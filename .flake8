@@ -1,8 +1,9 @@
 # .flake8
 [flake8]
 application-import-names = tessif,tests,noxfile
-# B,B9 = Bugbear; BLK= black warning; C = mccabe complexity; #F = pyflake errors; W,E = pycodestyle; I = import order; S=Securtiy
-select = B,B9,BLK,C,E,F,I,S,W
+# B,B9 = Bugbear; BLK= black warning; C = mccabe complexity; D = Docstring; F = pyflake errors; W,E = pycodestyle; I = import order; S=Securtiy
+select = B,B9,BLK,C,D,DAR,E,F,I,S,W
+docstring-convention = numpy
 # ignore incompatible black warnings:
 # E203 (Whitespace before ‘:')
 # W503 (Line break before binary operator)
