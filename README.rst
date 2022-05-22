@@ -1,4 +1,4 @@
-tessif
+Tessif
 ======
 
 |PyPI| |Status| |Python Version| |License|
@@ -52,7 +52,7 @@ License
 -------
 
 Distributed under the terms of the `MIT license`_,
-*Zettelkasten* is free and open source software.
+*Tessif* is free and open source software.
 
 .. _MIT license: https://opensource.org/licenses/MIT
 .. _PyPI: https://pypi.org/
