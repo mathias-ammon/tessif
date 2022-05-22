@@ -22,8 +22,8 @@ def request_url(url):
 @pytest.fixture
 def request_random_wiki_article():
     """Try reaching the wikipedia site to get a random article."""
-    API_URL = "https://en.wikipedia.org/api/rest_v1/page/random/summary"
-    response = request_url(API_URL)
+    api_url = "https://en.wikipedia.org/api/rest_v1/page/random/summary"
+    response = request_url(api_url)
 
     return response
 

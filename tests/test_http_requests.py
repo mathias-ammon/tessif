@@ -37,8 +37,8 @@ def mock_requests_get(mocker):
 @pytest.fixture
 def request_rnd_wiki_artcl():
     """Try reaching the wikipedia site to get a random article."""
-    API_URL = "https://en.wikipedia.org/api/rest_v1/page/random/summary"
-    response = request_url(API_URL)
+    api_url = "https://en.wikipedia.org/api/rest_v1/page/random/summary"
+    response = request_url(api_url)
     json_response = response.json()
 
     return json_response
@@ -94,8 +94,8 @@ def test_fail_on_request_error(mock_requests_get, request_rnd_wiki_artcl):
     """Test on failing the https request."""
     mock_requests_get.side_effect = requests.RequestException
 
-    API_URL = "https://en.wikipedia.org/api/rest_v1/page/random/summary"
-    mock_response = request_url(API_URL)
+    api_url = "https://en.wikipedia.org/api/rest_v1/page/random/summary"
+    mock_response = request_url(api_url)
 
     assert "Error" in mock_response
 

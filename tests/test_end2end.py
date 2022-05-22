@@ -10,10 +10,10 @@ import pytest
 @pytest.mark.e2e
 def test_unix_specifics():
     """Test unix specific things."""
-    assert type("Linux") == str
+    assert str == str
 
 
 @pytest.mark.e2e
 def test_windows_specifics():
     """Test windows specific things."""
-    assert type("Windows") == str
+    assert str == str
