@@ -1,4 +1,4 @@
-Tweaed Hypermodern Python Project
+Tweeked Hypermodern Python Project
 =================================
 
 Project Skeleton for the
