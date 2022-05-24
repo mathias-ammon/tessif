@@ -1,9 +1,8 @@
 # .github/workflows/pypi.yml
 name: PyPI
 on:
-  push:
-    tags:
-      - "*"
+  release:
+    types: [created]
 jobs:
   pypi:
     runs-on: ubuntu-latest
