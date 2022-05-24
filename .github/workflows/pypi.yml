@@ -1,10 +1,12 @@
 # .github/workflows/pypi.yml
 name: PyPI
 on:
-  release:
-    types: [created]
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
 jobs:
-  pypi:
+  publish_on_pypi:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
