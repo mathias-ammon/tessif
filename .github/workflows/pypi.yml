@@ -1,5 +1,5 @@
 # .github/workflows/pypi.yml
-name: Build package using poetry and publish on pypi
+name: PyPI
 on:
   push:
     tags:
@@ -18,7 +18,7 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          password: ${{ secrets.PYPI_TOKEN }}
           verbose: true
           print_hash: true
           skip_existing: true
