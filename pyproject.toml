@@ -29,6 +29,7 @@ xdoctest = "^1.0.0"
 Sphinx = "^4.5.0"
 pep8-naming = "^0.12.1"
 pyupgrade = "^2.32.1"
+sphinx-paramlinks = "^0.5.2"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
