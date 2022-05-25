@@ -4,6 +4,10 @@
 
 Tessif has been developed for unifying various free and open source modelling tools designed for analysing energy supply systems considering power heat and mobility.
 
+.. contents:: Contents
+   :backlinks: top
+   :local:
+
 
 Installation
 ============
@@ -18,7 +22,7 @@ Latest Stable Version
    $ pip install tesif
 
 Latest Development Version (potentially unstable)
-------------------------------------------------
+-------------------------------------------------
 
 .. code-block:: console
 
@@ -32,7 +36,7 @@ Development Workflows
 =====================
 
 
-Latest deveolpment publiches on TestPyPI
+Latest deveolpment publishes on TestPyPI
 ----------------------------------------
 Pseudo release a (potentially unstable) development version of your package by
 `Pushing <Push_>`_ or `Merging <Merge_>`_ a Pull-Request_ to your

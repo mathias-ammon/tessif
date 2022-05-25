@@ -1,11 +1,8 @@
 # docs/conf.py
 """Sphinx configuration."""
-from tessif import __version__
-
 project = "tessif - Transforming Energy Supply System modell I ng Frameworks"
 author = "Mathias Ammon"
 copyright = f"2022, {author}"
-release = __version__
 
 extensions = [
     "sphinx.ext.autodoc",  # enable docstring documentation
