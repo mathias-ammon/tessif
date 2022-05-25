@@ -37,25 +37,37 @@ Tessif
 
 
 
-Transforming Energy Suppy System modellIng Framework
+Transforming Energy Suppy System modell*I*ng Framework
 
-Installation
-------------
+Latest Stable Version
+---------------------
+You can install *Tessif* via pip_ from PyPI_.
+Install using a console with your virtual environment activated:
 
-You can install *Tessif* via pip_ from PyPI_:
+.. code-block:: console
 
-.. code:: console
+   $ pip install tesif
 
-   $ pip install tessif
+Latest Development Version (potentially unstable)
+------------------------------------------------
+
+You can install the development version of *Tessif* via pip_ from TestPyPI_.
+Install using a console with your virtual environment activated:
+
+.. code-block:: console
+
+   $ pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ tessif
+
+This installs the TestPyPI_ version of tessif while resolving the dependencies on PyPI_.
 
 License
 -------
-
 Distributed under the terms of the `MIT license`_,
 *Tessif* is free and open source software.
 
 .. _MIT license: https://opensource.org/licenses/MIT
 .. _PyPI: https://pypi.org/
+.. _TestPyPI: https://test.pypi.org/
 .. _pip: https://pip.pypa.io/
 .. github-only
 .. _Contributor Guide: CONTRIBUTING.rst
