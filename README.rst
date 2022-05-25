@@ -49,7 +49,7 @@ Install using a console with your virtual environment activated:
    $ pip install tesif
 
 Latest Development Version (potentially unstable)
-------------------------------------------------
+-------------------------------------------------
 
 You can install the development version of *Tessif* via pip_ from TestPyPI_.
 Install using a console with your virtual environment activated:
