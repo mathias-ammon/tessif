@@ -13,7 +13,13 @@ import nox
 # local packages
 
 # define default sessions:
-nox.options.sessions = "lint", "tests", "xdoctest"
+nox.options.sessions = (
+    "pre-commit",
+    "lint",
+    "tests",
+    "xdoctest",
+    "docs_rebuild",
+)
 
 
 def install_with_constraints(session, *args, **kwargs):
