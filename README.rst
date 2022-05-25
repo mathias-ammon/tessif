@@ -1,5 +1,5 @@
-Tessif
-======
+tessif (**T**\ ransforming **E**\ nergy **S**\ upply **S**\ ystem model\ **I**\ ng **F**\ ramework)
+===================================================================================================
 
 |PyPI| |Status| |Python Version| |License|
 
@@ -35,9 +35,6 @@ Tessif
    :target: https://github.com/psf/black
    :alt: Black
 
-
-
-Transforming Energy Suppy System modell*I*ng Framework
 
 Latest Stable Version
 ---------------------
