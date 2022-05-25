@@ -620,6 +620,14 @@ lint = ["flake8 (>=3.5.0)", "isort", "mypy (>=0.931)", "docutils-stubs", "types-
 test = ["pytest", "pytest-cov", "html5lib", "cython", "typed-ast"]
 
 [[package]]
+name = "sphinx-paramlinks"
+version = "0.5.2"
+description = "Allows param links in Sphinx function/method descriptions to be linkable"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "sphinxcontrib-applehelp"
 version = "1.0.2"
 description = "sphinxcontrib-applehelp is a sphinx extension which outputs Apple help books"
@@ -784,7 +792,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "f086155e23201c76be01a7706f592cdef645590953b0a101bb4fbb92f9215220"
+content-hash = "8370342a3f85ce6959bc52d4d99af4c1e6a950cbdf5277409e242db2c761dc19"
 
 [metadata.files]
 alabaster = [
@@ -1127,6 +1135,9 @@ snowballstemmer = [
 sphinx = [
     {file = "Sphinx-4.5.0-py3-none-any.whl", hash = "sha256:ebf612653238bcc8f4359627a9b7ce44ede6fdd75d9d30f68255c7383d3a6226"},
     {file = "Sphinx-4.5.0.tar.gz", hash = "sha256:7bf8ca9637a4ee15af412d1a1d9689fec70523a68ca9bb9127c2f3eeb344e2e6"},
+]
+sphinx-paramlinks = [
+    {file = "sphinx-paramlinks-0.5.2.tar.gz", hash = "sha256:51b3ecca66de5c063e97019eb354eec17a657f424a00357a04ee981c80ad5be9"},
 ]
 sphinxcontrib-applehelp = [
     {file = "sphinxcontrib-applehelp-1.0.2.tar.gz", hash = "sha256:a072735ec80e7675e3f432fcae8610ecf509c5f1869d17e2eecff44389cdbc58"},
