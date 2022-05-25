@@ -19,7 +19,7 @@ Latest Stable Version
 ---------------------
 .. code-block:: console
 
-   $ pip install tesif
+   $ pip install tessif
 
 Latest Development Version (potentially unstable)
 -------------------------------------------------
