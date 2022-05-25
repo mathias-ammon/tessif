@@ -46,7 +46,7 @@ Install using a console with your virtual environment activated:
 
 .. code-block:: console
 
-   $ pip install tesif
+   $ pip install tessif
 
 Latest Development Version (potentially unstable)
 -------------------------------------------------
