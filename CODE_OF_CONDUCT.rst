@@ -1,5 +1,5 @@
-Contributor Covenant Code of Conduct
-====================================
+Code of Conduct
+===============
 
 .. contents:: Contents
    :backlinks: top
