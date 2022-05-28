@@ -104,6 +104,7 @@ def xdoctest(session):
 @nox.session(python="3.10")
 def docs(session):
     """Build the documentation."""
+    session.run("poetry", "install", "--no-dev", external=True)
     install_with_constraints(
         session,
         "sphinx",
@@ -111,6 +112,7 @@ def docs(session):
         "furo",
         "sphinx-paramlinks",
         "sphinx-rtd-theme",
+        "pytest",
     )
     session.run("sphinx-build", "docs", "docs/_build")
 
@@ -119,6 +121,7 @@ def docs(session):
 def docs_live(session):
     """Build and serve the documentation with live reloading on changes."""
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
+    session.run("poetry", "install", "--no-dev", external=True)
     install_with_constraints(
         session,
         "sphinx",
@@ -127,6 +130,7 @@ def docs_live(session):
         "furo",
         "sphinx-paramlinks",
         "sphinx-rtd-theme",
+        "pytest",
     )
 
     build_dir = Path("docs", "_build")
@@ -139,6 +143,7 @@ def docs_live(session):
 @nox.session(python="3.10")
 def docs_rebuild(session):
     """Rebuild the entire sphinx documentation."""
+    session.run("poetry", "install", "--no-dev", external=True)
     install_with_constraints(
         session,
         "sphinx",
@@ -146,6 +151,7 @@ def docs_rebuild(session):
         "furo",
         "sphinx-paramlinks",
         "sphinx-rtd-theme",
+        "pytest",
     )
     build_dir = Path("docs", "_build")
     if build_dir.exists():

@@ -1,5 +1,35 @@
 # docs/conf.py
 """Sphinx configuration."""
+
+# Configuration file for the Sphinx documentation builder.
+#
+# This file only contains a selection of the most common options. For a full
+# list see the documentation:
+# https://www.sphinx-doc.org/en/master/usage/configuration.html
+
+# -- Path setup --------------------------------------------------------------
+
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+
+import os
+import pathlib
+import sys
+
+# Make src and unittest folders knows to sphinx, to allow rtd to build the docs
+src_path = pathlib.Path(__file__).resolve() / ".." / ".." / "src"
+unittest_path = pathlib.Path(__file__).resolve() / ".." / ".."
+
+
+sys.path.insert(0, os.path.abspath(unittest_path))
+sys.path.insert(0, os.path.abspath(src_path))
+
+print(unittest_path)
+print(sys.path)
+
+# -- Project information -----------------------------------------------------
+
 project = "tessif - Transforming Energy Supply System modell I ng Frameworks"
 author = "Mathias Ammon"
 copyright = f"2022, {author}"
@@ -23,6 +53,16 @@ html_theme_options = {
     "display_version": True,
     "sticky_navigation": True,
     # 'style_nav_header_background': '#009682',
+}
+
+# Example configuration for intersphinx: refer to the Python standard library.
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3/", None),
+    "networkx": ("https://networkx.org/documentation/stable/", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
+    "matplotlib": ("https://matplotlib.org", None),
 }
 
 # Sort the documentation

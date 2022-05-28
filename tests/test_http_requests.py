@@ -1,8 +1,9 @@
 # tests/test_http_requests.py
 """Module to test https request calls using the request package.
 
-Targets are mostly mocked using pytest-mock plugin
-(poetry add --def pytest-mock).
+Targets are mostly mocked using pytest-mock plugin::
+
+    poetry add --dev pytest-mock
 
 Meant to serve as template in case the package uses url based api calls.
 """
