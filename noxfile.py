@@ -104,6 +104,7 @@ def xdoctest(session):
 @nox.session(python="3.10")
 def docs(session):
     """Build the documentation."""
+    session.run("poetry", "install", "--no-dev", external=True)
     install_with_constraints(
         session,
         "sphinx",
@@ -111,6 +112,7 @@ def docs(session):
         "furo",
         "sphinx-paramlinks",
         "sphinx-rtd-theme",
+        "pytest",
     )
     session.run("sphinx-build", "docs", "docs/_build")
 
@@ -119,6 +121,7 @@ def docs(session):
 def docs_live(session):
     """Build and serve the documentation with live reloading on changes."""
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
+    session.run("poetry", "install", "--no-dev", external=True)
     install_with_constraints(
         session,
         "sphinx",
@@ -127,6 +130,7 @@ def docs_live(session):
         "furo",
         "sphinx-paramlinks",
         "sphinx-rtd-theme",
+        "pytest",
     )
 
     build_dir = Path("docs", "_build")
@@ -139,6 +143,7 @@ def docs_live(session):
 @nox.session(python="3.10")
 def docs_rebuild(session):
     """Rebuild the entire sphinx documentation."""
+    session.run("poetry", "install", "--no-dev", external=True)
     install_with_constraints(
         session,
         "sphinx",
@@ -146,6 +151,7 @@ def docs_rebuild(session):
         "furo",
         "sphinx-paramlinks",
         "sphinx-rtd-theme",
+        "pytest",
     )
     build_dir = Path("docs", "_build")
     if build_dir.exists():
@@ -244,3 +250,20 @@ def precommit(session):
     session.run("pre-commit", *args)
     if args and args[0] == "install":
         activate_virtualenv_in_precommit_hooks(session)
+
+
+@nox.session(python="3.10")
+def safety(session):
+    """Scan dependencies for insecure packages using safety."""
+    with tempfile.NamedTemporaryFile() as requirements:
+        session.run(
+            "poetry",
+            "export",
+            "--dev",
+            "--format=requirements.txt",
+            "--without-hashes",
+            f"--output={requirements.name}",
+            external=True,
+        )
+        session.install("safety")
+        session.run("safety", "check", f"--file={requirements.name}", "--full-report")
