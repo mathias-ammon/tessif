@@ -31,6 +31,9 @@ def request_random_wiki_article():
 @pytest.mark.con
 def test_wikipedia_connectivity(request_random_wiki_article):
     """Try reaching the wikipedia site to get a random article."""
+    # pylint: disable=redefined-outer-name
+    # disabled here, sind redefinition is how fixtures work
+
     answer = request_random_wiki_article
     print(answer)
     assert "Error" not in answer

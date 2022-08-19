@@ -16,6 +16,7 @@ import nox
 nox.options.sessions = (
     "pre-commit",
     "lint",
+    "pylint",
     "tests",
     "xdoctest",
     "docs_rebuild",
@@ -267,3 +268,18 @@ def safety(session):
         )
         session.install("safety")
         session.run("safety", "check", f"--file={requirements.name}", "--full-report")
+
+
+@nox.session(python="3.10")
+def pylint(session):
+    """Lint using pylint."""
+    args = session.posargs or locations
+    session.run("poetry", "install", "--no-dev", external=True)
+    install_with_constraints(
+        session,
+        "pytest",
+        "requests",
+        "nox",
+        "pylint",
+    )
+    session.run("pylint", "--output-format=colorized", "--recursive=y", *args)
