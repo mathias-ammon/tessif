@@ -11,17 +11,11 @@ Meant to serve as template in case the package uses url based api calls.
 import pytest
 import requests
 
+from .test_connectivity import request_url
 
-def request_url(url):
-    """With wrapper to requests.get."""
-    try:
-        with requests.get(url) as response:
-            response.raise_for_status()
-            return response
-
-    except requests.RequestException:
-        message = "Error: request_url failed."
-        return message
+# pylint: disable=redefined-outer-name
+# disabled here, sind redefinition is how fixtures work and they are used here
+# extensively
 
 
 @pytest.fixture
@@ -46,7 +40,8 @@ def request_rnd_wiki_artcl():
 
 
 def test_mock_gets_called(mock_requests_get, request_rnd_wiki_artcl):
-    """Assert the requests.get was actually called.
+    """
+    Assert the requests.get was actually called.
 
     random_wiki_article gets called by fixutre wrap around mock object so
     the mock object is "requests.get" instead of the url.
@@ -62,17 +57,26 @@ def test_mock_gets_called(mock_requests_get, request_rnd_wiki_artcl):
     request_rnd_wiki_artcl
         request_random_wiki_article fixture from above
     """
+    # pylint: disable=unused-argument
+    # disabled here since the fixture is needed for successful mocking
+    # but unsued in the traditional argument sense of a = b; print(2*a)
+
     assert mock_requests_get.called
 
 
 def test_mock_result_inspection(mock_requests_get, request_rnd_wiki_artcl):
     """Test successful mock result inspection."""
+    # pylint: disable=unused-argument
+    # disabled here since the fixture is needed for successful mocking
+    # but unsued in the traditional argument sense of a = b; print(2*a)
+
     http_json_response = request_rnd_wiki_artcl
     assert "Lorem Ipsum" in http_json_response["title"]
 
 
 def test_mock_param_call_inspection(mock_requests_get, request_rnd_wiki_artcl):
-    """Assert the requests.get was called properly.
+    """
+    Assert the requests.get was called properly.
 
     Random_wiki_article gets called by fixutre wrap around mock object so
     the mock object is "requests.get" instead of the url.
@@ -87,19 +91,23 @@ def test_mock_param_call_inspection(mock_requests_get, request_rnd_wiki_artcl):
     request_rnd_wiki_artcl
         request_random_wiki_article fixture from above
     """
+    # pylint: disable=unused-argument
+    # disabled here since the fixture is needed for successful mocking
+    # but unsued in the traditional argument sense of a = b; print(2*a)
+
     args, _ = mock_requests_get.call_args
     assert "en.wikipedia.org" in args[0]
 
 
 def test_fail_on_request_error(mock_requests_get, request_rnd_wiki_artcl):
     """Test on failing the https request."""
+    # pylint: disable=unused-argument
+    # disabled here since the fixture is needed for successful mocking
+    # but unsued in the traditional argument sense of a = b; print(2*a)
+
     mock_requests_get.side_effect = requests.RequestException
 
     api_url = "https://en.wikipedia.org/api/rest_v1/page/random/summary"
     mock_response = request_url(api_url)
 
     assert "Error" in mock_response
-
-
-# continue with end to end tests and actual connectivity tests
-# continue with data base FAKES

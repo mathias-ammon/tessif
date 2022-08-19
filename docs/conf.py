@@ -1,4 +1,5 @@
 # docs/conf.py
+# pylint: disable=invalid-name
 """Sphinx configuration."""
 
 # Configuration file for the Sphinx documentation builder.
@@ -32,7 +33,7 @@ print(sys.path)
 
 project = "tessif - Transforming Energy Supply System modell I ng Frameworks"
 author = "Mathias Ammon"
-copyright = f"2022, {author}"
+copyright = f"2022, {author}"  # pylint: disable=redefined-builtin
 
 extensions = [
     "sphinx.ext.autodoc",  # enable docstring documentation
@@ -67,3 +68,6 @@ intersphinx_mapping = {
 
 # Sort the documentation
 autodoc_member_order = "bysource"
+
+
+# pylint: enable=invalid-name

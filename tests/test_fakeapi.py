@@ -14,7 +14,7 @@ class FakeAPI:
     @classmethod
     def create(cls):
         """Expensive operation to create API."""
-        return "expensive creation"
+        return FakeAPI()
 
     def shutdown(self):
         """Expensive shutdown operation."""
