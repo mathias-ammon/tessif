@@ -1,8 +1,8 @@
-# .github/workflows/safety.yml
-name: Safety
+# .github/workflows/flake8_lint.yml
+name: Flake8-Linting
 on: push
 jobs:
-  safety:
+  flake8_lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,4 +13,4 @@ jobs:
       - run: pip install nox==2022.11.21
       - run: pip install poetry==1.3.2
       - run: pip install nox-poetry==1.0.2
-      - run: nox --sessions safety
+      - run: nox --sessions lint

@@ -12,6 +12,7 @@ keywords = ["energy technology", "energy supply systems"]
 [tool.poetry.dependencies]
 python = "^3.8"
 requests = "^2.27.1"
+nox-poetry = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
