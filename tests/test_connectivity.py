@@ -10,7 +10,7 @@ import requests
 def request_url(url):
     """With wrapper to requests.get."""
     try:
-        with requests.get(url) as response:
+        with requests.get(url, timeout=20) as response:
             response.raise_for_status()
             return response
 
