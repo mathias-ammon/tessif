@@ -22,7 +22,6 @@ def tsf_omf_44(session):
 
     # install tessif-oemof-4.4 using pip
     session.install(plugin)
-    session.install("matplotlib")
 
     # print(session.name)
     # print(sysmod_location)

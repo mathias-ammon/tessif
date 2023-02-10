@@ -788,7 +788,7 @@ requirements-deprecated-finder = ["pip-api", "pipreqs"]
 name = "ittools"
 version = "0.1.2"
 description = "Tweaked Hypermodern Python Project Template w/o Typing"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
@@ -2022,7 +2022,7 @@ pbr = ">=2.0.0,<2.1.0 || >2.1.0"
 name = "strutils"
 version = "0.1.0"
 description = "Tweaked Hypermodern Python Project Template w/o Typing"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
@@ -2054,14 +2054,14 @@ tessif = ">=0,<1"
 
 [[package]]
 name = "tessif-oemof-4-4"
-version = "0.1.1"
+version = "0.1.2"
 description = "Tessif-Plugin for providing oemof version 4.4. support."
 category = "dev"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "tessif_oemof_4_4-0.1.1-py3-none-any.whl", hash = "sha256:eb2e2c5aa8d7f25cbfebcd121edbdd68369afbe6a49e957e4f5651dd0da4a3a9"},
-    {file = "tessif_oemof_4_4-0.1.1.tar.gz", hash = "sha256:3a006ee6f9b4723c84015adcfd71f9e3e5beeebd18b5762bc6282e1f7ac031d0"},
+    {file = "tessif_oemof_4_4-0.1.2-py3-none-any.whl", hash = "sha256:5199a4fe754cc9231304ebdb6dd68da24f0ca11509d1d34ed429b1fb3e91d62d"},
+    {file = "tessif_oemof_4_4-0.1.2.tar.gz", hash = "sha256:8b875d24b2fecd0b97807d7693a106baace6adafe6c1ae448dbc13216ba2fd1e"},
 ]
 
 [package.dependencies]
@@ -2277,4 +2277,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "4d0d505fbc29023b8a255f3b40d699b60e3a0d5d44345c30abeda8794c1dfb27"
+content-hash = "a46287734390179b805edad7ca330583b579392a45b8f7dc9e7341a6a11c8c7d"

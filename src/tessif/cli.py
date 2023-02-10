@@ -46,11 +46,17 @@ def tropp(system_model_location, plugin):
     click.echo([node.uid.name for node in restored_es.nodes])
     click.echo()
 
-    t2o = importlib.import_module(f"{module_name}.tsf2omf")
-    omf_es = t2o.transform(restored_es)
+    # t2o = importlib.import_module(f"{module_name}.tsf2omf")
+    tool_system_model = plugin_module.transform(restored_es)
 
     click.echo("Nodes present in the oemof system model:")
-    click.echo([str(node) for node in omf_es.nodes])
+    click.echo([str(node) for node in tool_system_model.nodes])
+
+    optimized_system_model = plugin_module.optimize(tool_system_model)
+
+    click.echo("Optimization Succesfull!")
+    click.echo(
+        f"Global Costs: {optimized_system_model.results['global']['costs']}")
 
 # if __name__ == '__main__':
 #     main_cli_entry()
