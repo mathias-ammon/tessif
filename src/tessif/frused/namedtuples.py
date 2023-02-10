@@ -1,11 +1,13 @@
-# src/tessif/namedtuples.py
-# pylint: disable=invalid-name
-"""Dummy named tuples file to enebale tessif-examples."""
+# tessif/frused/namedtuples
+# -*- coding: utf-8 -*-
+"""
+:mod:`~tessif.frused.namedtuples` is a :mod:`tessif` subpackage aggregating
+utility objects for cleaner and more verbose code in the context of naming
+things.
+"""
 import collections
 import typing
-
-node_uid_seperator = "_"
-node_uid_style = "name"
+import tessif.frused.configurations as config
 
 
 class UidBase(typing.NamedTuple):
@@ -20,9 +22,9 @@ class UidBase(typing.NamedTuple):
     node_type: str
 
     def __str__(self):
-        return node_uid_seperator.join(
+        return config.node_uid_seperator.join(
             str(getattr(self, i)) for i in node_uid_styles[
-                node_uid_style])
+                config.node_uid_style])
 
 
 class Uid(UidBase):
@@ -217,20 +219,38 @@ results into following representaion, depending on the mapping used:
             print(configs.node_uid_style, '->', lbl)
 """
 
-MinMax = collections.namedtuple("MinMax", ["min", "max"])
+Edge = collections.namedtuple('Edge', ['source', 'target'])
+"""
+Edge of an energy system graph. (source, target)
+
+As of tessif's convention an Edge is describe as directional going from
+``source`` to ``target``.
+
+Parameters
+----------
+source: str
+    :ref:`Uid representation <Labeling_Concept>` of the :ref:`energy system
+    component <Models_Tessif_Concept_ESC>` representing the edges start.
+
+target: str
+    :ref:`Uid representation <Labeling_Concept>` of the :ref:`energy system
+    component <Models_Tessif_Concept_ESC>` representing the edges end.
+"""
+
+MinMax = collections.namedtuple('MinMax', ['min', 'max'])
 """
 Corespondent minimum and maximum value pair. Usually used for energy system
 value parings like flow limits (i.e: minimum and maximum flow boundaries).
 """
 
-OnOff = collections.namedtuple("OnOff", ["on", "off"])
+OnOff = collections.namedtuple('OnOff', ['on', 'off'])
 """
 Corespondent value pair for describing parameters dependent on a boolean
-status. Usually used for energy system value parings describing nonconvex
+status. . Usually used for energy system value parings describing nonconvex
 behaviour like i.e: minimum uptime and downtime.
 """
 
-InOut = collections.namedtuple("InOut", ["inflow", "outflow"])
+InOut = collections.namedtuple('InOut', ['inflow', 'outflow'])
 """
 Corespondent inflow outflow value pair. Usually used for energy system value
 parings describing different behaviours of the same component depending on in
@@ -238,15 +258,20 @@ or outflow like i.e: Storage efficiency
 """
 
 PositiveNegative = collections.namedtuple(
-    "PositiveNegative",
-    ["positive", "negative"],
-)
+    'PositiveNegative', ['positive', 'negative'])
 """
 Corespondent value pair for describing parameters dependent on directions
 expressed as positive or negative. Usually used for energy system value
 parings describing changes between timesteps like i.e: power production
 gradients.
 """
+
+Coordinates = collections.namedtuple(
+    'Coordinates', ['latitude', 'longitude'])
+"""
+Geospatial coordinates. (latitude [°], longitude[°])
+"""
+
 
 NodeColorGroupings = collections.namedtuple(
     'NodeColorGroupings',
@@ -274,4 +299,80 @@ carrier : defaultdict(list)
 
 sector : defaultdict(list)
     Dictionairy of node colors with tags searched for in node.label.sector
+"""
+
+
+AttributeGroupings = collections.namedtuple(
+    'AttributeGroupings',
+    ['node', 'edge', 'legend'])
+"""
+Energy system graph attribute groupings. (Mainly used for filtering purposes).
+
+Parameters
+----------
+node: str
+    String to tag node related attributes
+edge: str
+    String to tag edge related attributes
+legend: str
+    String to tag legend related attributes
+
+See also
+--------
+:paramref:`~tessif.visualize.nxgrph.draw_graph.kwargs`
+parameter of :meth:`~tessif.visualize.nxgrph.draw_graph`
+
+Implementation example:
+:attr:`~tessif.frused.conventions.nxgrph_visualize_defaults`
+"""
+
+MemoryTime = collections.namedtuple(
+    'MemoryTime',
+    ['memory', 'time'])
+"""
+Simulation meta data result container. (Mainly used by
+:class:`tessif.analye.Comparatier`).
+
+Parameters
+----------
+memory: str
+    String to tag memory related result data.
+edge: str
+    String to tag timing related result data.
+"""
+
+SimulationProcessStepResults = collections.namedtuple(
+    'SimulationProcessStepResults',
+    ['reading', 'parsing', 'transformation', 'simulation', 'post_processing', 'result'])
+"""
+Detailed meta data result container holding inrformation on the various
+simulation process steps.
+
+Parameters
+----------
+reading: ~numbers.Number
+    Number representing the quantity needed for reading in the data
+    during the simulation process.
+parsing: ~numbers.Number
+    Number representing the quantity needed for parsing the read in data
+    during the simulation process.
+transformation: ~numbers.Number
+    Number representing the quantity needed for transforming the parsed
+    data during the simulation process.
+solving: ~numbers.Number
+    Number representing the quantity needed for solving during the the
+    simulation process.
+post_processing: ~numbers.Number
+    Number representing the quantity needed for post precessing the
+    solving results during the simulation process.
+"""
+
+CLS = collections.namedtuple(
+    "CLS",  # Correlate Line Style
+    ["thresholds", "styles"],
+)
+"""Line style thresholds and style correlation.
+
+See :paramref:`tessif.transform.es2mapping.base.EdgeFormatier.cls` for more
+details.
 """
