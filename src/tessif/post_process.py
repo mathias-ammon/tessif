@@ -578,7 +578,7 @@ class LoadResultier(Resultier):
         for node, load in self._node_loads.items():
             # sort bus dataframe to first show inputs and then show outputs
             inflows, outflows = pd.DataFrame(), pd.DataFrame()
-            for (columnName, columnData) in load.iteritems():
+            for (columnName, columnData) in load.items():
                 # copysign(1, i) returns 1 if i > 0 or i == +0.0 and returns -1
                 # if i < 0 or i == -0.0
                 if all(copysign(1, i) > 0 for i in columnData.values):
@@ -663,7 +663,7 @@ class LoadResultier(Resultier):
 
             # kick out any duplicate columns
             new_df = pd.DataFrame()
-            for col_name, series in df.iteritems():
+            for col_name, series in df.items():
                 if df.columns.to_list().count(col_name) > 1 and (series <= 0).all():
                     pass
                 else:
@@ -723,7 +723,7 @@ class LoadResultier(Resultier):
 
             # kick out any duplicate columns
             new_df = pd.DataFrame()
-            for col_name, series in df.iteritems():
+            for col_name, series in df.items():
                 if df.columns.to_list().count(col_name) > 1 and (series <= 0).all():
                     pass
                 else:
