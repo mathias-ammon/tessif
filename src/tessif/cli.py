@@ -61,6 +61,11 @@ def tropp(system_model_location, plugin):
     click.echo("Optimization Succesfull!")
     click.echo(f"Global Costs: {optimized_system_model.results['global']['costs']}")
 
+    click.echo("Post-Process Tool System Model")
+    post_process = importlib.import_module(f"{module_name}.post_process")
+    global_resultier = post_process.IntegratedGlobalResultier(
+        optimized_system_model)
+    click.echo(global_resultier.global_results)
 
 # if __name__ == '__main__':
 #     main_cli_entry()
