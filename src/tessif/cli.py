@@ -14,12 +14,15 @@ def main_cli_entry():
 @main_cli_entry.command()
 def greet():
     """Greet the world."""
-    click.echo('Hello World!')
+    click.echo("Hello World!")
 
-# , help="Specify The TROPP Perfroming Tessif-Plugin")
+
 @main_cli_entry.command()
-@click.option("--system_model_location", help="Tessif System-Model Location")
-@click.argument('plugin')
+@click.option(
+    "--system_model_location",
+    help="Tessif System-Model Location",
+)
+@click.argument("plugin")
 def tropp(system_model_location, plugin):
     """TRansform Optimize and Post-Process."""
     click.echo("TRansform Optimize and Post-Process!\n")
@@ -39,7 +42,8 @@ def tropp(system_model_location, plugin):
     click.echo()
 
     from tessif.model.energy_system import AbstractEnergySystem
-    restored_es = AbstractEnergySystem(uid='This Instance Is Restored')
+
+    restored_es = AbstractEnergySystem(uid="This Instance Is Restored")
     msg = restored_es.unpickle(system_model_location)
     click.echo("Succesfully deserialized tessif system model!")
     click.echo("Nodes present in the tessif system model:")
@@ -55,8 +59,8 @@ def tropp(system_model_location, plugin):
     optimized_system_model = plugin_module.optimize(tool_system_model)
 
     click.echo("Optimization Succesfull!")
-    click.echo(
-        f"Global Costs: {optimized_system_model.results['global']['costs']}")
+    click.echo(f"Global Costs: {optimized_system_model.results['global']['costs']}")
+
 
 # if __name__ == '__main__':
 #     main_cli_entry()
