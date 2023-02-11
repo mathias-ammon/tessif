@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tessif"
-version = "0.0.17"
+version = "0.0.18"
 description = "Transforming Energy Supply System modell*I*ng Framework"
 authors = ["Mathias Ammon <mathias.ammon@tuhh.de>"]
 license = "MIT"
