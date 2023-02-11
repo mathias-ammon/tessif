@@ -441,7 +441,8 @@ class AbstractEnergySystem:
                 [
                     "nox",
                     "-f",
-                    "test_nox.py",  # try absolutifying once fully ported
+                    # try absolutifying once fully ported
+                    "/home/tze/Matze/Codes/tsf_release/test_nox.py",
                     "-R",
                     "-s",
                     registered_plugin,
