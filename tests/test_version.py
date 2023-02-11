@@ -5,4 +5,4 @@ from tessif import __version__
 
 def test_verssion_access():
     """Test for correct package version."""
-    assert __version__ == "0.0.19"
+    assert __version__ == "0.0.20"
