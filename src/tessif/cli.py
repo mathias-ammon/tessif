@@ -1,8 +1,16 @@
 # src/tessif/cli.py
 """Module providing the Tessif Command Line Interface (CLI)."""
 import importlib
-
+import os
+import venv
+import subprocess
 import click
+
+PLUGIN = "tessif-oemof-4-4"
+
+tessif_dir = os.path.join(os.path.expanduser("~"), ".tessif.d")
+venv_dir = os.path.join(tessif_dir, "plugin-venvs", PLUGIN)
+python_bin = os.path.join(venv_dir, "bin", "python")
 
 
 @click.group()
@@ -18,13 +26,33 @@ def greet():
 
 
 @main_cli_entry.command()
+@click.argument("plugin")
+def install_plugin(plugin):
+    venv.create(venv_dir, upgrade_deps=True, with_pip=True)
+    subprocess.run(
+        [
+            python_bin,
+            "-m",
+            "pip",
+            "install",
+            plugin,
+        ]
+    )
+
+
+@main_cli_entry.command()
 @click.option(
-    "--system_model_location",
-    help="Tessif System-Model Location",
+    "--directory",
+    help="Directory the system_model.tsf and the results are/will be stored in",
 )
 @click.argument("plugin")
-def tropp(system_model_location, plugin):
+def tropp(directory, plugin):
     """TRansform Optimize and Post-Process."""
+
+    system_model_location = os.path.join(directory, "tessif_system_model.tsf")
+    all_resultier_location = os.path.join(directory, "all_resutlier.alr")
+    igr_resultier_location = os.path.join(directory, "igr_resultier.igr")
+
     click.echo("TRansform Optimize and Post-Process!\n")
 
     module_name = plugin.replace("-", "_")
@@ -65,7 +93,13 @@ def tropp(system_model_location, plugin):
     post_process = importlib.import_module(f"{module_name}.post_process")
     global_resultier = post_process.IntegratedGlobalResultier(
         optimized_system_model)
-    click.echo(global_resultier.global_results)
+    global_resultier.pickle(igr_resultier_location)
+    click.echo(f"Stored global results to {igr_resultier_location}")
+
+    all_resultier = post_process.AllResultier(optimized_system_model)
+    all_resultier.pickle(all_resultier_location)
+    click.echo(f"Stored all other results to {all_resultier_location}")
+
 
 # if __name__ == '__main__':
 #     main_cli_entry()

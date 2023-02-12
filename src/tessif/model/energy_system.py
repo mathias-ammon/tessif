@@ -407,7 +407,7 @@ class AbstractEnergySystem:
         Parameters
         ----------
         location: str, default = None
-            String representing of a path the created system model is dumped
+            String representing of a path the created system model is pickled
             to. Passed to: meth: `pickle.dump`.
         """
         pickle.dump(self.__dict__, open(location, "wb"))
@@ -437,21 +437,42 @@ class AbstractEnergySystem:
                 tempdir, "tessif_system_model.tsf")
             self.pickle(system_model_location)
 
+            # subprocess.run(
+            #     [
+            #         "nox",
+            #         "-f",
+            #         # try absolutifying once fully ported
+            #         "/home/tze/Matze/Codes/tsf_release/test_nox.py",
+            #         "-R",
+            #         "-s",
+            #         registered_plugin,
+            #         "--python",
+            #         "3.8",
+            #         "--",
+            #         tempdir,
+            #     ]
+            # )
+
+            PLUGIN = "tessif-oemof-4-4"
+
+            tessif_dir = os.path.join(os.path.expanduser("~"), ".tessif.d")
+            venv_dir = os.path.join(tessif_dir, "plugin-venvs", PLUGIN)
+            activation_script = os.path.join(venv_dir, "bin", "activate")
+
+            activation_command = f". {activation_script}; "
+            tropp_command = f"tessif tropp --directory {tempdir} {PLUGIN}"
             subprocess.run(
-                [
-                    "nox",
-                    "-f",
-                    # try absolutifying once fully ported
-                    "/home/tze/Matze/Codes/tsf_release/test_nox.py",
-                    "-R",
-                    "-s",
-                    registered_plugin,
-                    "--python",
-                    "3.8",
-                    "--",
-                    system_model_location,
-                ]
+                activation_command + tropp_command,
+                shell=True,
+                check=True,
             )
+
+            all_resultier = pickle.load(open(os.path.join(
+                tempdir, "all_resutlier.alr"), "rb"))
+            igr = pickle.load(open(os.path.join(
+                tempdir, "igr_resultier.igr"), "rb"))
+
+        return igr, all_resultier
 
     @classmethod
     def from_components(cls, uid, components, timeframe,

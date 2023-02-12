@@ -37,6 +37,7 @@ import logging
 from collections import defaultdict
 from itertools import cycle
 from math import copysign
+import pickle
 
 import matplotlib as mpl
 import numpy as np
@@ -273,7 +274,8 @@ class ESTransformer(abc.ABC):
 
         """
         # get all attributes of this instance as a list of (name, value):
-        attributes = inspect.getmembers(self, lambda a: not (inspect.isroutine(a)))
+        attributes = inspect.getmembers(
+            self, lambda a: not (inspect.isroutine(a)))
         # get all attributes starting with node_ but not _node
         node_attribute_names = list(
             a[0] for a in attributes if "node_" in a[0] and "_node" not in a[0]
@@ -324,7 +326,8 @@ class ESTransformer(abc.ABC):
         return {attr_name: getattr(self, attr_name) for attr_name in _edge_data}
 
         # get all attributes of this instance as a list of (name, value):
-        attributes = inspect.getmembers(self, lambda a: not (inspect.isroutine(a)))
+        attributes = inspect.getmembers(
+            self, lambda a: not (inspect.isroutine(a)))
 
         # get all attributes starting with edge_ but not _edge
         edge_attribute_names = list(
@@ -334,6 +337,22 @@ class ESTransformer(abc.ABC):
         return {
             attr_name: getattr(self, attr_name) for attr_name in edge_attribute_names
         }
+
+    def pickle(self, location):
+        """Pickle the resultier.
+
+        Parameters
+        ----------
+        location: str, default = None
+            String representing of a path the Resultier is pickled
+            to. Passed to: meth: `pickle.dump`.
+        """
+        pickle.dump(self, open(location, "wb"))
+
+    # @classmethod
+    # def unpickle(cls, location):
+    #     """Restore a pickled energy system object."""
+    #     self.__dict__ = pickle.load(open(location, "rb"))
 
 
 class XmplResultier(ESTransformer):
@@ -410,7 +429,8 @@ class XmplResultier(ESTransformer):
         """
         super().__init__(optimized_es=optimized_es, **kwargs)
         self._node_attr_xmpl = "red"
-        self._edge_attr_xmpl = {edge: sum(tuple(map(int, edge))) for edge in self.edges}
+        self._edge_attr_xmpl = {
+            edge: sum(tuple(map(int, edge))) for edge in self.edges}
 
     def _map_nodes(self, optimized_es):
         r"""Return an exemplary :class:`~collections.abc.Iterable` of nodes"""
@@ -807,12 +827,14 @@ class CapacityResultier(Resultier):
         super().__init__(optimized_es=optimized_es, **kwargs)
 
         # do the mapping
-        self._installed_capacities = self._map_installed_capacities(optimized_es)
+        self._installed_capacities = self._map_installed_capacities(
+            optimized_es)
         self._original_capacities = self._map_original_capacities(optimized_es)
 
         self._expansion_costs = self._map_expansion_costs(optimized_es)
 
-        self._characteristic_values = self._map_characteristic_values(optimized_es)
+        self._characteristic_values = self._map_characteristic_values(
+            optimized_es)
         self._reference_capacity = self._map_reference_capacity(
             reference=reference_capacity
         )
@@ -1071,7 +1093,8 @@ class NodeCategorizer(Resultier):
     attribute.
     """
 
-    categories = {"coordinates": ["latitude", "longitude"], "carriers": ["carrier"]}
+    categories = {"coordinates": ["latitude",
+                                  "longitude"], "carriers": ["carrier"]}
     """
     Categories of attributes that are mapped directly to each
     :ref:`node uid representation <Labeling_Concept>` of the energy system.
@@ -1139,7 +1162,8 @@ class NodeCategorizer(Resultier):
                     node_category_values = node_category_values[0]
 
                 if category == "coordinates":
-                    node_category_values = nts.Coordinates(*node_category_values)
+                    node_category_values = nts.Coordinates(
+                        *node_category_values)
 
                 category_dict[representation] = node_category_values
 
@@ -1277,7 +1301,8 @@ class FlowResultier(Resultier):
         """
         incurred_costs = {}
         for edge in self.edges:
-            ics = self._specific_flow_costs[edge] * self.edge_net_energy_flow[edge]
+            ics = self._specific_flow_costs[edge] * \
+                self.edge_net_energy_flow[edge]
             incurred_costs[edge] = ics
 
         return incurred_costs
@@ -1293,7 +1318,8 @@ class FlowResultier(Resultier):
         """
         emissions_caused = {}
         for edge in self.edges:
-            ics = self.edge_specific_emissions[edge] * self.edge_net_energy_flow[edge]
+            ics = self.edge_specific_emissions[edge] * \
+                self.edge_net_energy_flow[edge]
             emissions_caused[edge] = ics
 
         return emissions_caused
@@ -1850,7 +1876,8 @@ class MplLegendFormatier(Resultier):
                     linestyle="",
                 )
 
-                legend_markers.append((most_outer_circle, outer_circle, inner_circle))
+                legend_markers.append(
+                    (most_outer_circle, outer_circle, inner_circle))
                 legend_entries.append(node)
             else:
                 # scale node size with installed capacity:
@@ -2168,7 +2195,8 @@ class NodeFormatier(Resultier):
                     drawutil, __name__
                 )
             )
-            logger.warning("Use one of the existing fields: {}".format("['dc', 'nx']"))
+            logger.warning(
+                "Use one of the existing fields: {}".format("['dc', 'nx']"))
             logger.warning("Using default drawing utility: 'dc'")
             self._drawutil = "dc"
         else:
@@ -2307,7 +2335,8 @@ class NodeFormatier(Resultier):
         # Use a defaultdict as node shape container:
         _nx_node_shape = defaultdict(str)
 
-        component_types = ["bus", "connector", "sink", "storage", "transformer"]
+        component_types = ["bus", "connector",
+                           "sink", "storage", "transformer"]
 
         for node in self.nodes:
             # Singular mapped component types
@@ -2325,19 +2354,23 @@ class NodeFormatier(Resultier):
             # Source
             elif self.uid_nodes[node].component in spellings.source:
                 # set source to default shape...
-                _nx_node_shape[node] = self._default_node_shapes.get("default_source")
+                _nx_node_shape[node] = self._default_node_shapes.get(
+                    "default_source")
 
                 # ... unless its a pv source
                 if any(expr in node for expr in esci.name["photovoltaic"]):
-                    _nx_node_shape[node] = self._default_node_shapes.get("solar")
+                    _nx_node_shape[node] = self._default_node_shapes.get(
+                        "solar")
 
                 # ... unless its a wind onshore source
                 if any(expr in node for expr in esci.name["onshore"]):
-                    _nx_node_shape[node] = self._default_node_shapes.get("wind")
+                    _nx_node_shape[node] = self._default_node_shapes.get(
+                        "wind")
 
                 # ... unless its a wind offshore source
                 if any(expr in node for expr in esci.name["offshore"]):
-                    _nx_node_shape[node] = self._default_node_shapes.get("wind")
+                    _nx_node_shape[node] = self._default_node_shapes.get(
+                        "wind")
 
                 # ... unless its a commodity_source
                 if any(
@@ -2366,7 +2399,8 @@ class NodeFormatier(Resultier):
         # Use a defaultdict as node shape container:
         _dc_node_shape = defaultdict(str)
 
-        component_types = ["bus", "connector", "sink", "storage", "transformer"]
+        component_types = ["bus", "connector",
+                           "sink", "storage", "transformer"]
 
         for node in self.nodes:
             # Singular mapped component types
@@ -2384,19 +2418,23 @@ class NodeFormatier(Resultier):
             # Source
             elif self.uid_nodes[node].component in spellings.source:
                 # set source to default shape...
-                _dc_node_shape[node] = self._default_node_shapes.get("default_source")
+                _dc_node_shape[node] = self._default_node_shapes.get(
+                    "default_source")
 
                 # ... unless its a pv source
                 if any(expr in node for expr in esci.name["photovoltaic"]):
-                    _dc_node_shape[node] = self._default_node_shapes.get("solar")
+                    _dc_node_shape[node] = self._default_node_shapes.get(
+                        "solar")
 
                 # ... unless its a wind onshore source
                 if any(expr in node for expr in esci.name["onshore"]):
-                    _dc_node_shape[node] = self._default_node_shapes.get("wind")
+                    _dc_node_shape[node] = self._default_node_shapes.get(
+                        "wind")
 
                 # ... unless its a wind offshore source
                 if any(expr in node for expr in esci.name["offshore"]):
-                    _dc_node_shape[node] = self._default_node_shapes.get("wind")
+                    _dc_node_shape[node] = self._default_node_shapes.get(
+                        "wind")
 
                 # ... unless its a commodity_source
                 if any(
@@ -2676,7 +2714,8 @@ class NodeFormatier(Resultier):
 
                 # name grouped node color maps
                 if any(tag == self.uid_nodes[node].name for tag in variations):
-                    _name_grouped_node_color_maps[node] = next(themes.ccycles.name[key])
+                    _name_grouped_node_color_maps[node] = next(
+                        themes.ccycles.name[key])
 
             # carrier grouped node color maps
             for key, variations in esci.carrier.items():
@@ -2799,7 +2838,8 @@ class EdgeFormatier(Resultier):
                     drawutil, __name__
                 )
             )
-            logger.warning("Use one of the existing fields: {}".format("['dc', 'nx']"))
+            logger.warning(
+                "Use one of the existing fields: {}".format("['dc', 'nx']"))
             logger.warning("Using default drawing utility: 'dc'")
             self._drawutil = "dc"
         else:
@@ -2941,7 +2981,8 @@ class EdgeFormatier(Resultier):
 
         for edge in self.edges:
             edge_color = round(
-                self.edge_specific_emissions[edge] / self.edge_reference_emissions, 2
+                self.edge_specific_emissions[edge] /
+                self.edge_reference_emissions, 2
             )
 
             if edge_color < defaults.nxgrph_visualize_defaults["edge_minimum_grey"]:
@@ -2966,7 +3007,8 @@ class EdgeFormatier(Resultier):
         for edge in self.edges:
             # scale color to emission/max_emissions
             edge_color_float = round(
-                self.edge_specific_emissions[edge] / self.edge_reference_emissions, 2
+                self.edge_specific_emissions[edge] /
+                self.edge_reference_emissions, 2
             )
             # cap lower end of scale
             edge_color_float = max(
