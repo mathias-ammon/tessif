@@ -9,7 +9,6 @@ import nox_poetry
 )
 def tsf_omf_44(session):
     plugin = "tessif-oemof-4-4"
-    sysmod_location = session.posargs
 
     # install tessif using poetry
     session.run(
@@ -30,7 +29,7 @@ def tsf_omf_44(session):
     session.run(
         "tessif",
         "tropp",
-        "--system_model_location",
-        sysmod_location[0],
+        "--directory",
+        session.posargs[0],
         plugin,
     )

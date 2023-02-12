@@ -2054,19 +2054,19 @@ tessif = ">=0,<1"
 
 [[package]]
 name = "tessif-oemof-4-4"
-version = "0.1.4"
+version = "0.1.5"
 description = "Tessif-Plugin for providing oemof version 4.4. support."
 category = "dev"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "tessif_oemof_4_4-0.1.4-py3-none-any.whl", hash = "sha256:d636d67502bfc7e32acbdc9cca8ad5e64fc722f8c8fa8f010afe94307ae743b1"},
-    {file = "tessif_oemof_4_4-0.1.4.tar.gz", hash = "sha256:e87f73155671c56cc0cdec7928d98908b1054d0ad19b150aae508749f398e565"},
+    {file = "tessif_oemof_4_4-0.1.5-py3-none-any.whl", hash = "sha256:eb0c40316e9f30774a84b31f5b56adfe8e6a745d7cc244a7f8db81219d271d95"},
+    {file = "tessif_oemof_4_4-0.1.5.tar.gz", hash = "sha256:0725f2a6d9ea7521f8ddca374891b00b9a0fe7312784c2a8c2edde41145f62f8"},
 ]
 
 [package.dependencies]
 oemof-solph = "0.4.4"
-tessif = ">=0.0.21,<0.0.22"
+tessif = ">=0.0.21"
 
 [[package]]
 name = "tokenize-rt"
@@ -2275,4 +2275,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "b821e2f75a5fc035bc250ad7587cc6ebd26cbbc75067f2faec708aa75fbf0a43"
+content-hash = "973f0e18787587e249cac7f5c2b9fd9e9043549e280a8831f0140dbb9906e38a"
