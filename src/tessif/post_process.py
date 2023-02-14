@@ -34,10 +34,14 @@ import abc
 import collections
 import inspect
 import logging
+
+# pylint: disable=S403
+import pickle
+
+# pylint: enable=S403
 from collections import defaultdict
 from itertools import cycle
 from math import copysign
-import pickle
 
 import matplotlib as mpl
 import numpy as np
@@ -78,14 +82,15 @@ class ESTransformer(abc.ABC):
     defaults = {}
 
     def __init__(self, optimized_es, **kwargs):
-        """ """
+        """Initialize Transformer."""
         self._nodes = self._map_nodes(optimized_es)
         self._node_uids = self._map_node_uids(optimized_es)
         self._edges = self._map_edges(optimized_es)
 
     @abc.abstractmethod
     def _map_nodes(self, optimized_es):
-        """
+        """Map the system model nodes.
+
         Class internal function designed to extract data interpretative as
         :attr:`~networkx.Graph.nodes` out of the optimized energy system to be
         transformed.
@@ -118,7 +123,8 @@ class ESTransformer(abc.ABC):
 
     @abc.abstractmethod
     def _map_node_uids(self, optimized_es):
-        """
+        """Map node uids.
+
         Class internal function designed to extract data interpretative as
         :attr:`~networkx.Graph.nodes` out of the optimized energy system to be
         transformed.
@@ -155,7 +161,8 @@ class ESTransformer(abc.ABC):
 
     @abc.abstractmethod
     def _map_edges(self, optimized_es):
-        """
+        """Map system model edges.
+
         Class internal function designed to extract data interpretative as
         :attr:`~networkx.Graph.nodes` out of the optimized energy system to be
         transformed.
@@ -188,13 +195,18 @@ class ESTransformer(abc.ABC):
 
     @property
     def nodes(self):
-        """:class:`~collections.abc.Container` of energy system component
-        string representations interpretable as nodes."""
+        """Mapped system model nodes.
+
+        :class:`~collections.abc.Container` of energy system component
+        string representations interpretable as nodes.
+        """
         return self._nodes
 
     @property
     def uid_nodes(self):
-        """:class:`~collections.abc.Mapping` of energy system component uids
+        """Mapped node uids.
+
+        :class:`~collections.abc.Mapping` of energy system component uids
         (interpretable as nodes) to their
         :ref:`node uid string representation <Labeling_Concept>`.
         """
@@ -202,13 +214,18 @@ class ESTransformer(abc.ABC):
 
     @property
     def edges(self):
-        """:class:`~collections.abc.Container` of energy system component
-        string representations interpretable as edges."""
+        """Mapped system-model edges.
+
+        :class:`~collections.abc.Container` of energy system component
+        string representations interpretable as edges.
+        """
         return self._edges
 
     @property
     def inbounds(self):
-        """:class:`~collection.abc.Mapping` of a list of inbound nodes
+        """Mappend inbound nodes.
+
+        :class:`~collection.abc.Mapping` of a list of inbound nodes
         (in fact their uid string representations) to the node (in fact its
         uid string representations) being the target of the inbounds.
 
@@ -217,7 +234,6 @@ class ESTransformer(abc.ABC):
 
             inbounds['1'] == []
             inbounds['2'] == ['1', '3']
-
         """
         _inbounds = defaultdict(list)
         for node in self.nodes:
@@ -229,7 +245,9 @@ class ESTransformer(abc.ABC):
 
     @property
     def outbounds(self):
-        """:class:`~collection.abc.Mapping` of a list of outbound nodes
+        """Mapped outbound nodes.
+
+        :class:`~collection.abc.Mapping` of a list of outbound nodes
         (in fact their uid string representations)
         to the node (in fact its uid string representations) being the source
         of the outbounds.
@@ -239,7 +257,6 @@ class ESTransformer(abc.ABC):
 
             outbounds['1'] == []
             outbounds['2'] == ['1', '3']
-
         """
         _outbound = defaultdict(list)
         for node in self.nodes:
@@ -250,7 +267,8 @@ class ESTransformer(abc.ABC):
         return _outbound
 
     def node_data(self):
-        r"""
+        r"""Map node parameter to its attribute name.
+
         Function to get a ready to use dictionary of node attribute names and
         parameters as expected by other utilities throughout this framework.
 
@@ -271,11 +289,9 @@ class ESTransformer(abc.ABC):
         attributes are properties and contain **node_** as well as not
         contain **_node** in their name. In fact being properties is not
         really necessary but a good practice anyways though.
-
         """
         # get all attributes of this instance as a list of (name, value):
-        attributes = inspect.getmembers(
-            self, lambda a: not (inspect.isroutine(a)))
+        attributes = inspect.getmembers(self, lambda a: not (inspect.isroutine(a)))
         # get all attributes starting with node_ but not _node
         node_attribute_names = list(
             a[0] for a in attributes if "node_" in a[0] and "_node" not in a[0]
@@ -286,7 +302,8 @@ class ESTransformer(abc.ABC):
         }
 
     def edge_data(self):
-        r"""
+        r"""Map edge parameter to its attribute name.
+
         Function to get a ready to use dictionary of edge attribute names and
         parameters as expected by other utilities throughout tessif.
 
@@ -326,8 +343,7 @@ class ESTransformer(abc.ABC):
         return {attr_name: getattr(self, attr_name) for attr_name in _edge_data}
 
         # get all attributes of this instance as a list of (name, value):
-        attributes = inspect.getmembers(
-            self, lambda a: not (inspect.isroutine(a)))
+        attributes = inspect.getmembers(self, lambda a: not (inspect.isroutine(a)))
 
         # get all attributes starting with edge_ but not _edge
         edge_attribute_names = list(
@@ -368,7 +384,7 @@ class XmplResultier(ESTransformer):
     See :class:`OmfNetResultier` for a real use case example.
 
     Example
-    --------
+    -------
     Recreating the :class:`XmplResultier` to demonstrate a minimum working
     example. See the respective documentation below this example.
 
@@ -407,8 +423,7 @@ class XmplResultier(ESTransformer):
     """
 
     def __init__(self, optimized_es=None, **kwargs):
-        r"""
-        Standard :class:`XmplResultier` initializer.
+        r"""Initialize standard :class:`XmplResultier`.
 
         It does not care about the optimized energy system and creates
         arbitrary nodes and edges as well as an exemplary attribute for each
@@ -429,19 +444,18 @@ class XmplResultier(ESTransformer):
         """
         super().__init__(optimized_es=optimized_es, **kwargs)
         self._node_attr_xmpl = "red"
-        self._edge_attr_xmpl = {
-            edge: sum(tuple(map(int, edge))) for edge in self.edges}
+        self._edge_attr_xmpl = {edge: sum(tuple(map(int, edge))) for edge in self.edges}
 
     def _map_nodes(self, optimized_es):
-        r"""Return an exemplary :class:`~collections.abc.Iterable` of nodes"""
+        r"""Return an exemplary :class:`~collections.abc.Iterable` of nodes."""
         return ["1", "2", "3"]
 
     def _map_node_uids(self, optimized_es):
-        r"""Return an exemplary :class:`~collections.abc.Iterable` of nodes"""
+        r"""Return an exemplary :class:`~collections.abc.Iterable` of nodes."""
         return ["1", "2", "3"]
 
     def _map_edges(self, optimized_es):
-        r"""Return an exemplary :class:`~collections.abc.Iterable` of edges"""
+        r"""Return an exemplary :class:`~collections.abc.Iterable` of edges."""
         return [("1", "2"), ("2", "3"), ("3", "1")]
 
     @property
@@ -457,7 +471,9 @@ class XmplResultier(ESTransformer):
 
     @property
     def edge_attr_xmpl(self):
-        r"""Exemplary edge attribute. Calculates the sum of the edge nodes.
+        r"""Example edge attribute.
+
+        Calculates the sum of the edge nodes.
         Emulates ":paramref:`~ESTransformer.optimized_es` dependent logic"
 
         Note
@@ -470,8 +486,9 @@ class XmplResultier(ESTransformer):
 
 
 class Resultier(ESTransformer):
-    """Transform nodes and edges into their name representation. Child of
-    ESTransformer and  mother of all model specific resultiers.
+    """Transform nodes and edges into their name representation.
+
+    Child of ESTransformer and  mother of all model specific resultiers.
 
     Parameters
     ----------
@@ -494,7 +511,8 @@ class Resultier(ESTransformer):
 
 
 class IntegratedGlobalResultier(Resultier):
-    """
+    """Map integrated global results.
+
     Extracting the integrated global results out of the energy system and
     conveniently aggregating them (rounded to unit place) inside a dictionary
     keyed by result name.
@@ -505,7 +523,7 @@ class IntegratedGlobalResultier(Resultier):
         :ref:`Model <SupportedModels>` specific, optimized energy system
         containing its results.
 
-    See also
+    See Also
     --------
     For examples check one of the :ref:`model <SupportedModels>` specific
     LoadResultier children like, e.g..:
@@ -541,7 +559,9 @@ class IntegratedGlobalResultier(Resultier):
 
     @abc.abstractmethod
     def _map_global_results(self, optimized_es):
-        """Interface to extract the integrated global results out of the
+        """Do the mapping.
+
+        Interface to extract the integrated global results out of the
         :ref:`model <SupportedModels>` specific, optimized energy system and
         map them to their result names (``costs``, ``emissions``, ``time``,
         ``memory``)
@@ -557,8 +577,7 @@ class IntegratedGlobalResultier(Resultier):
 
 
 class LoadResultier(Resultier):
-    """
-    Transforming flow results into dictionaries keyed by node.
+    """Transform flow results into dictionaries keyed by node.
 
     Parameters
     ----------
@@ -566,7 +585,7 @@ class LoadResultier(Resultier):
         :ref:`Model <SupportedModels>` specific, optimized energy system
         containing its results.
 
-    See also
+    See Also
     --------
     For examples check one of the :ref:`model <SupportedModels>` specific
     LoadResultier children like, e.g..: :class:`es2mapping.omf.LoadResultier
@@ -582,7 +601,9 @@ class LoadResultier(Resultier):
 
     @property
     def node_load(self):
-        """Timeseries flow results mapped to their
+        """Mapped flow results.
+
+        Timeseries flow results mapped to their
         :ref:`node uid representation <Labeling_Concept>`.
 
         Mapped are :class:`pandas.DataFrame` objects containing:
@@ -598,13 +619,13 @@ class LoadResultier(Resultier):
         for node, load in self._node_loads.items():
             # sort bus dataframe to first show inputs and then show outputs
             inflows, outflows = pd.DataFrame(), pd.DataFrame()
-            for (columnName, columnData) in load.items():
+            for (column_name, column_data) in load.items():
                 # copysign(1, i) returns 1 if i > 0 or i == +0.0 and returns -1
                 # if i < 0 or i == -0.0
-                if all(copysign(1, i) > 0 for i in columnData.values):
-                    outflows[columnName] = columnData
-                elif all(copysign(1, i) < 0 for i in columnData.values):
-                    inflows[columnName] = columnData
+                if all(copysign(1, i) > 0 for i in column_data.values):
+                    outflows[column_name] = column_data
+                elif all(copysign(1, i) < 0 for i in column_data.values):
+                    inflows[column_name] = column_data
 
             # sort inflow and outflow alphabetically
             inflows.sort_index(axis=1, inplace=True)
@@ -624,7 +645,9 @@ class LoadResultier(Resultier):
 
     @property
     def node_inflows(self):
-        """Incoming timeseries flow results as positive values mapped
+        """Map inflow results to uid representations.
+
+        Incoming timeseries flow results as positive values mapped
         to their :ref:`node uid representation <Labeling_Concept>`.
 
         Mapped are :class:`pandas.DataFrame` objects containing:
@@ -638,7 +661,9 @@ class LoadResultier(Resultier):
 
     @property
     def node_outflows(self):
-        """Outgoing timeseries flow results as positive values mapped
+        """Mapped outflow results to uid representations.
+
+        Outgoing timeseries flow results as positive values mapped
         to their :ref:`node uid representation <Labeling_Concept>`.
 
         Mapped are :class:`pandas.DataFrame` objects containing:
@@ -652,7 +677,9 @@ class LoadResultier(Resultier):
 
     @property
     def node_summed_loads(self):
-        """Summed timeseries flow results mapped to their
+        """Mapped summed load results to uid representations.
+
+        Summed timeseries flow results mapped to their
         :ref:`node uid representation <Labeling_Concept>`.
 
         Mapped are :class:`pandas.Series` objects containing:
@@ -663,7 +690,9 @@ class LoadResultier(Resultier):
         return self._loads_old
 
     def _map_inflows(self):
-        """Interface to extract inflow results out of the :ref:`model
+        """Map inflow results to uid representations.
+
+        Interface to extract inflow results out of the :ref:`model
         <SupportedModels>` specific, optimized energy system and map them to
         their :ref:`node uid representation <Labeling_Concept>`.
 
@@ -709,7 +738,9 @@ class LoadResultier(Resultier):
 
     @abc.abstractmethod
     def _map_loads(self, optimized_es):
-        """Interface to extract in- and outflow results out of the :ref:`model
+        """Map load results to node uid representations.
+
+        Interface to extract in- and outflow results out of the :ref:`model
         <SupportedModels>` specific, optimized energy system and map them to
         their :ref:`node uid representation <Labeling_Concept>`.
 
@@ -722,7 +753,9 @@ class LoadResultier(Resultier):
         """
 
     def _map_outflows(self):
-        """Interface to extract in- and outflow results out of the :ref:`model
+        """Map outflow results to node uid representations.
+
+        Interface to extract in- and outflow results out of the :ref:`model
         <SupportedModels>` specific, optimized energy system and map them to
         their :ref:`node uid representation <Labeling_Concept>`.
 
@@ -768,7 +801,9 @@ class LoadResultier(Resultier):
         return dict(_outflow_loads)
 
     def _map_summed_loads(self):
-        """Interface to extract in- and outflow results out of the :ref:`model
+        """Map summed load results to node uid representations.
+
+        Interface to extract in- and outflow results out of the :ref:`model
         <SupportedModels>` specific, optimized energy system and map them tools
         their :ref:`node uid representation <Labeling_Concept>`.
 
@@ -807,7 +842,7 @@ class CapacityResultier(Resultier):
     kwargs:
         Key word arguments are passed to :class:`Resultier`.
 
-    See also
+    See Also
     --------
     For examples check one of the :ref:`model <SupportedModels>` specific
     CapacityResultier children like, e.g..:
@@ -827,21 +862,21 @@ class CapacityResultier(Resultier):
         super().__init__(optimized_es=optimized_es, **kwargs)
 
         # do the mapping
-        self._installed_capacities = self._map_installed_capacities(
-            optimized_es)
+        self._installed_capacities = self._map_installed_capacities(optimized_es)
         self._original_capacities = self._map_original_capacities(optimized_es)
 
         self._expansion_costs = self._map_expansion_costs(optimized_es)
 
-        self._characteristic_values = self._map_characteristic_values(
-            optimized_es)
+        self._characteristic_values = self._map_characteristic_values(optimized_es)
         self._reference_capacity = self._map_reference_capacity(
             reference=reference_capacity
         )
 
     @property
     def node_installed_capacity(self):
-        r"""Installed capacities of the energy system components mapped to
+        r"""Mapped installed capacities to node uid representations.
+
+        Installed capacities of the energy system components mapped to
         their :ref:`node uid representation <Labeling_Concept>`.
 
         Components of variable size have an installed capacity as stated in
@@ -853,7 +888,9 @@ class CapacityResultier(Resultier):
 
     @property
     def node_original_capacity(self):
-        r"""Installed pre-optimization capacities of the energy system
+        r"""Mapped original capacities to node uid representations.
+
+        Installed pre-optimization capacities of the energy system
         components mapped to their
         :ref:`node uid representation <Labeling_Concept>`.
 
@@ -866,14 +903,18 @@ class CapacityResultier(Resultier):
 
     @property
     def node_expansion_costs(self):
-        r"""Installed capacity expansion costs for components mapped to their
+        r"""Mapped expansion costs to node uid representations.
+
+        Installed capacity expansion costs for components mapped to their
         :ref:`node uid representation <Labeling_Concept>`.
         """
         return self._expansion_costs
 
     @property
     def node_characteristic_value(self):
-        r"""Characteristic values of the energy system components mapped to
+        r"""Mapped characteristic values to node uid representations.
+
+        Characteristic values of the energy system components mapped to
         their :ref:`node uid representation <Labeling_Concept>`.
 
         Components of variable size or have a characteristic value as stated in
@@ -917,7 +958,8 @@ class CapacityResultier(Resultier):
 
     @property
     def node_reference_capacity(self):
-        """
+        """Mapped reference capacities to node uid representations.
+
         The systems reference capacity, most often used as scaling factor.
 
         Usually the highest installed capacity throughout the energy system.
@@ -926,7 +968,8 @@ class CapacityResultier(Resultier):
 
     @property
     def load_resultier(self):
-        """
+        """Used load resultier.
+
         :ref:`Model <SupportedModels>` specific :class:`LoadResultier`, used
         for calculating the :attr:`characteristic values
         <node_characteristic_value>`.
@@ -935,7 +978,9 @@ class CapacityResultier(Resultier):
 
     @abc.abstractmethod
     def _map_installed_capacities(self, optimized_es):
-        """Interface to extract installed capacity results out of the
+        """Map installed capacities to node uid representations.
+
+        Interface to extract installed capacity results out of the
         :ref:`model<SupportedModels>` specific, optimized energy system and map
         them to their :ref:`node uid representation <Labeling_Concept>`.
 
@@ -950,7 +995,9 @@ class CapacityResultier(Resultier):
 
     @abc.abstractmethod
     def _map_characteristic_values(self, optimized_es):
-        """Interface to extract installed capacity and flow results out of the
+        """Map characteristic to node uid representations.
+
+        Interface to extract installed capacity and flow results out of the
         :ref:`model <SupportedModels>` specific, optimized energy system to
         calculate a characteristic value for each component and map this value
         the respective component's :ref:`node uid representation
@@ -966,7 +1013,7 @@ class CapacityResultier(Resultier):
         pass
 
     def _map_reference_capacity(self, reference=None):
-
+        """Map reference capacities to node uid representations."""
         if reference is None:
             capacities = [
                 v for v in self.node_installed_capacity.values() if v is not None
@@ -997,7 +1044,7 @@ class StorageResultier(Resultier):
         :ref:`Model <SupportedModels>` specific, optimized energy system
         containing its results.
 
-    See also
+    See Also
     --------
     For examples check one of the :ref:`model <SupportedModels>` specific
     StorageResultier children like, e.g..:
@@ -1011,13 +1058,17 @@ class StorageResultier(Resultier):
 
     @property
     def node_soc(self):
-        """:ref:`Node uid representation <Labeling_Concept>` to state of
+        """Mapped state of charge results.
+
+        :ref:`Node uid representation <Labeling_Concept>` to state of
         charge (soc)  mapping for all storages of the energy system.
         """
         return self._states_of_charge
 
     def _map_states_of_charge(self, optimized_es):
-        """Interface to extract the state of charge results out of the
+        """Map state of charge results.
+
+        Interface to extract the state of charge results out of the
         :ref:`model <SupportedModels>` specific, optimized energy system and
         map them to their :ref:`node uid representation <Labeling_Concept>`.
 
@@ -1064,7 +1115,7 @@ class NodeCategorizer(Resultier):
         :ref:`Model <SupportedModels>` specific, optimized energy system
         containing its results.
 
-    See also
+    See Also
     --------
     For examples check one of the :ref:`model <SupportedModels>` specific
     NodeCategorizer children like, e.g.:
@@ -1093,8 +1144,7 @@ class NodeCategorizer(Resultier):
     attribute.
     """
 
-    categories = {"coordinates": ["latitude",
-                                  "longitude"], "carriers": ["carrier"]}
+    categories = {"coordinates": ["latitude", "longitude"], "carriers": ["carrier"]}
     """
     Categories of attributes that are mapped directly to each
     :ref:`node uid representation <Labeling_Concept>` of the energy system.
@@ -1115,7 +1165,8 @@ class NodeCategorizer(Resultier):
     }
 
     def _map_node_groups(self):
-        """
+        """Map node groups to uid representations.
+
         Group :ref:`node uid representation <Labeling_Concept>`
         by keys specified in :attr:`groupings` and make them
         accessible as respective attribute.
@@ -1146,7 +1197,8 @@ class NodeCategorizer(Resultier):
             setattr(self, f"_{group}", dict(group_dict))
 
     def _map_node_categories(self):
-        """
+        """Map node categories to uid representations.
+
         Create a mapping for every node to each attribute categorised
         in :attr:`categories`.
         """
@@ -1162,8 +1214,7 @@ class NodeCategorizer(Resultier):
                     node_category_values = node_category_values[0]
 
                 if category == "coordinates":
-                    node_category_values = nts.Coordinates(
-                        *node_category_values)
+                    node_category_values = nts.Coordinates(*node_category_values)
 
                 category_dict[representation] = node_category_values
 
@@ -1171,7 +1222,9 @@ class NodeCategorizer(Resultier):
 
     @property
     def node_components(self):
-        """:ref:`energy system component identifiers
+        """Mapped component identifiers to node uid representations.
+
+        :ref:`energy system component identifiers
         <Models_Tessif_Concept_ESC>` of each node
         present in the energy system mapped to their `node uid representation
         <Labeling_Concept>`.
@@ -1180,7 +1233,9 @@ class NodeCategorizer(Resultier):
 
     @property
     def node_coordinates(self):
-        """:paramref:`Latitude <tessif.frused.namedtuples.Uid.latitude>` and
+        """Mapped coordinates to node uid representations.
+
+        :paramref:`Latitude <tessif.frused.namedtuples.Uid.latitude>` and
         :paramref:`~tessif.frused.namedtuples.Uid.longitude` of each node
         present in the energy system mapped to their `node uid representation
         <Labeling_Concept>`.
@@ -1189,7 +1244,9 @@ class NodeCategorizer(Resultier):
 
     @property
     def node_region_grouped(self):
-        """:ref:`Node uid representations <Labeling_Concept>` grouped by
+        """Mapped region identifiers to node uid representations.
+
+        :ref:`Node uid representations <Labeling_Concept>` grouped by
         :paramref:`~tessif.frused.namedtuples.Uid.region`
         (i.e "World" "South" "Antinational").
         """
@@ -1197,7 +1254,8 @@ class NodeCategorizer(Resultier):
 
     @property
     def node_sector_grouped(self):
-        """
+        """Mapped sector identifiers to node uid representations.
+
         :ref:`Node uid representations <Labeling_Concept>` of the nodes present
         in the energy system grouped by energy
         :paramref:`~tessif.frused.namedtuples.Uid.sector` (i.e "Power" "Heat"
@@ -1207,7 +1265,9 @@ class NodeCategorizer(Resultier):
 
     @property
     def node_type_grouped(self):
-        """:ref:`Node uid representations <Labeling_Concept>` of the energy
+        """Mapped component type identifiers to node uid representations.
+
+        :ref:`Node uid representations <Labeling_Concept>` of the energy
         system's nodes grouped by
         :paramref:`~tessif.frused.namedtuples.Uid.node_type` (arbitrary
         classification, i.e. "Combined_Cycle", "Renewable", ...)
@@ -1216,7 +1276,9 @@ class NodeCategorizer(Resultier):
 
     @property
     def node_carrier_grouped(self):
-        """:ref:`Node uid representations <Labeling_Concept>` of the energy
+        """Mapped carrier identifiers to node uid representations.
+
+        :ref:`Node uid representations <Labeling_Concept>` of the energy
         system's nodes grouped by energy
         :paramref:`~tessif.frused.namedtuples.Uid.carrier`. (i.e.
         "Electricity", "Gas", "Water").
@@ -1225,7 +1287,9 @@ class NodeCategorizer(Resultier):
 
     @property
     def node_energy_carriers(self):
-        """Energy :paramref:`~tessif.frused.namedtuples.Uid.carrier` mapped to
+        """Mapped energy carrier identifiers to node uid representations.
+
+        Energy :paramref:`~tessif.frused.namedtuples.Uid.carrier` mapped to
         the :ref:`node uid representations <Labeling_Concept>` of the nodes
         present in the energy system.
         """
@@ -1233,8 +1297,7 @@ class NodeCategorizer(Resultier):
 
 
 class FlowResultier(Resultier):
-    """
-    Transforming flow results into dictionaries keyed by edges.
+    """Transforming flow results into dictionaries keyed by edges.
 
     Parameters
     ----------
@@ -1242,7 +1305,7 @@ class FlowResultier(Resultier):
         :ref:`Model <SupportedModels>` specific, optimized energy system
         containing its results.
 
-    See also
+    See Also
     --------
     For examples check one of the :ref:`model <SupportedModels>` specific
     FlowResultier children like, e.g.:
@@ -1282,7 +1345,8 @@ class FlowResultier(Resultier):
 
     @property
     def edge_net_energy_flow(self):
-        r"""
+        r"""Mapped net energy flow results.
+
         Time integrated flow results mapped to the respective
         :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
@@ -1292,7 +1356,8 @@ class FlowResultier(Resultier):
 
     @property
     def edge_total_costs_incurred(self):
-        r"""
+        r"""Mapped total cost results.
+
         Energy specific flow costs mapped to the respective
         :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
@@ -1301,15 +1366,15 @@ class FlowResultier(Resultier):
         """
         incurred_costs = {}
         for edge in self.edges:
-            ics = self._specific_flow_costs[edge] * \
-                self.edge_net_energy_flow[edge]
+            ics = self._specific_flow_costs[edge] * self.edge_net_energy_flow[edge]
             incurred_costs[edge] = ics
 
         return incurred_costs
 
     @property
     def edge_total_emissions_caused(self):
-        r"""
+        r"""Mapped total emission results.
+
         Energy specific emissions mapped to the respective
         :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
@@ -1318,15 +1383,15 @@ class FlowResultier(Resultier):
         """
         emissions_caused = {}
         for edge in self.edges:
-            ics = self.edge_specific_emissions[edge] * \
-                self.edge_net_energy_flow[edge]
+            ics = self.edge_specific_emissions[edge] * self.edge_net_energy_flow[edge]
             emissions_caused[edge] = ics
 
         return emissions_caused
 
     @property
     def edge_specific_flow_costs(self):
-        r"""
+        r"""Mapped specific flow costs.
+
         Energy specific flow costs mapped to the respective
         :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
@@ -1337,7 +1402,8 @@ class FlowResultier(Resultier):
 
     @property
     def edge_specific_emissions(self):
-        r"""
+        r"""Mapped specific emission results.
+
         Energy specific emissions mapped to the respective
         :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
@@ -1348,7 +1414,8 @@ class FlowResultier(Resultier):
 
     @property
     def edge_weight(self):
-        r"""
+        r"""Mapped edge weights.
+
         Edge weights mapped to the respective
         :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
@@ -1361,7 +1428,7 @@ class FlowResultier(Resultier):
         <https://networkx.github.io/documentation/stable/reference/algorithms/shortest_paths.html>`_
         .
 
-        See also
+        See Also
         --------
         `Weighted Graph
         <https://networkx.github.io/documentation/networkx-1.9/examples/drawing/weighted_graph.html>`_
@@ -1376,6 +1443,7 @@ class FlowResultier(Resultier):
 
     @property
     def edge_len(self):
+        """Mapped edge len results."""
         return self._edge_len
 
     @property
@@ -1389,7 +1457,8 @@ class FlowResultier(Resultier):
         return self._reference_net_energy_flow
 
     def _map_net_energy_flows(self, optimized_es):
-        """
+        """Map net energy flow results.
+
         Interface for mapping the integrated energy flows (summed up over all
         timesteps) to their respective :class:`Edges
         <tessif.frused.namedtuples.Edge>`.
@@ -1405,7 +1474,9 @@ class FlowResultier(Resultier):
 
     @abc.abstractmethod
     def _map_specific_flow_costs(self, optimized_es):
-        """Interface for mapping the specific flow cost results to their
+        """Map specific flow cost results.
+
+        Interface for mapping the specific flow cost results to their
         respective :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
         Note
@@ -1420,7 +1491,9 @@ class FlowResultier(Resultier):
 
     @abc.abstractmethod
     def _map_specific_emissions(self, optimized_es):
-        """Interface for mapping the specific flow emission results to their
+        """Map specific emission results.
+
+        Interface for mapping the specific flow emission results to their
         respective :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
         Note
@@ -1431,11 +1504,12 @@ class FlowResultier(Resultier):
         <tessif.transform.es2mapping.omf.FlowResultier>` source code for
         exemplary implementation.
         """
-
         pass
 
     def _map_edge_weights(self):
-        """Interface for mapping edge weights  to their
+        """Map edge weights.
+
+        Interface for mapping edge weights  to their
         respective :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
         Edges are weighed by specific costs, scaled by maximum costs present.
@@ -1468,7 +1542,9 @@ class FlowResultier(Resultier):
         return dict(_edge_weights)
 
     def _map_edge_lens(self):
-        """Interface for mapping edge weights  to their
+        """Map edge lengths results.
+
+        Interface for mapping edge weights  to their
         respective :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
         Edges length are scaled by edge weight. The more weight, the longer.
@@ -1514,7 +1590,9 @@ class LabelFormatier(Resultier):
 
     @property
     def node_summaries(self):
-        r"""Multiline node summary strings mapped to their
+        r"""Mapped node summaries.
+
+        Multiline node summary strings mapped to their
         :ref:`node uid representation <Labeling_Concept>`. Useful for
         certain on-the-fly
         debug / testing applications. (See
@@ -1533,7 +1611,9 @@ class LabelFormatier(Resultier):
 
     @property
     def edge_summaries(self):
-        r"""Multiline edge summary strings mapped to their
+        r"""Mapped edge summaries.
+
+        Multiline edge summary strings mapped to their
         :class:`~tessif.frused.namedtuples.Edge` Useful for
         certain on-the-fly  debug/testing applications. (See
         :meth:`tessif.visualize.nxgrph.draw_numerical_representation`)
@@ -1551,7 +1631,9 @@ class LabelFormatier(Resultier):
         return self._edge_summaries
 
     def _map_node_labels(self):
-        r"""Interface for mapping node result summaries to their respective
+        r"""Map node summary results to uid representations.
+
+        Interface for mapping node result summaries to their respective
         :ref:`node uid representation <Labeling_Concept>`.
 
         Summarized are:
@@ -1616,7 +1698,8 @@ class LabelFormatier(Resultier):
         return dict(_node_labels)
 
     def _map_edge_labels(self):
-        r"""
+        r"""Map edge summaries to edges.
+
         Interface for mapping edge result summaries to their
         respective :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
@@ -1698,8 +1781,7 @@ class LabelFormatier(Resultier):
 
 
 class MplLegendFormatier(Resultier):
-    r"""
-    Generating visually enhanced matplotlib legends for nodes and edges.
+    r"""Generating visually enhanced matplotlib legends for nodes and edges.
 
     Parameters
     ----------
@@ -1767,7 +1849,9 @@ class MplLegendFormatier(Resultier):
 
     @property
     def node_style_legend(self):
-        """Matplotlib legend attributes mapped to their parameters to describe
+        """Mapped node style legend.
+
+        Matplotlib legend attributes mapped to their parameters to describe
         :paramref:`fency node styles
         <tessif.visualize.nxgrph.draw_nodes.draw_fency_nodes>`. Fency as in:
 
@@ -1779,7 +1863,9 @@ class MplLegendFormatier(Resultier):
 
     @property
     def edge_style_legend(self):
-        """Matplotlib legend attributes mapped to their parameters to describe
+        """Mapped edge style legend.
+
+        Matplotlib legend attributes mapped to their parameters to describe
         the chosen edge style. Current style represents:
 
             - net energy flow being proportional to edge width
@@ -1789,8 +1875,7 @@ class MplLegendFormatier(Resultier):
         return self._edge_style_legend
 
     def _create_node_legend(self):
-        """
-        Create a 3 legend tuple of nodes grouped by label sector and carrier.
+        """Create a 3 legend tuple of nodes grouped by label sector and carrier.
 
         Each legend consists of a dict filled with matplotlib.Legend kwargs.
 
@@ -1876,8 +1961,7 @@ class MplLegendFormatier(Resultier):
                     linestyle="",
                 )
 
-                legend_markers.append(
-                    (most_outer_circle, outer_circle, inner_circle))
+                legend_markers.append((most_outer_circle, outer_circle, inner_circle))
                 legend_entries.append(node)
             else:
                 # scale node size with installed capacity:
@@ -1990,7 +2074,8 @@ class MplLegendFormatier(Resultier):
         )
 
     def _create_node_style_legend(self):
-        """
+        """Create node style legend dictionairy.
+
         Create a dict with matplotlib.pyplot.legend kwargs showing node styles
 
         This is designed for visualizing fency node design aka:
@@ -1998,7 +2083,6 @@ class MplLegendFormatier(Resultier):
             - variable node size being outer fading circles
             - capacity factors being proportional to cycle filling
             - installed capacities being proportional to outer diameter
-
         """
         # Create empty marker and label lists:
         legend_markers = list()
@@ -2092,7 +2176,8 @@ class MplLegendFormatier(Resultier):
         return _node_style_legend
 
     def _create_edge_style_legend(self):
-        """
+        """Create edge style legend dictionairy.
+
         Create a dict with matplotlib.pyplot.legend kwargs showing edge styles
 
         This is designed for visualizing fency edge design aka:
@@ -2100,7 +2185,6 @@ class MplLegendFormatier(Resultier):
             - net energy flow being proportional to edge width
             - specific_emissions being proportional to darkness
             - specific flow costs being proportional to edge length
-
         """
         # Create empty marker and label lists to be filled in the process
         legend_markers = list()
@@ -2195,8 +2279,7 @@ class NodeFormatier(Resultier):
                     drawutil, __name__
                 )
             )
-            logger.warning(
-                "Use one of the existing fields: {}".format("['dc', 'nx']"))
+            logger.warning("Use one of the existing fields: {}".format("['dc', 'nx']"))
             logger.warning("Using default drawing utility: 'dc'")
             self._drawutil = "dc"
         else:
@@ -2220,7 +2303,9 @@ class NodeFormatier(Resultier):
 
     @property
     def node_shape(self):
-        r"""Nodes shapes mapped to their respective
+        r"""Mapped node shapes to uid representations.
+
+        Nodes shapes mapped to their respective
         :ref:`node uid representation <Labeling_Concept>`.
 
         .. csv-table::
@@ -2230,7 +2315,9 @@ class NodeFormatier(Resultier):
 
     @property
     def node_size(self):
-        r"""Scaled node sizes mapped to their respective
+        r"""Mapped node sizes to uid representations.
+
+        Scaled node sizes mapped to their respective
         :ref:`node uid representation <Labeling_Concept>`.
 
         Scaled by:
@@ -2249,7 +2336,9 @@ class NodeFormatier(Resultier):
 
     @property
     def node_fill_size(self):
-        r"""Scaled node sizes mapped to their respective
+        r"""Mapped node fill sizes to uid representations.
+
+        Scaled node sizes mapped to their respective
         :ref:`node uid representation <Labeling_Concept>`.
 
         Scaled using:
@@ -2266,7 +2355,9 @@ class NodeFormatier(Resultier):
 
     @property
     def node_color(self):
-        """Grouped node colors mapped to their respective
+        """Mapped node colors to uid representations.
+
+        Grouped node colors mapped to their respective
         :ref:`node uid representation <Labeling_Concept>`.
 
         Grouping utilizes
@@ -2301,7 +2392,9 @@ class NodeFormatier(Resultier):
 
     @property
     def node_color_maps(self):
-        r"""Same as :attr:`node_color` with
+        r"""Mapped node color maps to uid representations.
+
+        Same as :attr:`node_color` with
         :attr:`color maps <tessif.frused.themes.cmaps>` that are cycled through
         for each member of the group.
 
@@ -2328,15 +2421,16 @@ class NodeFormatier(Resultier):
             return self._node_color_maps.label
 
     def _map_nx_node_shapes(self):
-        """Interface to map the :ref:`model <SupportedModels>` specific,
+        """Map nx node shapes to uid representations.
+
+        Interface to map the :ref:`model <SupportedModels>` specific,
         optimized energy system component :ref:`uid representations
         <Labeling_Concept>` to a node shape specifying string.
         """
         # Use a defaultdict as node shape container:
         _nx_node_shape = defaultdict(str)
 
-        component_types = ["bus", "connector",
-                           "sink", "storage", "transformer"]
+        component_types = ["bus", "connector", "sink", "storage", "transformer"]
 
         for node in self.nodes:
             # Singular mapped component types
@@ -2354,23 +2448,19 @@ class NodeFormatier(Resultier):
             # Source
             elif self.uid_nodes[node].component in spellings.source:
                 # set source to default shape...
-                _nx_node_shape[node] = self._default_node_shapes.get(
-                    "default_source")
+                _nx_node_shape[node] = self._default_node_shapes.get("default_source")
 
                 # ... unless its a pv source
                 if any(expr in node for expr in esci.name["photovoltaic"]):
-                    _nx_node_shape[node] = self._default_node_shapes.get(
-                        "solar")
+                    _nx_node_shape[node] = self._default_node_shapes.get("solar")
 
                 # ... unless its a wind onshore source
                 if any(expr in node for expr in esci.name["onshore"]):
-                    _nx_node_shape[node] = self._default_node_shapes.get(
-                        "wind")
+                    _nx_node_shape[node] = self._default_node_shapes.get("wind")
 
                 # ... unless its a wind offshore source
                 if any(expr in node for expr in esci.name["offshore"]):
-                    _nx_node_shape[node] = self._default_node_shapes.get(
-                        "wind")
+                    _nx_node_shape[node] = self._default_node_shapes.get("wind")
 
                 # ... unless its a commodity_source
                 if any(
@@ -2392,15 +2482,16 @@ class NodeFormatier(Resultier):
         return dict(_nx_node_shape)
 
     def _map_dc_node_shapes(self):
-        """Interface to map the :ref:`model <SupportedModels>` specific,
+        """Map dcgraph node shapes to uid representations.
+
+        Interface to map the :ref:`model <SupportedModels>` specific,
         optimized energy system component :ref:`uid representations
         <Labeling_Concept>` to a node shape specifying string.
         """
         # Use a defaultdict as node shape container:
         _dc_node_shape = defaultdict(str)
 
-        component_types = ["bus", "connector",
-                           "sink", "storage", "transformer"]
+        component_types = ["bus", "connector", "sink", "storage", "transformer"]
 
         for node in self.nodes:
             # Singular mapped component types
@@ -2418,23 +2509,19 @@ class NodeFormatier(Resultier):
             # Source
             elif self.uid_nodes[node].component in spellings.source:
                 # set source to default shape...
-                _dc_node_shape[node] = self._default_node_shapes.get(
-                    "default_source")
+                _dc_node_shape[node] = self._default_node_shapes.get("default_source")
 
                 # ... unless its a pv source
                 if any(expr in node for expr in esci.name["photovoltaic"]):
-                    _dc_node_shape[node] = self._default_node_shapes.get(
-                        "solar")
+                    _dc_node_shape[node] = self._default_node_shapes.get("solar")
 
                 # ... unless its a wind onshore source
                 if any(expr in node for expr in esci.name["onshore"]):
-                    _dc_node_shape[node] = self._default_node_shapes.get(
-                        "wind")
+                    _dc_node_shape[node] = self._default_node_shapes.get("wind")
 
                 # ... unless its a wind offshore source
                 if any(expr in node for expr in esci.name["offshore"]):
-                    _dc_node_shape[node] = self._default_node_shapes.get(
-                        "wind")
+                    _dc_node_shape[node] = self._default_node_shapes.get("wind")
 
                 # ... unless its a commodity_source
                 if any(
@@ -2456,7 +2543,9 @@ class NodeFormatier(Resultier):
         return dict(_dc_node_shape)
 
     def _map_nx_node_sizes(self):
-        r"""Interface to map and scale node sizes of the :ref:`model
+        r"""Map networkx node sizes to uid representations.
+
+        Interface to map and scale node sizes of the :ref:`model
         <SupportedModels>` specific, optimized energy system components to
         their respective :ref:`uid representation <Labeling_Concept>`.
 
@@ -2510,7 +2599,9 @@ class NodeFormatier(Resultier):
         return dict(_node_size)
 
     def _map_dc_node_sizes(self):
-        r"""Interface to map and scale node sizes of the :ref:`model
+        r"""Map dcgraph node sizes to uid representations.
+
+        Interface to map and scale node sizes of the :ref:`model
         <SupportedModels>` specific, optimized energy system components to
         their respective :ref:`uid representation <Labeling_Concept>`.
 
@@ -2564,7 +2655,9 @@ class NodeFormatier(Resultier):
         return dict(_dc_node_size)
 
     def _map_node_fill_size(self):
-        r"""Interface to map and scale node fill sizes of the :ref:`model
+        r"""Map node fill sizes to uid representations.
+
+        Interface to map and scale node fill sizes of the :ref:`model
         <SupportedModels>` specific, optimized energy system components to
         their respective :ref:`uid representation <Labeling_Concept>`.
 
@@ -2602,11 +2695,12 @@ class NodeFormatier(Resultier):
         return dict(_node_fill_size)
 
     def _map_node_colors(self):
-        """Interface to map node colors of the :ref:`model
+        """Map node colors to uid representations.
+
+        Interface to map node colors of the :ref:`model
         <SupportedModels>` specific, optimized energy system components to
         their respective :ref:`uid representation <Labeling_Concept>`.
         """
-
         # Use a defaultdict as node color container:
         _component_grouped_node_colors = defaultdict(str)
         _name_grouped_node_colors = defaultdict(str)
@@ -2687,11 +2781,12 @@ class NodeFormatier(Resultier):
         )
 
     def _map_node_color_maps(self):
-        """Interface to map node colors of the :ref:`model
+        """Map node color maps to uid representations.
+
+        Interface to map node colors of the :ref:`model
         <SupportedModels>` specific, optimized energy system components to
         their respective :ref:`uid representation <Labeling_Concept>`.
         """
-
         # Use a defaultdict as node color container:
         _component_grouped_node_color_maps = defaultdict(str)
         _name_grouped_node_color_maps = defaultdict(str)
@@ -2714,8 +2809,7 @@ class NodeFormatier(Resultier):
 
                 # name grouped node color maps
                 if any(tag == self.uid_nodes[node].name for tag in variations):
-                    _name_grouped_node_color_maps[node] = next(
-                        themes.ccycles.name[key])
+                    _name_grouped_node_color_maps[node] = next(themes.ccycles.name[key])
 
             # carrier grouped node color maps
             for key, variations in esci.carrier.items():
@@ -2838,8 +2932,7 @@ class EdgeFormatier(Resultier):
                     drawutil, __name__
                 )
             )
-            logger.warning(
-                "Use one of the existing fields: {}".format("['dc', 'nx']"))
+            logger.warning("Use one of the existing fields: {}".format("['dc', 'nx']"))
             logger.warning("Using default drawing utility: 'dc'")
             self._drawutil = "dc"
         else:
@@ -2912,7 +3005,8 @@ class EdgeFormatier(Resultier):
         return self._edge_linestyle
 
     def _map_nx_edge_width(self):
-        """
+        """Map nx edge width to eges.
+
         Interface for mapping the edge widths to their respective :class:`Edges
         <tessif.frused.namedtuples.Edge>`. Widths are scaled with
         their net energy flows, the bigger the flow, the wider the edge
@@ -2942,7 +3036,8 @@ class EdgeFormatier(Resultier):
         return dict(_edge_width)
 
     def _map_dc_edge_width(self):
-        """
+        """Map dcgraph edge widths to edges.
+
         Interface for mapping the edge widths to their respective :class:`Edges
         <tessif.frused.namedtuples.Edge>`. Widths are scaled with
         their net energy flows, the bigger the flow, the wider the edge
@@ -2970,7 +3065,9 @@ class EdgeFormatier(Resultier):
         return dict(_edge_width_cyt)
 
     def _map_nx_edge_colors(self):
-        """Interface for mapping edge colors to their respective :class:`Edges
+        """Map networkx edge colors to edges.
+
+        Interface for mapping edge colors to their respective :class:`Edges
         <tessif.frused.namedtuples.Edge>`.
 
         Greyscale is scaled with emissions. The less gray, the less emissions.
@@ -2981,8 +3078,7 @@ class EdgeFormatier(Resultier):
 
         for edge in self.edges:
             edge_color = round(
-                self.edge_specific_emissions[edge] /
-                self.edge_reference_emissions, 2
+                self.edge_specific_emissions[edge] / self.edge_reference_emissions, 2
             )
 
             if edge_color < defaults.nxgrph_visualize_defaults["edge_minimum_grey"]:
@@ -2993,7 +3089,9 @@ class EdgeFormatier(Resultier):
         return dict(_edge_colors)
 
     def _map_dc_edge_colors(self):
-        """Interface for mapping edge colors to their respective :class:`Edges
+        """Map dc edge colors to edges.
+
+        Interface for mapping edge colors to their respective :class:`Edges
         <tessif.frused.namedtuples.Edge>`.
 
         Greyscale is scaled with emissions. The less gray, the less emissions.
@@ -3001,14 +3099,13 @@ class EdgeFormatier(Resultier):
         # List as defaultdict entry is used, cause draw_networkx_edges expects
         # iterable of floats when using a colormap
         _edge_colors = defaultdict(
-            lambda: dcgrph_visualize_defaults["edge_minimum_grey"]
+            lambda: defaults.dcgrph_visualize_defaults["edge_minimum_grey"]
         )
 
         for edge in self.edges:
             # scale color to emission/max_emissions
             edge_color_float = round(
-                self.edge_specific_emissions[edge] /
-                self.edge_reference_emissions, 2
+                self.edge_specific_emissions[edge] / self.edge_reference_emissions, 2
             )
             # cap lower end of scale
             edge_color_float = max(
@@ -3022,14 +3119,16 @@ class EdgeFormatier(Resultier):
         return dict(_edge_colors)
 
     def _map_edge_linestyles(self):
-        """Interface for mapping edge colors to their respective :class:`Edges
-        <tessif.frused.namedtuples.Edge>`. Greyscale is scaled
-        with emissions. The less gray, the less emissions."""
+        """Map edge linestyles to edges.
 
+        Interface for mapping edge colors to their respective :class:`Edges
+        <tessif.frused.namedtuples.Edge>`. Greyscale is scaled
+        with emissions. The less gray, the less emissions.
+        """
         # List as defaultdict entry is used, cause draw_networkx_edges expects
         # iterable of floats when using a colormap
         _edge_linestyles = defaultdict(
-            lambda: dcgrph_visualize_defaults["edge_linestyle"]
+            lambda: defaults.dcgrph_visualize_defaults["edge_linestyle"]
         )
 
         # scale color relative to max emissions
@@ -3049,12 +3148,15 @@ class EdgeFormatier(Resultier):
 
             # enforce default in case something wierd happens:
             if edge not in _edge_linestyles:
-                _edge_linestyles[edge] = dcgrph_visualize_defaults["edge_linestyle"]
+                _edge_linestyles[edge] = defaults.dcgrph_visualize_defaults[
+                    "edge_linestyle"
+                ]
         return dict(_edge_linestyles)
 
 
 class ICRHybridier(Resultier):
-    """
+    """Hybrid Resultier and Formatier.
+
     Aggregate numerical and visual information for visualizing
     the :ref:`Integrated_Component_Results` (ICR).
 
@@ -3114,7 +3216,8 @@ class ICRHybridier(Resultier):
 
     @property
     def edge_net_energy_flow(self):
-        r"""
+        r"""Mapped net energy flows.
+
         Return sum of time series flow results mapped to
         :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
@@ -3127,7 +3230,8 @@ class ICRHybridier(Resultier):
 
     @property
     def edge_specific_flow_costs(self):
-        r"""
+        r"""Mapped flow costs.
+
         Return energy specific flow costs mapped to
         :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
@@ -3138,12 +3242,12 @@ class ICRHybridier(Resultier):
         <Integrated_Component_Results>` scales with the
         **specific flow costs**.
         """
-
         return self._edge_formatier.edge_specific_flow_costs
 
     @property
     def edge_specific_emissions(self):
-        r"""
+        r"""Mapped specific emissions.
+
         Return energy specific emissions mapped to
         :class:`Edges <tessif.frused.namedtuples.Edge>`.
 
@@ -3153,7 +3257,6 @@ class ICRHybridier(Resultier):
         The **edge greyscale** of :ref:`integrated component results graphs
         <Integrated_Component_Results>` scales with the **specific emissions**.
         """
-
         return self._edge_formatier.edge_specific_emissions
 
     @property
@@ -3168,7 +3271,9 @@ class ICRHybridier(Resultier):
 
     @property
     def node_characteristic_value(self):
-        r"""Characteristic values of the energy system components mapped to
+        r"""Mapped characteristic values.
+
+        Characteristic values of the energy system components mapped to
         their :ref:`node uid representation <Labeling_Concept>`.
 
         Components of variable size or have a characteristic value as stated in
@@ -3227,7 +3332,9 @@ class ICRHybridier(Resultier):
 
     @property
     def node_installed_capacity(self):
-        r"""Return the installed capacities of the energy system components as
+        r"""Mapped installe capacities.
+
+        Return the installed capacities of the energy system components as
         mapping keyed by node label. Components of variable size have an
         installed capacity of None
 
@@ -3244,7 +3351,7 @@ class ICRHybridier(Resultier):
 
     @property
     def node_shape(self):
-        r"""Nodes shapes mapped to their node names
+        r"""Nodes shapes mapped to their node names.
 
         .. csv-table:: Node shape mapping
             :widths: 20, 6, 20, 6
@@ -3320,7 +3427,9 @@ class ICRHybridier(Resultier):
 
     @property
     def legend_of_node_styles(self):
-        """Matplotlib legend attributes mapped to their parameters to describe
+        """Mapped node style legends.
+
+        Matplotlib legend attributes mapped to their parameters to describe
         :paramref:`fency node styles
         <tessif.visualize.nxgrph.draw_nodes.draw_fency_nodes>`. Fency as in:
 
@@ -3333,7 +3442,9 @@ class ICRHybridier(Resultier):
 
     @property
     def legend_of_edge_styles(self):
-        """Matplotlib legend attributes mapped to their parameters to describe
+        """Mapped edge style legends.
+
+        Matplotlib legend attributes mapped to their parameters to describe
         the edge style of :ref:`integrated component results graphs
         <Integrated_Component_Results>`. As in:
 
