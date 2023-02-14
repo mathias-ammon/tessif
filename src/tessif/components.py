@@ -19,6 +19,7 @@ way an engineer would classify such components. For more on that see
 :mod:`tessif.model`.
 """
 import numpy as np
+
 import tessif.frused.namedtuples as nts
 from tessif.frused.defaults import energy_system_nodes as es_defaults
 
@@ -90,23 +91,25 @@ class AbstractEsComponent:
     def __init__(self, name, *args, **kwargs):
 
         # modify this dict to add additional parameters
-        kwargs_and_defaults = dict([
-            ('name', name),
-            ('latitude', kwargs.get('latitude', es_defaults['latitude'])),
-            ('longitude', kwargs.get('longitude', es_defaults['longitude'])),
-            ('region', kwargs.get('region', es_defaults['region'])),
-            ('sector', kwargs.get('sector', es_defaults['sector'])),
-            ('carrier', kwargs.get('carrier', es_defaults['carrier'])),
-            ('component', kwargs.get('component', es_defaults['component'])),
-            ('node_type', kwargs.get('node_type', es_defaults['node_type'])),
-        ])
+        kwargs_and_defaults = dict(
+            [
+                ("name", name),
+                ("latitude", kwargs.get("latitude", es_defaults["latitude"])),
+                ("longitude", kwargs.get("longitude", es_defaults["longitude"])),
+                ("region", kwargs.get("region", es_defaults["region"])),
+                ("sector", kwargs.get("sector", es_defaults["sector"])),
+                ("carrier", kwargs.get("carrier", es_defaults["carrier"])),
+                ("component", kwargs.get("component", es_defaults["component"])),
+                ("node_type", kwargs.get("node_type", es_defaults["node_type"])),
+            ]
+        )
 
         self._uid = nts.Uid(**kwargs_and_defaults)
 
         # key parsing functionality wrapper to parameterize the component
         self._parse_arguments(**kwargs)
 
-    def duplicate(self, prefix='', separator='_', suffix='copy'):
+    def duplicate(self, prefix="", separator="_", suffix="copy"):
         """
         Duplicate the energy system component and return it. Potentially
         modifying it's :paramref:`~AbstractEsComponent.name`.
@@ -130,18 +133,16 @@ class AbstractEsComponent:
         """
         new_attributes = self.attributes
         # get the old uid and transform it into a dict
-        new_uid = new_attributes.pop('uid')._asdict()
+        new_uid = new_attributes.pop("uid")._asdict()
 
         # modify the uid's name according to request
         if prefix:
-            new_uid['name'] = separator.join([prefix, new_uid['name']])
+            new_uid["name"] = separator.join([prefix, new_uid["name"]])
         if suffix:
-            new_uid['name'] = separator.join([new_uid['name'], suffix])
+            new_uid["name"] = separator.join([new_uid["name"], suffix])
 
         # create a new component instance using the from_attributes method
-        return self.from_attributes(
-            attributes={**new_uid, **new_attributes}
-        )
+        return self.from_attributes(attributes={**new_uid, **new_attributes})
 
     @classmethod
     def from_attributes(cls, attributes):
@@ -166,9 +167,11 @@ class AbstractEsComponent:
         parameters. Called by :meth:`_parse_arguments`.
         """
         for parameter, default_value in self._parameters_and_defaults[
-                'singular_values'].items():
-            setattr(self, '_{}'.format(parameter),
-                    arguments.get(parameter, default_value))
+            "singular_values"
+        ].items():
+            setattr(
+                self, "_{}".format(parameter), arguments.get(parameter, default_value)
+            )
 
     def _parse_arguments_as_singular_value_mappings(self, **arguments):
         """Utility for parsing key word arguments in to the form of::
@@ -185,14 +188,18 @@ class AbstractEsComponent:
         parameters. Called by :meth:`_parse_arguments`.
         """
         for parameter, default_mapping in self._parameters_and_defaults[
-                'singular_value_mappings'].items():
+            "singular_value_mappings"
+        ].items():
 
             mapping = arguments.get(parameter, default_mapping)
             # reading in data sets from external data can lead to NaN values
             if mapping is np.nan:
                 mapping = default_mapping
-            setattr(self, '_{}'.format(parameter),
-                    {key: mapping[key] for key in sorted(mapping.keys())})
+            setattr(
+                self,
+                "_{}".format(parameter),
+                {key: mapping[key] for key in sorted(mapping.keys())},
+            )
 
     def _parse_arguments_as_namedtuples(self, **arguments):
         """Utility for parsing key word arguments in to the form of::
@@ -208,8 +215,7 @@ class AbstractEsComponent:
         Designed to internally set the energy system components
         parameters. Called by :meth:`_parse_arguments`.
         """
-        for ntple, parameters in self._parameters_and_defaults[
-                'namedtuples'].items():
+        for ntple, parameters in self._parameters_and_defaults["namedtuples"].items():
             for parameter, default_tuple in parameters.items():
                 tpl = arguments.get(parameter, default_tuple)
 
@@ -217,8 +223,7 @@ class AbstractEsComponent:
                 if tpl is np.nan:
                     tpl = default_tuple
 
-                setattr(self, '_{}'.format(parameter),
-                        getattr(nts, ntple)(*tpl))
+                setattr(self, "_{}".format(parameter), getattr(nts, ntple)(*tpl))
 
     def _parse_arguments_as_mapped_namedtuples(self, **arguments):
         """Utility for parsing key word arguments in to the form of::
@@ -238,7 +243,8 @@ class AbstractEsComponent:
         parameters. Called by :meth:`_parse_arguments`.
         """
         for ntple, parameters in self._parameters_and_defaults[
-                'mapped_namedtuples'].items():
+            "mapped_namedtuples"
+        ].items():
             for parameter, default_mapping in parameters.items():
                 mapping = arguments.get(parameter, default_mapping)
 
@@ -246,32 +252,38 @@ class AbstractEsComponent:
                 if mapping is np.nan:
                     mapping = default_mapping
 
-                setattr(self, '_{}'.format(parameter),
-                        {key: getattr(nts, ntple)(*mapping[key])
-                         for key in sorted(mapping.keys())})
+                setattr(
+                    self,
+                    "_{}".format(parameter),
+                    {
+                        key: getattr(nts, ntple)(*mapping[key])
+                        for key in sorted(mapping.keys())
+                    },
+                )
 
     def _parse_timeseries(self, **arguments):
         """Utility for parsing the key word argument timeseries::
 
-            timeseries = None
-            timeseries = {input/output_string: MinMax namedtuple}
+        timeseries = None
+        timeseries = {input/output_string: MinMax namedtuple}
         """
         timeseries = arguments.get(
-            'timeseries',
-            self._parameters_and_defaults.get(
-                'timeseries', es_defaults['timeseries']))
+            "timeseries",
+            self._parameters_and_defaults.get("timeseries", es_defaults["timeseries"]),
+        )
 
         # reading in data sets from external data can lead to NaN values
         if timeseries is np.nan:
             timeseries = self._parameters_and_defaults.get(
-                'timeseries', es_defaults['timeseries'])
+                "timeseries", es_defaults["timeseries"]
+            )
 
         # enforce min max tuple:
         if timeseries is not None:
             for interface, tple in timeseries.copy().items():
                 timeseries[interface] = nts.MinMax(*tple)
 
-        setattr(self, '_{}'.format('timeseries'), timeseries)
+        setattr(self, "_{}".format("timeseries"), timeseries)
 
     def _parse_arguments(self, **arguments):
         """
@@ -302,12 +314,16 @@ class AbstractEsComponent:
 
                 tsf.Component(attribute_name=attribute, ....)
         """
-        return '{!s}('.format(self.__class__) + ', '.join([
-            *['{!r}={!r}'.format(
-                k.lstrip('_'), v) for k, v in sorted(self.__dict__.items())
-              if k != '_parameters_and_defaults'],
-            ')',
-        ])
+        return "{!s}(".format(self.__class__) + ", ".join(
+            [
+                *[
+                    "{!r}={!r}".format(k.lstrip("_"), v)
+                    for k, v in sorted(self.__dict__.items())
+                    if k != "_parameters_and_defaults"
+                ],
+                ")",
+            ]
+        )
 
     def __str__(self):
         """
@@ -321,30 +337,36 @@ class AbstractEsComponent:
                     ....
                 )
         """
-        return '{!s}(\n'.format(self.__class__) + ',\n'.join([
-            *['    {!r}={!r}'.format(
-                k.lstrip('_'), v) for k, v in sorted(self.__dict__.items())
-              if k != '_parameters_and_defaults'],
-            ')'
-        ])
+        return "{!s}(\n".format(self.__class__) + ",\n".join(
+            [
+                *[
+                    "    {!r}={!r}".format(k.lstrip("_"), v)
+                    for k, v in sorted(self.__dict__.items())
+                    if k != "_parameters_and_defaults"
+                ],
+                ")",
+            ]
+        )
 
     @property
     def attributes(self):
         """:class:`~collections.abc.Mapping` of entity's energy system
         component attribute names to its respective attribute values.
         """
-        return {k.lstrip('_'): v for k, v in sorted(self.__dict__.items())
-                if k != '_parameters_and_defaults'}
+        return {
+            k.lstrip("_"): v
+            for k, v in sorted(self.__dict__.items())
+            if k != "_parameters_and_defaults"
+        }
 
     @property
     def interfaces(self):
-        """:class:`frozenset` holding the component's in- and outputs.
-        """
+        """:class:`frozenset` holding the component's in- and outputs."""
         return self._interfaces
 
     @property
     def parameters(self):
-        """ :class:`~collections.abc.Mapping` of the entity's parameter names
+        """:class:`~collections.abc.Mapping` of the entity's parameter names
         to its respective values.
 
         Note
@@ -463,15 +485,11 @@ class Bus(AbstractEsComponent):
         self._interfaces = self._inputs.union(self._outputs)
 
         self._parameters_and_defaults = {
-            'singular_values': {
-            },
-            'singular_value_mappings': {
-            },
-            'namedtuples': {
-            },
-            'mapped_namedtuples': {
-            },
-            'timeseries': es_defaults['timeseries'],
+            "singular_values": {},
+            "singular_value_mappings": {},
+            "namedtuples": {},
+            "mapped_namedtuples": {},
+            "timeseries": es_defaults["timeseries"],
         }
         super().__init__(name, *args, **kwargs)
 
@@ -609,25 +627,20 @@ class Connector(AbstractEsComponent):
         self._interfaces = frozenset(interfaces)
         _connections = tuple(interfaces)
 
-        if kwargs.get('conversions', None) is None:
+        if kwargs.get("conversions", None) is None:
             self._conversions = {
-                _connections: es_defaults['efficiency'],
-                tuple(reversed(_connections)): es_defaults['efficiency'],
+                _connections: es_defaults["efficiency"],
+                tuple(reversed(_connections)): es_defaults["efficiency"],
             }
         else:
-            self._conversions = kwargs.get('conversions')
+            self._conversions = kwargs.get("conversions")
 
         self._parameters_and_defaults = {
-            'singular_values': {
-            },
-            'singular_value_mappings': {
-            },
-            'namedtuples': {
-
-            },
-            'mapped_namedtuples': {
-            },
-            'timeseries': es_defaults['timeseries'],
+            "singular_values": {},
+            "singular_value_mappings": {},
+            "namedtuples": {},
+            "mapped_namedtuples": {},
+            "timeseries": es_defaults["timeseries"],
         }
         super().__init__(name, *args, **kwargs)
 
@@ -976,64 +989,82 @@ class Source(AbstractEsComponent):
         self._interfaces = self._outputs
 
         self._parameters_and_defaults = {
-            'singular_values': {
-                'initial_status': es_defaults['initial_status'],
-                'costs_for_being_active': es_defaults[
-                    'costs_for_being_active'],
+            "singular_values": {
+                "initial_status": es_defaults["initial_status"],
+                "costs_for_being_active": es_defaults["costs_for_being_active"],
             },
-            'singular_value_mappings': {
-                'flow_costs': {key: es_defaults['flow_costs']
-                               for key in sorted(self._interfaces)},
-                'flow_emissions': {key: es_defaults['emissions']
-                                   for key in sorted(self._interfaces)},
-                'expandable': {key: es_defaults['expandable']
-                               for key in sorted(self._interfaces)},
-                'expansion_costs': {key: es_defaults['expansion_costs']
-                                    for key in sorted(self._interfaces)},
-                'milp': {key: es_defaults['milp']
-                         for key in sorted(self._interfaces)},
+            "singular_value_mappings": {
+                "flow_costs": {
+                    key: es_defaults["flow_costs"] for key in sorted(self._interfaces)
+                },
+                "flow_emissions": {
+                    key: es_defaults["emissions"] for key in sorted(self._interfaces)
+                },
+                "expandable": {
+                    key: es_defaults["expandable"] for key in sorted(self._interfaces)
+                },
+                "expansion_costs": {
+                    key: es_defaults["expansion_costs"]
+                    for key in sorted(self._interfaces)
+                },
+                "milp": {key: es_defaults["milp"] for key in sorted(self._interfaces)},
             },
-            'namedtuples': {
-                'MinMax': {
-                },
-                'OnOff': {
-                    'status_inertia': nts.OnOff(
-                        es_defaults['minimum_uptime'],
-                        es_defaults['minimum_downtime']),
-                    'status_changing_costs': nts.OnOff(
-                        es_defaults['startup_costs'],
-                        es_defaults['shutdown_costs']),
-                    'number_of_status_changes': nts.OnOff(
-                        es_defaults['maximum_startups'],
-                        es_defaults['maximum_shutdowns']),
+            "namedtuples": {
+                "MinMax": {},
+                "OnOff": {
+                    "status_inertia": nts.OnOff(
+                        es_defaults["minimum_uptime"], es_defaults["minimum_downtime"]
+                    ),
+                    "status_changing_costs": nts.OnOff(
+                        es_defaults["startup_costs"], es_defaults["shutdown_costs"]
+                    ),
+                    "number_of_status_changes": nts.OnOff(
+                        es_defaults["maximum_startups"],
+                        es_defaults["maximum_shutdowns"],
+                    ),
                 },
             },
-            'mapped_namedtuples': {
-                'MinMax': {
-                    'expansion_limits': {key: nts.MinMax(
-                        es_defaults['minimum_expansion'],
-                        es_defaults['maximum_expansion'])
-                        for key in sorted(self._interfaces)},
-                    'flow_rates': {key: nts.MinMax(
-                        es_defaults['minimum_flow_rate'],
-                        es_defaults['maximum_flow_rate'])
-                        for key in sorted(self._interfaces)},
-                    'accumulated_amounts': {key: nts.MinMax(
-                        es_defaults['accumulated_minimum'],
-                        es_defaults['accumulated_maximum'])
-                        for key in sorted(self._interfaces)},
+            "mapped_namedtuples": {
+                "MinMax": {
+                    "expansion_limits": {
+                        key: nts.MinMax(
+                            es_defaults["minimum_expansion"],
+                            es_defaults["maximum_expansion"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                    "flow_rates": {
+                        key: nts.MinMax(
+                            es_defaults["minimum_flow_rate"],
+                            es_defaults["maximum_flow_rate"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                    "accumulated_amounts": {
+                        key: nts.MinMax(
+                            es_defaults["accumulated_minimum"],
+                            es_defaults["accumulated_maximum"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
                 },
-                'PositiveNegative': {
-                    'flow_gradients': {key: nts.PositiveNegative(
-                        es_defaults['positive_gradient'],
-                        es_defaults['negative_gradient'])
-                        for key in sorted(self._interfaces)},
-                    'gradient_costs': {key: nts.PositiveNegative(
-                        es_defaults['positive_gradient_costs'],
-                        es_defaults['negative_gradient_costs'])
-                        for key in sorted(self._interfaces)},
+                "PositiveNegative": {
+                    "flow_gradients": {
+                        key: nts.PositiveNegative(
+                            es_defaults["positive_gradient"],
+                            es_defaults["negative_gradient"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                    "gradient_costs": {
+                        key: nts.PositiveNegative(
+                            es_defaults["positive_gradient_costs"],
+                            es_defaults["negative_gradient_costs"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
                 },
-            }
+            },
         }
 
         super().__init__(name, *args, **kwargs)
@@ -1065,7 +1096,7 @@ class Source(AbstractEsComponent):
 
     @property
     def flow_rates(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum amount per time.
@@ -1078,7 +1109,7 @@ class Source(AbstractEsComponent):
 
     @property
     def flow_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~numbers.Number` specifying its cost.
 
@@ -1089,7 +1120,7 @@ class Source(AbstractEsComponent):
 
     @property
     def flow_emissions(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~numbers.Number` specifying its emissions
 
@@ -1105,7 +1136,7 @@ class Source(AbstractEsComponent):
 
     @property
     def flow_gradients(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the maximum positive or negative change between two following
@@ -1119,7 +1150,7 @@ class Source(AbstractEsComponent):
 
     @property
     def gradient_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         Mapping of each :paramref:`output name<Source.outputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the costs for the respective
@@ -1133,7 +1164,7 @@ class Source(AbstractEsComponent):
 
     @property
     def timeseries(self):
-        """ :class:`~collections.abc.Mapping` of an arbitrary number
+        """:class:`~collections.abc.Mapping` of an arbitrary number
         of :attr:`output names<Source.outputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum :paramref:`flow_rates` respectively.
@@ -1142,7 +1173,7 @@ class Source(AbstractEsComponent):
 
     @property
     def expandable(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a boolean variable
         describing if the mapped :attr:`Source.flow_rates` value can be
         increased by the  solver or not.
@@ -1151,7 +1182,7 @@ class Source(AbstractEsComponent):
 
     @property
     def expansion_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~numbers.Number` specifying its expansion cost.
 
@@ -1164,7 +1195,7 @@ class Source(AbstractEsComponent):
 
     @property
     def expansion_limits(self):
-        r""" :class:`~collections.abc.Mapping`
+        r""":class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum expansion limit.
@@ -1178,7 +1209,7 @@ class Source(AbstractEsComponent):
 
     @property
     def initial_status(self):
-        """ :class:`Status variable<bool>`, indicating if the entity is
+        """:class:`Status variable<bool>`, indicating if the entity is
         running, operating, working, doing the things its supposed to do in
         the beginning of the evaluated timeframe.
         """
@@ -1214,7 +1245,7 @@ class Source(AbstractEsComponent):
 
     @property
     def costs_for_being_active(self):
-        """ A :class:`~number.Number`, default = 0
+        """A :class:`~number.Number`, default = 0
         Describing the costs for not being inactive.
 
         Meaning for each discrete time step the entity's boolean status
@@ -1545,65 +1576,83 @@ class Sink(AbstractEsComponent):
 
         # modify this dict for adding additional parameters
         self._parameters_and_defaults = {
-            'singular_values': {
-                'initial_status': es_defaults['initial_status'],
-                'costs_for_being_active': es_defaults[
-                    'costs_for_being_active'],
+            "singular_values": {
+                "initial_status": es_defaults["initial_status"],
+                "costs_for_being_active": es_defaults["costs_for_being_active"],
             },
-            'singular_value_mappings': {
-                'flow_costs': {key: es_defaults['flow_costs']
-                               for key in sorted(self._interfaces)},
-                'flow_emissions': {key: es_defaults['emissions']
-                                   for key in sorted(self._interfaces)},
-                'expandable': {key: es_defaults['expandable']
-                               for key in sorted(self._interfaces)},
-                'expansion_costs': {key: es_defaults['expansion_costs']
-                                    for key in sorted(self._interfaces)},
-                'milp': {key: es_defaults['milp']
-                         for key in sorted(self._interfaces)},
+            "singular_value_mappings": {
+                "flow_costs": {
+                    key: es_defaults["flow_costs"] for key in sorted(self._interfaces)
+                },
+                "flow_emissions": {
+                    key: es_defaults["emissions"] for key in sorted(self._interfaces)
+                },
+                "expandable": {
+                    key: es_defaults["expandable"] for key in sorted(self._interfaces)
+                },
+                "expansion_costs": {
+                    key: es_defaults["expansion_costs"]
+                    for key in sorted(self._interfaces)
+                },
+                "milp": {key: es_defaults["milp"] for key in sorted(self._interfaces)},
             },
-            'namedtuples': {
-                'MinMax': {
-                },
-                'OnOff': {
-                    'status_inertia': nts.OnOff(
-                        es_defaults['minimum_uptime'],
-                        es_defaults['minimum_downtime']),
-                    'status_changing_costs': nts.OnOff(
-                        es_defaults['startup_costs'],
-                        es_defaults['shutdown_costs']),
-                    'number_of_status_changes': nts.OnOff(
-                        es_defaults['maximum_startups'],
-                        es_defaults['maximum_shutdowns']),
-                },
-            },
-            'mapped_namedtuples': {
-                'MinMax': {
-                    'expansion_limits': {key: nts.MinMax(
-                        es_defaults['minimum_expansion'],
-                        es_defaults['maximum_expansion'])
-                        for key in sorted(self._interfaces)},
-                    'flow_rates': {key: nts.MinMax(
-                        es_defaults['minimum_flow_rate'],
-                        es_defaults['maximum_flow_rate'])
-                        for key in sorted(self._interfaces)},
-                    'accumulated_amounts': {key: nts.MinMax(
-                        es_defaults['accumulated_minimum'],
-                        es_defaults['accumulated_maximum'])
-                        for key in sorted(self._interfaces)},
-                },
-                'PositiveNegative': {
-                    'flow_gradients': {key: nts.PositiveNegative(
-                        es_defaults['positive_gradient'],
-                        es_defaults['negative_gradient'])
-                        for key in sorted(self._interfaces)},
-                    'gradient_costs': {key: nts.PositiveNegative(
-                        es_defaults['positive_gradient_costs'],
-                        es_defaults['negative_gradient_costs'])
-                        for key in sorted(self._interfaces)},
+            "namedtuples": {
+                "MinMax": {},
+                "OnOff": {
+                    "status_inertia": nts.OnOff(
+                        es_defaults["minimum_uptime"], es_defaults["minimum_downtime"]
+                    ),
+                    "status_changing_costs": nts.OnOff(
+                        es_defaults["startup_costs"], es_defaults["shutdown_costs"]
+                    ),
+                    "number_of_status_changes": nts.OnOff(
+                        es_defaults["maximum_startups"],
+                        es_defaults["maximum_shutdowns"],
+                    ),
                 },
             },
-            'timeseries': es_defaults['timeseries'],
+            "mapped_namedtuples": {
+                "MinMax": {
+                    "expansion_limits": {
+                        key: nts.MinMax(
+                            es_defaults["minimum_expansion"],
+                            es_defaults["maximum_expansion"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                    "flow_rates": {
+                        key: nts.MinMax(
+                            es_defaults["minimum_flow_rate"],
+                            es_defaults["maximum_flow_rate"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                    "accumulated_amounts": {
+                        key: nts.MinMax(
+                            es_defaults["accumulated_minimum"],
+                            es_defaults["accumulated_maximum"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                },
+                "PositiveNegative": {
+                    "flow_gradients": {
+                        key: nts.PositiveNegative(
+                            es_defaults["positive_gradient"],
+                            es_defaults["negative_gradient"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                    "gradient_costs": {
+                        key: nts.PositiveNegative(
+                            es_defaults["positive_gradient_costs"],
+                            es_defaults["negative_gradient_costs"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                },
+            },
+            "timeseries": es_defaults["timeseries"],
         }
 
         super().__init__(name, *args, **kwargs)
@@ -1634,7 +1683,7 @@ class Sink(AbstractEsComponent):
 
     @property
     def flow_rates(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum amount per time.
@@ -1647,7 +1696,7 @@ class Sink(AbstractEsComponent):
 
     @property
     def flow_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~numbers.Number` specifying its cost.
 
@@ -1658,7 +1707,7 @@ class Sink(AbstractEsComponent):
 
     @property
     def flow_emissions(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~numbers.Number` specifying its emissions
 
@@ -1674,7 +1723,7 @@ class Sink(AbstractEsComponent):
 
     @property
     def flow_gradients(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the maximum positive or negative change between two following
@@ -1688,7 +1737,7 @@ class Sink(AbstractEsComponent):
 
     @property
     def gradient_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         Mapping of each :paramref:`input name<Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the costs for the respective
@@ -1702,7 +1751,7 @@ class Sink(AbstractEsComponent):
 
     @property
     def timeseries(self):
-        """ :class:`~collections.abc.Mapping` of an arbitrary number
+        """:class:`~collections.abc.Mapping` of an arbitrary number
         of :attr:`input names<Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum :paramref:`flow_rates` respectively.
@@ -1711,7 +1760,7 @@ class Sink(AbstractEsComponent):
 
     @property
     def expandable(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a boolean variable
         describing if the mapped :attr:`Sink.flow_rates` value can be
         increased by the  solver or not.
@@ -1720,7 +1769,7 @@ class Sink(AbstractEsComponent):
 
     @property
     def expansion_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~numbers.Number` specifying its expansion cost.
 
@@ -1733,7 +1782,7 @@ class Sink(AbstractEsComponent):
 
     @property
     def expansion_limits(self):
-        r""" :class:`~collections.abc.Mapping`
+        r""":class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum expansion limit.
@@ -1747,7 +1796,7 @@ class Sink(AbstractEsComponent):
 
     @property
     def initial_status(self):
-        """ :class:`Status variable<bool>`, indicating if the entity is
+        """:class:`Status variable<bool>`, indicating if the entity is
         running, operating, working, doing the things its supposed to do in
         the beginning of the evaluated timeframe.
         """
@@ -1783,7 +1832,7 @@ class Sink(AbstractEsComponent):
 
     @property
     def costs_for_being_active(self):
-        """ A :class:`~number.Number`, default = 0
+        """A :class:`~number.Number`, default = 0
         Describing the costs for not being inactive.
 
         Meaning for each discrete time step the entity's boolean status
@@ -2133,61 +2182,76 @@ class Transformer(AbstractEsComponent):
         self._conversions = conversions
 
         self._parameters_and_defaults = {
-            'singular_values': {
-                'initial_status': es_defaults['initial_status'],
-                'costs_for_being_active': es_defaults[
-                    'costs_for_being_active'],
+            "singular_values": {
+                "initial_status": es_defaults["initial_status"],
+                "costs_for_being_active": es_defaults["costs_for_being_active"],
             },
-            'singular_value_mappings': {
-                'flow_costs': {key: es_defaults['flow_costs']
-                               for key in sorted(self._interfaces)},
-                'flow_emissions': {key: es_defaults['emissions']
-                                   for key in sorted(self._interfaces)},
-                'expandable': {key: es_defaults['expandable']
-                               for key in sorted(self._interfaces)},
-                'expansion_costs': {key: es_defaults['expansion_costs']
-                                    for key in sorted(self._interfaces)},
-                'milp': {key: es_defaults['milp']
-                         for key in sorted(self._interfaces)},
+            "singular_value_mappings": {
+                "flow_costs": {
+                    key: es_defaults["flow_costs"] for key in sorted(self._interfaces)
+                },
+                "flow_emissions": {
+                    key: es_defaults["emissions"] for key in sorted(self._interfaces)
+                },
+                "expandable": {
+                    key: es_defaults["expandable"] for key in sorted(self._interfaces)
+                },
+                "expansion_costs": {
+                    key: es_defaults["expansion_costs"]
+                    for key in sorted(self._interfaces)
+                },
+                "milp": {key: es_defaults["milp"] for key in sorted(self._interfaces)},
             },
-            'namedtuples': {
-                'MinMax': {
-                },
-                'OnOff': {
-                    'status_inertia': nts.OnOff(
-                        es_defaults['minimum_uptime'],
-                        es_defaults['minimum_downtime']),
-                    'status_changing_costs': nts.OnOff(
-                        es_defaults['startup_costs'],
-                        es_defaults['shutdown_costs']),
-                    'number_of_status_changes': nts.OnOff(
-                        es_defaults['maximum_startups'],
-                        es_defaults['maximum_shutdowns']),
-                },
-            },
-            'mapped_namedtuples': {
-                'MinMax': {
-                    'expansion_limits': {key: nts.MinMax(
-                        es_defaults['minimum_expansion'],
-                        es_defaults['maximum_expansion'])
-                        for key in sorted(self._interfaces)},
-                    'flow_rates': {key: nts.MinMax(
-                        es_defaults['minimum_flow_rate'],
-                        es_defaults['maximum_flow_rate'])
-                        for key in sorted(self._interfaces)},
-                },
-                'PositiveNegative': {
-                    'flow_gradients': {key: nts.PositiveNegative(
-                        es_defaults['positive_gradient'],
-                        es_defaults['negative_gradient'])
-                        for key in sorted(self._interfaces)},
-                    'gradient_costs': {key: nts.PositiveNegative(
-                        es_defaults['positive_gradient_costs'],
-                        es_defaults['negative_gradient_costs'])
-                        for key in sorted(self._interfaces)},
+            "namedtuples": {
+                "MinMax": {},
+                "OnOff": {
+                    "status_inertia": nts.OnOff(
+                        es_defaults["minimum_uptime"], es_defaults["minimum_downtime"]
+                    ),
+                    "status_changing_costs": nts.OnOff(
+                        es_defaults["startup_costs"], es_defaults["shutdown_costs"]
+                    ),
+                    "number_of_status_changes": nts.OnOff(
+                        es_defaults["maximum_startups"],
+                        es_defaults["maximum_shutdowns"],
+                    ),
                 },
             },
-            'timeseries': es_defaults['timeseries'],
+            "mapped_namedtuples": {
+                "MinMax": {
+                    "expansion_limits": {
+                        key: nts.MinMax(
+                            es_defaults["minimum_expansion"],
+                            es_defaults["maximum_expansion"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                    "flow_rates": {
+                        key: nts.MinMax(
+                            es_defaults["minimum_flow_rate"],
+                            es_defaults["maximum_flow_rate"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                },
+                "PositiveNegative": {
+                    "flow_gradients": {
+                        key: nts.PositiveNegative(
+                            es_defaults["positive_gradient"],
+                            es_defaults["negative_gradient"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                    "gradient_costs": {
+                        key: nts.PositiveNegative(
+                            es_defaults["positive_gradient_costs"],
+                            es_defaults["negative_gradient_costs"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                },
+            },
+            "timeseries": es_defaults["timeseries"],
         }
 
         super().__init__(name, *args, **kwargs)
@@ -2212,7 +2276,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def conversions(self):
-        r""" :class:`~collections.abc.Mapping` of transformer relevant
+        r""":class:`~collections.abc.Mapping` of transformer relevant
         (inflow-name, outflow-name) tuples to their respective conversion
         efficiency. With recognized conversion  efficiencies between 0 and 1
         (:math:`\left[0, 1\right]`)
@@ -2221,7 +2285,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def flow_rates(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum amount per time.
@@ -2234,7 +2298,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def flow_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~numbers.Number` specifying its cost.
 
@@ -2245,7 +2309,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def flow_emissions(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~numbers.Number` specifying its emissions
 
@@ -2261,7 +2325,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def flow_gradients(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the maximum positive or negative change between two following
@@ -2275,7 +2339,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def gradient_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         Mapping of each :paramref:`input/output name<Transformer.inputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the costs for the respective
@@ -2289,7 +2353,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def timeseries(self):
-        """ :class:`~collections.abc.Mapping` of an arbitrary number
+        """:class:`~collections.abc.Mapping` of an arbitrary number
         of :attr:`input/output names<Transformer.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum :paramref:`flow_rates` respectively.
@@ -2298,7 +2362,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def expandable(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a boolean
         variable describing if the mapped :attr:`Transformer.flow_rates`
         value can be increased by the  solver or not.
@@ -2307,7 +2371,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def expansion_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~numbers.Number` specifying its expansion cost.
 
@@ -2320,7 +2384,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def expansion_limits(self):
-        r""" :class:`~collections.abc.Mapping`
+        r""":class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum expansion limit.
@@ -2334,7 +2398,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def initial_status(self):
-        """ :class:`Status variable<bool>`, indicating if the entity is
+        """:class:`Status variable<bool>`, indicating if the entity is
         running, operating, working, doing the things its supposed to do in
         the beginning of the evaluated timeframe.
         """
@@ -2370,7 +2434,7 @@ class Transformer(AbstractEsComponent):
 
     @property
     def costs_for_being_active(self):
-        """ A :class:`~number.Number`, default = 0
+        """A :class:`~number.Number`, default = 0
         Describing the costs for not being inactive.
 
         Meaning for each discrete time step the entity's boolean status
@@ -2784,27 +2848,31 @@ class CHP(Transformer):
         # the CHP class however doesn't, therefore if a CHP object is created
         # without the 'conversions' argument, a default value gets passed to
         # super().__init__().
-        if 'conversions' not in (args or kwargs):
-            kwargs.update({'conversions': es_defaults['chp_efficiency']})
+        if "conversions" not in (args or kwargs):
+            kwargs.update({"conversions": es_defaults["chp_efficiency"]})
         super().__init__(name, inputs, outputs, *args, **kwargs)
         # Add the additional parameters for the chp class, then call
         # _parse_arguments again.
-        self._parameters_and_defaults['singular_values'].update({
-            'back_pressure': es_defaults['chp_back_pressure'],
-            'min_condenser_load': es_defaults['min_condenser_load'],
-            'power_loss_index': es_defaults['power_loss_index'],
-        })
-        self._parameters_and_defaults['singular_value_mappings'].update({
-            'conversion_factor_full_condensation': es_defaults[
-                'chp_efficiency'],
-            'conversions': es_defaults['chp_efficiency'],
-        })
-        self._parameters_and_defaults['namedtuples']['MinMax'].update({
-            'el_efficiency_wo_dist_heat': es_defaults[
-                'el_efficiency_wo_dist_heat'],
-            'enthalpy_loss': es_defaults['enthalpy_loss'],
-            'power_wo_dist_heat': es_defaults['power_wo_dist_heat'],
-        })
+        self._parameters_and_defaults["singular_values"].update(
+            {
+                "back_pressure": es_defaults["chp_back_pressure"],
+                "min_condenser_load": es_defaults["min_condenser_load"],
+                "power_loss_index": es_defaults["power_loss_index"],
+            }
+        )
+        self._parameters_and_defaults["singular_value_mappings"].update(
+            {
+                "conversion_factor_full_condensation": es_defaults["chp_efficiency"],
+                "conversions": es_defaults["chp_efficiency"],
+            }
+        )
+        self._parameters_and_defaults["namedtuples"]["MinMax"].update(
+            {
+                "el_efficiency_wo_dist_heat": es_defaults["el_efficiency_wo_dist_heat"],
+                "enthalpy_loss": es_defaults["enthalpy_loss"],
+                "power_wo_dist_heat": es_defaults["power_wo_dist_heat"],
+            }
+        )
         self._parse_arguments(**kwargs)
 
     @property
@@ -2816,7 +2884,7 @@ class CHP(Transformer):
 
     @property
     def conversion_factor_full_condensation(self):
-        r""" :class:`~collections.abc.Mapping` where the
+        r""":class:`~collections.abc.Mapping` where the
         (inflow-name, outflow-name) tuple of the main flow is the only key and
         it's conversion efficiency when there is no tapped flow is it's value.
         Conversion efficiencies are expected to be between 0 and 1
@@ -3276,80 +3344,96 @@ class Storage(AbstractEsComponent):
 
         # modify this dict for adding additional parameters
         self._parameters_and_defaults = {
-            'singular_values': {
-                'initial_status': es_defaults['initial_status'],
-                'costs_for_being_active': es_defaults[
-                    'costs_for_being_active'],
-                'initial_soc': es_defaults['initial_soc'],
-                'final_soc': es_defaults['final_soc'],
+            "singular_values": {
+                "initial_status": es_defaults["initial_status"],
+                "costs_for_being_active": es_defaults["costs_for_being_active"],
+                "initial_soc": es_defaults["initial_soc"],
+                "final_soc": es_defaults["final_soc"],
             },
-            'singular_value_mappings': {
-                'flow_costs': {key: es_defaults['flow_costs']
-                               for key in sorted(self._interfaces)},
-                'flow_emissions': {key: es_defaults['emissions']
-                                   for key in sorted(self._interfaces)},
-                'expandable': {
-                    key: es_defaults['expandable']
-                    for key in sorted(self._interfaces)+['capacity']},
-                'fixed_expansion_ratios': {
-                    key: es_defaults['fixed_expansion_ratios']
-                    for key in sorted(self._interfaces)},
-                'expansion_costs': {
-                    key: es_defaults['expansion_costs']
-                    for key in sorted(self._interfaces)+['capacity']},
-                'milp': {key: es_defaults['milp']
-                         for key in sorted(self._interfaces)},
+            "singular_value_mappings": {
+                "flow_costs": {
+                    key: es_defaults["flow_costs"] for key in sorted(self._interfaces)
+                },
+                "flow_emissions": {
+                    key: es_defaults["emissions"] for key in sorted(self._interfaces)
+                },
+                "expandable": {
+                    key: es_defaults["expandable"]
+                    for key in sorted(self._interfaces) + ["capacity"]
+                },
+                "fixed_expansion_ratios": {
+                    key: es_defaults["fixed_expansion_ratios"]
+                    for key in sorted(self._interfaces)
+                },
+                "expansion_costs": {
+                    key: es_defaults["expansion_costs"]
+                    for key in sorted(self._interfaces) + ["capacity"]
+                },
+                "milp": {key: es_defaults["milp"] for key in sorted(self._interfaces)},
             },
-            'namedtuples': {
-                'MinMax': {
+            "namedtuples": {
+                "MinMax": {},
+                "OnOff": {
+                    "status_inertia": nts.OnOff(
+                        es_defaults["minimum_uptime"], es_defaults["minimum_downtime"]
+                    ),
+                    "status_changing_costs": nts.OnOff(
+                        es_defaults["startup_costs"], es_defaults["shutdown_costs"]
+                    ),
+                    "number_of_status_changes": nts.OnOff(
+                        es_defaults["maximum_startups"],
+                        es_defaults["maximum_shutdowns"],
+                    ),
                 },
-                'OnOff': {
-                    'status_inertia': nts.OnOff(
-                        es_defaults['minimum_uptime'],
-                        es_defaults['minimum_downtime']),
-                    'status_changing_costs': nts.OnOff(
-                        es_defaults['startup_costs'],
-                        es_defaults['shutdown_costs']),
-                    'number_of_status_changes': nts.OnOff(
-                        es_defaults['maximum_startups'],
-                        es_defaults['maximum_shutdowns']),
-                },
-                'PositiveNegative': {
-                    'idle_changes': nts.PositiveNegative(
-                        es_defaults['gain_rate'],
-                        es_defaults['loss_rate']),
+                "PositiveNegative": {
+                    "idle_changes": nts.PositiveNegative(
+                        es_defaults["gain_rate"], es_defaults["loss_rate"]
+                    ),
                 },
             },
-            'mapped_namedtuples': {
-                'MinMax': {
-                    'expansion_limits': {
+            "mapped_namedtuples": {
+                "MinMax": {
+                    "expansion_limits": {
                         key: nts.MinMax(
-                            es_defaults['minimum_expansion'],
-                            es_defaults['maximum_expansion'])
-                        for key in sorted(self._interfaces)+['capacity']},
-                    'flow_rates': {key: nts.MinMax(
-                        es_defaults['minimum_flow_rate'],
-                        es_defaults['maximum_flow_rate'])
-                        for key in sorted(self._interfaces)},
+                            es_defaults["minimum_expansion"],
+                            es_defaults["maximum_expansion"],
+                        )
+                        for key in sorted(self._interfaces) + ["capacity"]
+                    },
+                    "flow_rates": {
+                        key: nts.MinMax(
+                            es_defaults["minimum_flow_rate"],
+                            es_defaults["maximum_flow_rate"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
                 },
-                'PositiveNegative': {
-                    'flow_gradients': {key: nts.PositiveNegative(
-                        es_defaults['positive_gradient'],
-                        es_defaults['negative_gradient'])
-                        for key in sorted(self._interfaces)},
-                    'gradient_costs': {key: nts.PositiveNegative(
-                        es_defaults['positive_gradient_costs'],
-                        es_defaults['negative_gradient_costs'])
-                        for key in sorted(self._interfaces)},
+                "PositiveNegative": {
+                    "flow_gradients": {
+                        key: nts.PositiveNegative(
+                            es_defaults["positive_gradient"],
+                            es_defaults["negative_gradient"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
+                    "gradient_costs": {
+                        key: nts.PositiveNegative(
+                            es_defaults["positive_gradient_costs"],
+                            es_defaults["negative_gradient_costs"],
+                        )
+                        for key in sorted(self._interfaces)
+                    },
                 },
-                'InOut': {
-                    'flow_efficiencies': {key: nts.InOut(
-                        es_defaults['efficiency'],
-                        es_defaults['efficiency'])
-                        for key in sorted(self._interfaces)},
+                "InOut": {
+                    "flow_efficiencies": {
+                        key: nts.InOut(
+                            es_defaults["efficiency"], es_defaults["efficiency"]
+                        )
+                        for key in sorted(self._interfaces)
+                    },
                 },
             },
-            'timeseries': None,
+            "timeseries": None,
         }
 
         super().__init__(name, *args, **kwargs)
@@ -3372,14 +3456,14 @@ class Storage(AbstractEsComponent):
 
     @property
     def capacity(self):
-        r""" Maximum :class:`~numbers.Number` of units the entity is able
+        r"""Maximum :class:`~numbers.Number` of units the entity is able
         to accumulate.
         """
         return self._capacity
 
     @property
     def initial_soc(self):
-        r""" The :class:`~numbers.Number` of units the entity
+        r"""The :class:`~numbers.Number` of units the entity
         has accumulated at the beginning of the evaluated timeframe.
         Usually something between  0 and :attr:`~Storage.capacity`
         (:math:`\left[0, \text{capacity}\right]`).
@@ -3388,7 +3472,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def final_soc(self):
-        r""" The :class:`~numbers.Number` of units the entity
+        r"""The :class:`~numbers.Number` of units the entity
         has accumulated at the end of the evaluated timeframe.
         Usually something between  0 and :attr:`~Storage.capacity`
         (:math:`\left[0, \text{capacity}\right]`).
@@ -3407,7 +3491,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def flow_rates(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Storage.input>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum amount per time.
@@ -3420,7 +3504,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def flow_efficiencies(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :paramref:`input/output name<Storage.input>` to a
         :class:`~numbers.Number` specifying its efficiency.
 
@@ -3431,7 +3515,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def flow_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Storage.input>` to a
         :class:`~numbers.Number` specifying its cost.
 
@@ -3442,7 +3526,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def flow_emissions(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Storage.input>` to a
         :class:`~numbers.Number` specifying its emissions
 
@@ -3458,7 +3542,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def flow_gradients(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Storage.input>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the maximum positive or negative change between two following
@@ -3472,7 +3556,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def gradient_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         Mapping of each :paramref:`input/output name<Storage.input>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the costs for the respective
@@ -3486,7 +3570,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def timeseries(self):
-        """ :class:`~collections.abc.Mapping` of an arbitrary number
+        """:class:`~collections.abc.Mapping` of an arbitrary number
         of :attr:`input/output names<Storage.input>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum :paramref:`flow_rates` respectively.
@@ -3495,7 +3579,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def expandable(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name <Storage.input>` to a boolean
         variable describing if the mapped :attr:`Storage.flow_rates`
         value can be increased by the  solver or not.
@@ -3504,7 +3588,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def fixed_expansion_ratios(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :paramref:`input <Storage.input>` and
         :paramref:`output <Storage.output>` name to a boolean variable
         describing if the mapped :attr:`flow rate <Storage.flow_rates>`
@@ -3515,7 +3599,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def expansion_costs(self):
-        """ :class:`~collections.abc.Mapping`
+        """:class:`~collections.abc.Mapping`
         of each :attr:`input/output name <Storage.input>` to a
         :class:`~numbers.Number` specifying its expansion cost.
 
@@ -3528,7 +3612,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def expansion_limits(self):
-        r""" :class:`~collections.abc.Mapping`
+        r""":class:`~collections.abc.Mapping`
         of each :attr:`input/output name <Storage.input>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum expansion limit.
@@ -3542,7 +3626,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def initial_status(self):
-        """ :class:`Status variable <bool>`, indicating if the entity is
+        """:class:`Status variable <bool>`, indicating if the entity is
         running, operating, working, doing the things its supposed to do in
         the beginning of the evaluated timeframe.
         """
@@ -3578,7 +3662,7 @@ class Storage(AbstractEsComponent):
 
     @property
     def costs_for_being_active(self):
-        """ A :class:`~number.Number`, default = 0
+        """A :class:`~number.Number`, default = 0
         Describing the costs for not being inactive.
 
         Meaning for each discrete time step the entity's boolean status
