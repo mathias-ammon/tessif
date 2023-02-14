@@ -1,6 +1,6 @@
-# tessif/frused/hooks/ppsa.py
-# -*- coding: utf-8 -*-
-"""
+# tessif/frused/hooks/tsf.py
+"""Tessif's tessif-system-model hooks.
+
 :mod:`~tessif.frused.hooks.tsf` is a :mod:`tessif` module aggregating
 mod:`tessif energy system specific <tessif.model.energy_system>` hooks to
 change tessif energy systems after their creation.
@@ -8,32 +8,29 @@ change tessif energy systems after their creation.
 Usually used for auto comparing a singular tessif energy system on
 contradicting model assumptions. Like for example in :ref:`AutoCompare_HH`.
 """
-from tessif.model.energy_system import AbstractEnergySystem
 import tessif.model.components as comps
+from tessif.model.energy_system import AbstractEnergySystem
 
 
-def reparameterize_components(es, components=dict()):
-    """
-    Reparameterize certain compnents in a tessif energy system after its
-    creation
+def reparameterize_components(es, components=None):
+    """Reparameterize tessif-system-model components after its creation.
 
     Parameters
     ----------
     es: :class:`tessif.model.energy_system.AbstractEnergySystem`
         The tessif energy system that is to be reparameterized.
-    components: dict
+    components: dict, None, default=None
         Dictionairy of dictionairies keyeing parameter and value
         combination by :attr:`component uid <tessif.frused.namedtuples.Uid>`
-        string representation.
+        string representation. If none, an empty dictionairy is used.
 
     Examples
     --------
-
     Use :ref:`tessifs example hub <Examples>` to create a minimum working
     example:
 
-    >>> import tessif.examples.data.tsf.py_hard as hardcoded_tessif_examples
-    >>> mwe = hardcoded_tessif_examples.create_mwe()
+    >>> from tessif_examples.basic import create_mwe()
+    >>> mwe = create_mwe()
 
     Check the components that are to be reparamterized:
 
@@ -82,6 +79,8 @@ def reparameterize_components(es, components=dict()):
     Demand
     {'electricity': MinMax(min=11, max=11)}
     """
+    if not components:
+        components = dict()
     # turn generator into list for recreating the es later
     nodes = list(es.nodes)
     # iterate through the requested components...

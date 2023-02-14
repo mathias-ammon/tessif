@@ -1,23 +1,16 @@
 # tessif/frused/hooks/ppsa.py
-# -*- coding: utf-8 -*-
-"""
+"""Tessif's PyPSA hooks.
+
 :mod:`~tessif.frused.hooks.ppsa` is a :mod:`tessif` module aggregating
 :ref:`pypsa specific <Models_Pypsa>` hooks to improve it's integration
 into tessif.
 """
-import pypsa
 import numpy as np
 
 
-def enforce_uid():
-    """
-    test
-    """
-    pass
-
-
 def add_flow_bound_emissions(attribute_dict):
-    """
+    """Enable flow specific emissions.
+
     Pre simulation hook for extending pypsa components to enable flow specific
     emissions.
 
@@ -60,7 +53,8 @@ def add_flow_bound_emissions(attribute_dict):
 
 
 def add_siso_transfromer_type(attribute_dict):
-    """
+    """Extend pypsa links to behave like siso transformers.
+
     Pre simulation hook for extending pypsa links to act like siso
     transfromers.
 
@@ -108,7 +102,7 @@ def add_siso_transfromer_type(attribute_dict):
             "Input (optional)",  # input output and required/optional
         ]
 
-        attribute_dict["Link"].loc[f"expansion_costs"] = [
+        attribute_dict["Link"].loc["expansion_costs"] = [
             "static",  # type
             "€/MW",  # unit
             0.0,  # default
@@ -120,7 +114,8 @@ def add_siso_transfromer_type(attribute_dict):
 
 
 def extend_number_of_link_interfaces(attribute_dict, additional_interfaces=1):
-    """
+    """Extend links to use them as CHPs.
+
     Pre simulation hook for extending pypsa links to enable using them as
     simple chps.
 
@@ -164,7 +159,7 @@ def extend_number_of_link_interfaces(attribute_dict, additional_interfaces=1):
     ]
 
     # bus 0 to 1 expansion cost
-    attribute_dict["Link"].loc[f"expansion_costs"] = [
+    attribute_dict["Link"].loc["expansion_costs"] = [
         "static",  # type
         "€/MW",  # unit
         0.0,  # default
@@ -269,7 +264,8 @@ def extend_number_of_link_interfaces(attribute_dict, additional_interfaces=1):
 
 
 def constrain_extended_link_interfaces(additional_interfaces):
-    """
+    """Extent number of link interfaces.
+
     Pre simulation hook to constrain the additonal interfaces added by
     :func:`extend_number_of_link_interfaces`.
 
