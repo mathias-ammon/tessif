@@ -1,16 +1,18 @@
 # tessif/frused/namedtuples
-# -*- coding: utf-8 -*-
-"""
+"""Tessif's nameduptles, designed to increase verbosity of parameterization.
+
 :mod:`~tessif.frused.namedtuples` is a :mod:`tessif` subpackage aggregating
 utility objects for cleaner and more verbose code in the context of naming
 things.
 """
 import collections
 import typing
+
 import tessif.frused.configurations as config
 
 
 class UidBase(typing.NamedTuple):
+    """Base UId."""
 
     name: str
     latitude: float
@@ -22,9 +24,10 @@ class UidBase(typing.NamedTuple):
     node_type: str
 
     def __str__(self):
+        """Redefine string representation to parameterize desired output."""
         return config.node_uid_seperator.join(
-            str(getattr(self, i)) for i in node_uid_styles[
-                config.node_uid_style])
+            str(getattr(self, i)) for i in node_uid_styles[config.node_uid_style]
+        )
 
 
 class Uid(UidBase):
@@ -100,36 +103,47 @@ class Uid(UidBase):
         Namedtuple instance object serving as uid
     """
 
-    def __new__(cls, name,
-                latitude=None,
-                longitude=None,
-                region=None,
-                sector=None,
-                carrier=None,
-                component=None,
-                node_type=None):
-        self = super().__new__(cls, name,  latitude, longitude, region,
-                               sector, carrier, component, node_type)
+    def __new__(
+        cls,
+        name,
+        latitude=None,
+        longitude=None,
+        region=None,
+        sector=None,
+        carrier=None,
+        component=None,
+        node_type=None,
+    ):
+        """Create UID through seperate class to improve documentation."""
+        self = super().__new__(
+            cls,
+            name,
+            latitude,
+            longitude,
+            region,
+            sector,
+            carrier,
+            component,
+            node_type,
+        )
 
         return self
 
     @classmethod
     def reconstruct(cls, string_representation):
-        """Reconstruct a :class:`Uid` from its :ref:`string representation
-        <Labeling_Concept>`."""
-        deconstructed_uid = string_representation.split(
-            config.node_uid_seperator)
+        """Reconstruct UID from its :ref:`string representation <Labeling_Concept>`."""
+        deconstructed_uid = string_representation.split(config.node_uid_seperator)
         dict_representation = dict()
         for pos, attr in enumerate(node_uid_styles[config.node_uid_style]):
             if pos > len(deconstructed_uid) - 1:
                 msg = (
-                    "Index out of range\n" +
-                    "The node_uid_style specificiation needs to be done " +
-                    "BEFORE constructing a Uid implying it also needs to be " +
-                    "Done BEFORE CREATING a model specific energy system\n" +
-                    "(Use 'qualname' before constructing the model specific " +
-                    "energy system and use more specified styles before " +
-                    "attempting a Uid reconstruction.)"
+                    "Index out of range\n"
+                    + "The node_uid_style specificiation needs to be done "
+                    + "BEFORE constructing a Uid implying it also needs to be "
+                    + "Done BEFORE CREATING a model specific energy system\n"
+                    + "(Use 'qualname' before constructing the model specific "
+                    + "energy system and use more specified styles before "
+                    + "attempting a Uid reconstruction.)"
                 )
                 raise IndexError(msg)
 
@@ -139,15 +153,17 @@ class Uid(UidBase):
 
 
 node_uid_styles = {
-    'name': ['name'],
-    'qualname': [i for i in Uid.__new__.__code__.co_varnames
-                 if i not in ['self', 'cls']],
-    'coords': ['name', 'latitude', 'longitude'],
-    'region': ['name', 'region'],
-    'sector': ['name', 'sector'],
-    'carrier': ['name', 'carrier'],
-    'component': ['name', 'component'],
-    'node_type': ['name', 'node_type']}
+    "name": ["name"],
+    "qualname": [
+        i for i in Uid.__new__.__code__.co_varnames if i not in ["self", "cls"]
+    ],
+    "coords": ["name", "latitude", "longitude"],
+    "region": ["name", "region"],
+    "sector": ["name", "sector"],
+    "carrier": ["name", "carrier"],
+    "component": ["name", "component"],
+    "node_type": ["name", "node_type"],
+}
 """
 Provide possible internal node label representation styles. Use
 :attr:`configurations.node_uid_style
@@ -219,7 +235,7 @@ results into following representaion, depending on the mapping used:
             print(configs.node_uid_style, '->', lbl)
 """
 
-Edge = collections.namedtuple('Edge', ['source', 'target'])
+Edge = collections.namedtuple("Edge", ["source", "target"])
 """
 Edge of an energy system graph. (source, target)
 
@@ -237,28 +253,27 @@ target: str
     component <Models_Tessif_Concept_ESC>` representing the edges end.
 """
 
-MinMax = collections.namedtuple('MinMax', ['min', 'max'])
+MinMax = collections.namedtuple("MinMax", ["min", "max"])
 """
 Corespondent minimum and maximum value pair. Usually used for energy system
 value parings like flow limits (i.e: minimum and maximum flow boundaries).
 """
 
-OnOff = collections.namedtuple('OnOff', ['on', 'off'])
+OnOff = collections.namedtuple("OnOff", ["on", "off"])
 """
 Corespondent value pair for describing parameters dependent on a boolean
 status. . Usually used for energy system value parings describing nonconvex
 behaviour like i.e: minimum uptime and downtime.
 """
 
-InOut = collections.namedtuple('InOut', ['inflow', 'outflow'])
+InOut = collections.namedtuple("InOut", ["inflow", "outflow"])
 """
 Corespondent inflow outflow value pair. Usually used for energy system value
 parings describing different behaviours of the same component depending on in
 or outflow like i.e: Storage efficiency
 """
 
-PositiveNegative = collections.namedtuple(
-    'PositiveNegative', ['positive', 'negative'])
+PositiveNegative = collections.namedtuple("PositiveNegative", ["positive", "negative"])
 """
 Corespondent value pair for describing parameters dependent on directions
 expressed as positive or negative. Usually used for energy system value
@@ -266,16 +281,15 @@ parings describing changes between timesteps like i.e: power production
 gradients.
 """
 
-Coordinates = collections.namedtuple(
-    'Coordinates', ['latitude', 'longitude'])
+Coordinates = collections.namedtuple("Coordinates", ["latitude", "longitude"])
 """
 Geospatial coordinates. (latitude [°], longitude[°])
 """
 
 
 NodeColorGroupings = collections.namedtuple(
-    'NodeColorGroupings',
-    ['component', 'name', 'carrier', 'sector'])
+    "NodeColorGroupings", ["component", "name", "carrier", "sector"]
+)
 """
 Node color groups mapped by format like
 :class:`~tessif.transform.es2mapping.ESTransformer` objects.
@@ -303,8 +317,8 @@ sector : defaultdict(list)
 
 
 AttributeGroupings = collections.namedtuple(
-    'AttributeGroupings',
-    ['node', 'edge', 'legend'])
+    "AttributeGroupings", ["node", "edge", "legend"]
+)
 """
 Energy system graph attribute groupings. (Mainly used for filtering purposes).
 
@@ -326,9 +340,7 @@ Implementation example:
 :attr:`~tessif.frused.conventions.nxgrph_visualize_defaults`
 """
 
-MemoryTime = collections.namedtuple(
-    'MemoryTime',
-    ['memory', 'time'])
+MemoryTime = collections.namedtuple("MemoryTime", ["memory", "time"])
 """
 Simulation meta data result container. (Mainly used by
 :class:`tessif.analye.Comparatier`).
@@ -342,8 +354,9 @@ edge: str
 """
 
 SimulationProcessStepResults = collections.namedtuple(
-    'SimulationProcessStepResults',
-    ['reading', 'parsing', 'transformation', 'simulation', 'post_processing', 'result'])
+    "SimulationProcessStepResults",
+    ["reading", "parsing", "transformation", "simulation", "post_processing", "result"],
+)
 """
 Detailed meta data result container holding inrformation on the various
 simulation process steps.
