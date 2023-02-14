@@ -44,16 +44,16 @@ def add_flow_bound_emissions(attribute_dict):
         the parameters for using flow bound emission values.
 
     """
-    co2_bound_components = ['Generator', 'Link', 'StorageUnit']
+    co2_bound_components = ["Generator", "Link", "StorageUnit"]
 
     # bus flow emissions
     for component in co2_bound_components:
         attribute_dict[component].loc["flow_emissions"] = [
-            "static",                   # type
-            "t_CO2eq/MW",               # unit
-            0.,                         # default
+            "static",  # type
+            "t_CO2eq/MW",  # unit
+            0.0,  # default
             "flow specific emissions",  # docstring
-            "Input (optional)"          # input output and required/optional
+            "Input (optional)",  # input output and required/optional
         ]
 
     return attribute_dict
@@ -84,34 +84,36 @@ def add_siso_transfromer_type(attribute_dict):
        carrying the parameters for using the extendend transfromer type.
 
     """
-    siso_transformer_components = ['Link', ]
+    siso_transformer_components = [
+        "Link",
+    ]
 
     # bus flow emissions
     for component in siso_transformer_components:
         # adding the option to tell the post processors about multiple inputs
         attribute_dict[component].loc["siso_transformer"] = [
-            "bool",                           # type
-            np.nan,                           # unit
-            False,                            # default
+            "bool",  # type
+            np.nan,  # unit
+            False,  # default
             "Link has 1 input and 1 output",  # docstring
             # input output and required/optional
-            "Input (optional)"
+            "Input (optional)",
         ]
 
         attribute_dict[component].loc["flow_costs"] = [
-            "static",               # type
-            "€/MW",                 # unit
-            0.,                     # default
+            "static",  # type
+            "€/MW",  # unit
+            0.0,  # default
             "flow specific costs",  # docstring
-            "Input (optional)"      # input output and required/optional
+            "Input (optional)",  # input output and required/optional
         ]
 
         attribute_dict["Link"].loc[f"expansion_costs"] = [
             "static",  # type
             "€/MW",  # unit
-            0.,  # default
+            0.0,  # default
             "expansion cost",  # docstring
-            "Input (optional)"  # input output and required/optional
+            "Input (optional)",  # input output and required/optional
         ]
 
     return attribute_dict
@@ -154,29 +156,29 @@ def extend_number_of_link_interfaces(attribute_dict, additional_interfaces=1):
     """
     # bus 0 to 1 flow costs
     attribute_dict["Link"].loc["flow_costs"] = [
-        "static",               # type
-        "€/MW",                 # unit
-        0.,                     # default
+        "static",  # type
+        "€/MW",  # unit
+        0.0,  # default
         "flow specific costs",  # docstring
-        "Input (optional)"      # input output and required/optional
+        "Input (optional)",  # input output and required/optional
     ]
 
     # bus 0 to 1 expansion cost
     attribute_dict["Link"].loc[f"expansion_costs"] = [
-        "static",              # type
-        "€/MW",                # unit
-        0.,                    # default
-        "expansion cost",      # docstring
-        "Input (optional)"     # input output and required/optional
+        "static",  # type
+        "€/MW",  # unit
+        0.0,  # default
+        "expansion cost",  # docstring
+        "Input (optional)",  # input output and required/optional
     ]
 
     # adding the option to tell the post processors about multiple outputs
     attribute_dict["Link"].loc["multiple_outputs"] = [
-        "bool",                        # type
-        np.nan,                        # unit
-        False,                         # default
+        "bool",  # type
+        np.nan,  # unit
+        False,  # default
         "Link uses multiple outputs",  # docstring
-        "Input (optional)"             # input output and required/optional
+        "Input (optional)",  # input output and required/optional
     ]
 
     # # adding the option to tell the post processors about multiple inputs
@@ -190,11 +192,11 @@ def extend_number_of_link_interfaces(attribute_dict, additional_interfaces=1):
 
     # adding the option to tell the post processors about multiple inputs
     attribute_dict["Link"].loc["siso_transformer"] = [
-        "bool",                           # type
-        np.nan,                           # unit
-        False,                            # default
+        "bool",  # type
+        np.nan,  # unit
+        False,  # default
         "Link has 1 input and 1 output",  # docstring
-        "Input (optional)"                # input output and required/optional
+        "Input (optional)",  # input output and required/optional
     ]
 
     # add a new link interface for each one requested:
@@ -202,65 +204,65 @@ def extend_number_of_link_interfaces(attribute_dict, additional_interfaces=1):
 
         # connecting bus attribute
         attribute_dict["Link"].loc[f"bus{2+i}"] = [
-            "string",           # type
-            np.nan,             # unit
-            np.nan,             # default
-            "2nd bus",          # docstring
-            "Input (optional)"  # input/output and required/optional
+            "string",  # type
+            np.nan,  # unit
+            np.nan,  # default
+            "2nd bus",  # docstring
+            "Input (optional)",  # input/output and required/optional
         ]
 
         # bus 0 to 2+i efficiency
         attribute_dict["Link"].loc[f"efficiency{2+i}"] = [
-            "static or series",     # type
-            "per unit",             # unit
-            1.,                     # default
-            "2nd bus efficiency",   # docstring
-            "Input (optional)"      # input/output and required/optional
+            "static or series",  # type
+            "per unit",  # unit
+            1.0,  # default
+            "2nd bus efficiency",  # docstring
+            "Input (optional)",  # input/output and required/optional
         ]
 
         # bus 0 to 2+i flow costs
         attribute_dict["Link"].loc[f"flow_costs{2+i}"] = [
-            "static",            # type
-            "€/MW",              # unit
-            0.,                  # default
+            "static",  # type
+            "€/MW",  # unit
+            0.0,  # default
             "addit. flow cost",  # docstring
-            "Input (optional)"   # input output and required/optional
+            "Input (optional)",  # input output and required/optional
         ]
 
         # bus 0 to 2+i flow emissions
         attribute_dict["Link"].loc[f"flow_emissions{2+i}"] = [
-            "static",            # type
-            "t_CO2/MW",          # unit
-            0.,                  # default
+            "static",  # type
+            "t_CO2/MW",  # unit
+            0.0,  # default
             "addit. flow cost",  # docstring
-            "Input (optional)"   # input output and required/optional
+            "Input (optional)",  # input output and required/optional
         ]
 
         # bus 0 to 2+i installed capacities
         attribute_dict["Link"].loc[f"p_nom{2+i}"] = [
-            "static",            # type
-            "MW",                # unit
-            0.,                  # default
-            "addit. capacity",   # docstring
-            "Input (optional)"   # input output and required/optional
+            "static",  # type
+            "MW",  # unit
+            0.0,  # default
+            "addit. capacity",  # docstring
+            "Input (optional)",  # input output and required/optional
         ]
 
         # bus 0 to 2+i expansion cost
         attribute_dict["Link"].loc[f"expansion_costs{2+i}"] = [
-            "static",              # type
-            "€/MW",                # unit
-            0.,                    # default
+            "static",  # type
+            "€/MW",  # unit
+            0.0,  # default
             "2nd expansion cost",  # docstring
-            "Input (optional)"     # input output and required/optional
+            "Input (optional)",  # input output and required/optional
         ]
 
         # bus 0 to 2+i result
         attribute_dict["Link"].loc[f"p{2+i}"] = [
-            "series",          # type
-            "MW",              # unit
-            0.,                # default
+            "series",  # type
+            "MW",  # unit
+            0.0,  # default
             "2nd bus output",  # docstring
-            "Output"           # input output and required/optional
+            "Output",  # input output and required/optional
         ]
 
     return attribute_dict

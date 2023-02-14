@@ -102,7 +102,7 @@ def reparameterize_components(es, components=dict()):
                 attributes = node.attributes.copy()
 
                 # remove the uid part since it is handled above
-                attributes.pop('uid')
+                attributes.pop("uid")
 
                 # iterate over requested parameters
                 for parameter, value in components[uid].items():
@@ -117,7 +117,7 @@ def reparameterize_components(es, components=dict()):
                     # print('to:', attributes[parameter]) # future log
 
                 # infer reparameterized components type in a way ...
-                ntype = str(type(node)).split('.')[-1].replace("'>", "")
+                ntype = str(type(node)).split(".")[-1].replace("'>", "")
 
                 # its constructor can be allocated dynamically
                 # and the reparameterized component created
