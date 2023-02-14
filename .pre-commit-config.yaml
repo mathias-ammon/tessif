@@ -45,7 +45,7 @@ repos:
         args: [--py310-plus]
       - id: isort
         name: Sort python imports using isort through poetry.
-        entry: poetry run isort
+        entry: poetry run isort --profile black
         language: system
         types: [python]
         args: [-v]

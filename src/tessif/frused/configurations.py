@@ -1,32 +1,27 @@
-# tessif/frused/configurations
-# -*- coding: utf-8 -*-
-"""
+# tessif/frused/configurations.py
+"""Package-wide configurations.
+
 :mod:`~tessif.frused.configurations` is a :mod:`tessif` subpackage aggregating
-simulation parameters, used naming and unit conventions as well as some
+frequently used parameters, used naming and unit conventions as well as some
 logging behavior.
 
-It serves as main reference point for adjusting tessif's simulative and
-parsing behavior.
+It serves as main reference point for adjusting Tessif's parsing behavior.
 """
-import os
-from tessif.frused.paths import log_dir
 
-temporal_resolution = 'hourly'
+
+temporal_resolution = "hourly"
 """
 Currently used temporal resolution. Must be one of the keys found in
 :attr:`~tessif.frused.resolutions.temporals`.
 
-Currently set to:
+Currently set to::
 
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
-
-        import tessif.frused.configurations as config
-        print(config.temporal_resolution)
+    from tessif.frused.configurations import temporal_resolution
+    print(temporal_resolution)
+    hourly
 """
 
-node_uid_style = 'name'
+node_uid_style = "name"
 """
 Switch for tweaking internal node uid representation style.
 
@@ -51,17 +46,14 @@ energy system.
 For a list of available styles and their key (the string set to
 :attr:`node_uid_style`) see :attr:`tessif.frused.namedtuples.node_uid_styles`.
 
-Currently set to:
+Currently set to::
 
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
-
-        import tessif.frused.configurations as config
-        print(config.node_uid_style)
+    from tessif.frused.configurations import node_uid_style
+    print(node_uid_style)
+    name
 """
 
-node_uid_seperator = '_'
+node_uid_seperator = "_"
 """
 Seperate different tags of the same
 :attr:`node uid <tessif.frused.namedtuples.uid>`
@@ -69,26 +61,14 @@ Seperate different tags of the same
 Seperate symbol for (uniquely) identifying a node's uid using various tags of
 the :attr:`namedtuples implementation <tessif.frused.namedtuples.uid>`.
 
-Currently set to:
+Currently set to::
 
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
-
-        import tessif.frused.configurations as config
-        print(config.node_uid_seperator)
-
-So ``TAG1{NODE_UID_SEPERATOR}TAG2`` results in:
-
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
-
-        import tessif.frused.configurations as config
-        print('TAG1{}TAG2'.format(config.node_uid_seperator))
+    from tessif.frused.configurations import node_uid_seperator
+    print(node_uid_seperator)
+    _
 """
 
-timeseries_seperator = '.'
+timeseries_seperator = "."
 """
 Seperate energy system object and timeseries value.
 
@@ -99,24 +79,20 @@ Standard syntax::
 
     {ES_OBJECT}{SEPERATOR}{TIMESERIES_PARAMETER}.
 
-Currently set to:
+Currently set to::
 
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
+    import tessif.frused.configurations as config
+    print(config.timeseries_seperator)
+    .
 
-        import tessif.frused.configurations as config
-        print(config.timeseries_seperator)
+So ``PV{SEPERATOR}max`` and ``Onshore{SEPERATOR}fix`` results in::
 
-So ``PV{SEPERATOR}max`` and ``Onshore{SEPERATOR}fix`` results in:
+    import tessif.frused.configurations as config
+    print(f"PV{config.timeseries_seperator}max")
+    PV.max
 
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
-
-        import tessif.frused.configurations as config
-        print('PV{}max'.format(config.timeseries_seperator))
-        print('Onshore{}fix'.format(config.timeseries_seperator))
+    print(f"Onshore{config.timeseries_seperator}fix")
+    Onshore.fix
 """
 
 mimos = 10
@@ -124,71 +100,36 @@ mimos = 10
 Number of seperate inputs/outputs supported for multiple input output energy
 system transformers.
 
-Currently set to:
-
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
+Currently set to::
 
         import tessif.frused.configurations as config
         print(config.mimos)
+        10
 """
 
-power_reference_unit = 'MW'
+power_reference_unit = "MW"
 """
 Unit to display power results with.
 
-Currently set to:
-
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
+Currently set to::
 
         import tessif.frused.configurations as config
         print(config.power_reference_unit)
+        MW
 """
 
-cost_unit = '€'
+cost_unit = "€"
 """
 Unit representing the costs.
 
-Currently set to:
-
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
+Currently set to::
 
         import tessif.frused.configurations as config
         print(config.cost_unit)
+        €
 """
 
-#: Dictionairy configuring tessif's logging locations and file names
-logging_file_paths = {
-    'debug': os.path.join(log_dir, 'debug.log'),
-    'content': os.path.join(log_dir, 'content.log'),
-    'timings': os.path.join(log_dir, 'timings.log'),
-}
-"""
-Tessif's logging locations and filenames.
-
-Currently set to:
-
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
-
-        from tessif.frused.configurations import logging_file_paths as lgn
-        print(lgn['debug'])
-        print(lgn['content'])
-        print(lgn['timings'])
-
-Warning
--------
-Logging root directory must exist for the logging file location configuration
-to work as expected.
-"""
-
-spellings_logging_level = 'warning'
+spellings_logging_level = "debug"
 """
 `logging level
 <https://docs.python.org/3/library/logging.html#logging-levels>`_
@@ -196,12 +137,43 @@ used by :meth:`spellings.get_from <tessif.frused.spellings.get_from>`.
 
 Must be one of the keys found in :attr:`~tessif.write.log.logging_levels`.
 
-Currently set to:
-
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
+Currently set to::
 
         import tessif.frused.configurations as config
         print(config.spellings_logging_level)
+        info
+"""
+
+general_logging_level = "info"
+"""
+`logging level
+<https://docs.python.org/3/library/logging.html#logging-levels>`_
+used by :mod:`tessif.logging`.
+
+Currently set to::
+
+        import tessif.frused.configurations as config
+        print(config.spellings_logging_level)
+        info
+"""
+
+maximum_logging_file_size = 1 * 1024 * 2014
+"""Maximum logging file size in bytes.
+
+Currently set to::
+
+        import tessif.frused.configurations as config
+        print(config.maximum_logging_file_size)
+        1048576  # 1 MB.
+"""
+
+
+maximum_number_of_logs = 13
+"""Maximum number of kept logging files.
+
+Currently set to::
+
+        import tessif.frused.configurations as config
+        print(config.maximum_number_of_logs)
+        10
 """

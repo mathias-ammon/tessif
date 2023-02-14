@@ -1,14 +1,24 @@
 # tessif/frused/resolutions.py
-# -*- coding: utf-8 -*-
-"""
+"""Tessif's temporal and spatial resolution parameters.
+
 :mod:`~tessif.frused.resolutions` is a :mod:`tessif` aggregating frequently
 needed temporal resolution parameters.
 """
 
 temporal_support = [
-    'daily', 'hourly',
-    '30min', '15min', '10min', '5min', 'min',
-    '30s', '15s', '10s', '5s', 's']
+    "daily",
+    "hourly",
+    "30min",
+    "15min",
+    "10min",
+    "5min",
+    "min",
+    "30s",
+    "15s",
+    "10s",
+    "5s",
+    "s",
+]
 """
 Supported temporal resolution aliases. Use
 :attr:`~tessif.frused.resolutions.temporals` for accessing them.
@@ -69,18 +79,18 @@ Mapping temporal support tags to themself for failsafe resolution access.
 #: <https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases>`_
 #: for supported temporal resolutions.
 temporal_rounding_map = {
-    'daily': 'D',
-    'hourly': 'H',
-    '30min': '30min',
-    '15min': '15min',
-    '10min': '10min',
-    '5min': '5min',
-    'min': 'min',
-    '30s': '30S',
-    '15s': '15S',
-    '10s': '10S',
-    '5s': '5S',
-    's': 'S',
+    "daily": "D",
+    "hourly": "H",
+    "30min": "30min",
+    "15min": "15min",
+    "10min": "10min",
+    "5min": "5min",
+    "min": "min",
+    "30s": "30S",
+    "15s": "15S",
+    "10s": "10S",
+    "5s": "5S",
+    "s": "S",
 }
 """
 `Rounding aliases

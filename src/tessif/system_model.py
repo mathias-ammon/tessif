@@ -1,31 +1,24 @@
-# src/tessif/model/energy_system.py
+# src/tessif/energy_system.py
 # pylint: disable=too-few-public-methods
 """Dummy energy_system module to enebale tessif-examples."""
 
 # standard library
-# import shutil
-# import tempfile
-# from pathlib import Path
 import os
 import pickle
 import subprocess
 import tempfile
 
+import networkx as nx
+
 # third pary packages
 import pandas as pd
 
 # local packages
-import tessif.model.components as tessif_components
+import tessif.components as tessif_components
 import tessif.frused.namedtuples as nts
-
-uid_seperator = "_"
-
-registered_plugins = {
-    "oemof-4.4": "tessif-oemof-4.4",
-    "omeof-latest": "tessif-oemof-4.4",
-    "oemof": "tessif-oemof-4.4",
-    "omf": "tessif-oemof-4.4",
-}
+from tessif import nxgraph
+from tessif.frused.defaults import registered_plugins
+from tessif.frused.paths import tessif_dir
 
 
 class AbstractEnergySystem:
@@ -86,15 +79,16 @@ class AbstractEnergySystem:
         self._uid = uid
 
         kwargs_and_defaults = {
-            'busses': (),
-            'chps': (),
-            'connectors': (),
-            'sinks': (),
-            'sources': (),
-            'transformers': (),
-            'storages': (),
-            'timeframe': pd.Series(),
-            'global_constraints': {'emissions': float('+inf')}}
+            "busses": (),
+            "chps": (),
+            "connectors": (),
+            "sinks": (),
+            "sources": (),
+            "transformers": (),
+            "storages": (),
+            "timeframe": pd.Series(),
+            "global_constraints": {"emissions": float("+inf")},
+        }
 
         for kwarg, default in kwargs_and_defaults.copy().items():
 
@@ -102,116 +96,132 @@ class AbstractEnergySystem:
             kwargs_and_defaults[kwarg] = kwargs.get(kwarg, default)
 
             # initialize instance respective instance attribute:
-            if kwarg == 'global_constraints':
-                setattr(self, '_{}'.format(kwarg), kwargs_and_defaults[kwarg])
+            if kwarg == "global_constraints":
+                setattr(self, f"_{kwarg}", kwargs_and_defaults[kwarg])
 
-            elif kwarg != 'timeframe':
-                setattr(self, '_{}'.format(kwarg),
-                        tuple(kwargs_and_defaults[kwarg]))
+            elif kwarg != "timeframe":
+                setattr(self, f"_{kwarg}", tuple(kwargs_and_defaults[kwarg]))
             else:
                 self._timeframe = kwargs_and_defaults[kwarg]
 
         self._es_attributes = tuple(kwargs_and_defaults.keys())
 
     def __repr__(self):
-        return '{!s}({!r})'.format(self.__class__, self.__dict__)
+        """Verbosify representation."""
+        return f"{self.__class__!s}({self.__dict__!r})"
 
     def __str__(self):
-        return '{!s}(\n'.format(self.__class__) + ',\n'.join([
-            *['    {!r}={!r}'.format(
-                k.lstrip('_'), v) for k, v in self.__dict__.items()],
-            ')'
-        ])
+        """Verbosify string representation."""
+        return f"{self.__class__!s}(\n" + ",\n".join(
+            [
+                *[
+                    "    {!r}={!r}".format(k.lstrip("_"), v)
+                    for k, v in self.__dict__.items()
+                ],
+                ")",
+            ]
+        )
 
     @property
     def uid(self):
-        """:class:`~collections.abc.Hashable` unique identifier. Usually a
-        string aka a name.
+        """:class:`~collections.abc.Hashable` unique identifier.
+
+        Usually a string aka a name.
         """
         return self._uid
 
     @property
     def busses(self):
-        """:class:`~collections.abc.Generator` of
+        """Generator of the system model's busses.
+
+        :class:`~collections.abc.Generator` of
         :class:`~tessif.model.components.Bus` objects part
         of the energy system.
         """
-        for bus in self._busses:
-            yield bus
+        yield from self._busses
 
     @property
     def chps(self):
-        """:class:`~collections.abc.Generator` of
+        """Generator of the system model's CHPs.
+
+        :class:`~collections.abc.Generator` of
         :class:`~tessif.model.components.CHP`
         objects part of the energy system.
         """
-        for chp in self._chps:
-            yield chp
+        yield from self._chps
 
     @property
     def connectors(self):
-        """ :class:`~collections.abc.Generator` of
+        """Generator of the system model's connectors.
+
+        :class:`~collections.abc.Generator` of
         :class:`~tessif.model.components.Connectors` objects part
         of the energy system.
         """
 
-        for connector in self._connectors:
-            yield connector
+        yield from self._connectors
 
     @property
     def sources(self):
-        """:class:`~collections.abc.Generator` of
+        """Generator of the system model's sources.
+
+        :class:`~collections.abc.Generator` of
         :class:`~tessif.model.components.Source` objects
         part of the energy system.
         """
-        for source in self._sources:
-            yield source
+        yield from self._sources
 
     @property
     def sinks(self):
-        """:class:`~collections.abc.Generator` of
+        """Generator of the system model's sinks.
+
+        :class:`~collections.abc.Generator` of
         :class:`~tessif.model.components.Sink` objects part
         of the energy system.
         """
-        for sink in self._sinks:
-            yield sink
+        yield from self._sinks
 
     @property
     def transformers(self):
-        """:class:`~collections.abc.Generator` of
+        """Generator of the system model's transformers.
+
+        :class:`~collections.abc.Generator` of
         :class:`~tessif.model.components.Transformer`
         objects part of the energy system.
         """
-        for transformer in self._transformers:
-            yield transformer
+        yield from self._transformers
 
     @property
     def storages(self):
-        """:class:`~collections.abc.Generator` of
+        """Generator of the system model's storages.
+
+        :class:`~collections.abc.Generator` of
         :class:`~tessif.model.components.Storage` objects
         part of the energy system.
         """
-        for storage in self._storages:
-            yield storage
+        yield from self._storages
 
     @property
     def nodes(self):
-        """
-        :class:`~collections.abc.Generator` yielding this energy system's
-        components.
-        """
-
-        component_types = ['busses', 'chps', 'sources',
-                           'sinks', 'transformers', 'storages',
-                           'connectors']
+        """Generator yielding this system models' components."""
+        component_types = [
+            "busses",
+            "chps",
+            "sources",
+            "sinks",
+            "transformers",
+            "storages",
+            "connectors",
+        ]
 
         for component_type in component_types:
-            for component in getattr(self, component_type):
-                yield component
+            yield from getattr(self, component_type)
 
     @property
     def edges(self):
-        """:class:`~collections.abc.Generator` of
+        """Generator yielding this system model's Graph representation edges.
+
+        :class:`~collections.abc.Generator` of
         :class:`~tessif.frused.namedtuples.Edge`
         :class:`NamedTuples<typing.Namedtuple>` representing graph like `edges
         <https://en.wikipedia.org/wiki/Glossary_of_graph_theory_terms#edge>`_.
@@ -223,7 +233,7 @@ class AbstractEnergySystem:
                 # so find out node uid by string comparison with
                 # every single node:
                 for node in self.nodes:
-                    if inflow.split('.')[0] == node.uid.name:
+                    if inflow.split(".")[0] == node.uid.name:
                         edge = nts.Edge(str(node.uid), str(bus.uid))
                         yield edge
 
@@ -232,7 +242,7 @@ class AbstractEnergySystem:
                 # so find out node uid by string comparison with
                 # every single node:
                 for node in self.nodes:
-                    if outflow.split('.')[0] == node.uid.name:
+                    if outflow.split(".")[0] == node.uid.name:
                         edge = nts.Edge(str(bus.uid), str(node.uid))
                         yield edge
 
@@ -248,7 +258,8 @@ class AbstractEnergySystem:
 
     @property
     def global_constraints(self):
-        """
+        """The system model's global constraints.
+
         :class:`Dictionary <dict>` of :class:`numeric <numbers.Number>`
         values mapped to global constraint naming :class:`strings <str>`
         currently respected by the energy system.
@@ -256,9 +267,7 @@ class AbstractEnergySystem:
         return self._global_constraints
 
     def _edge_carriers(self):
-        """
-        Extract carrier information out of busses and connectors.
-        """
+        """Extract carrier information out of busses and connectors."""
         _ecarriers = {}
         # All edge information are stored inside the bus objects
         for bus in self.busses:
@@ -267,31 +276,31 @@ class AbstractEnergySystem:
                 # so find out node uid by string comparison with
                 # every single node:
                 for node in self.nodes:
-                    if inflow.split('.')[0] == node.uid.name:
+                    if inflow.split(".")[0] == node.uid.name:
                         edge = nts.Edge(str(node.uid), str(bus.uid))
-                        _ecarriers[edge] = inflow.split('.')[1]
+                        _ecarriers[edge] = inflow.split(".")[1]
 
             # Bus leaving edges should contain bus.uid and node.uid:
             for outflow in bus.outputs:
                 # so find out node uid by string comparison with
                 # every single node:
                 for node in self.nodes:
-                    if outflow.split('.')[0] == node.uid.name:
+                    if outflow.split(".")[0] == node.uid.name:
                         edge = nts.Edge(str(bus.uid), str(node.uid))
-                        _ecarriers[edge] = inflow.split('.')[1]
+                        _ecarriers[edge] = inflow.split(".")[1]
 
         for connector in self.connectors:
             for inflow in connector.inputs:
                 for bus in self.busses:
                     if inflow == str(bus.uid):
                         edge = nts.Edge(inflow, str(connector.uid))
-                        _ecarriers[edge] = list(bus.outputs)[0].split('.')[1]
+                        _ecarriers[edge] = list(bus.outputs)[0].split(".")[1]
 
             for outflow in connector.outputs:
                 for bus in self.busses:
                     if outflow == str(bus.uid):
                         edge = nts.Edge(str(connector.uid), outflow)
-                        _ecarriers[edge] = list(bus.inputs)[0].split('.')[1]
+                        _ecarriers[edge] = list(bus.inputs)[0].split(".")[1]
 
         return _ecarriers
 
@@ -336,7 +345,6 @@ class AbstractEnergySystem:
             The energy system created by connecting the
             :paramref:`~connect.energy_system` to this energy system.
         """
-
         components_to_add = list()
 
         for component in energy_system.nodes:
@@ -348,8 +356,8 @@ class AbstractEnergySystem:
                 # yes it's to be connected, so create a connector:
                 connector = tessif_components.Connector(
                     **connection_uid._asdict(),
-                    interfaces=(connecting_busses[0],
-                                connecting_busses[1]))
+                    interfaces=(connecting_busses[0], connecting_busses[1]),
+                )
 
                 components_to_add.append(connector)
                 components_to_add.append(component)
@@ -358,14 +366,15 @@ class AbstractEnergySystem:
             uid=self.uid,
             timeframe=self.timeframe,
             global_constraints=self.global_constraints,
-            components=set([*self.nodes, *components_to_add]))
+            components={*self.nodes, *components_to_add},
+        )
 
         return connected_es
 
-    def duplicate(self, prefix='', separator='_', suffix='copy'):
-        """
-        Duplicate the energy system and return it. Potentially modify
-        the node names.
+    def duplicate(self, prefix="", separator="_", suffix="copy"):
+        """Duplicate the energy system and return it.
+
+        Potentially modify the node names.
 
         Parameters
         ----------
@@ -386,19 +395,20 @@ class AbstractEnergySystem:
         """
         duplicated_nodes = list()
         for node in self.nodes:
-            duplicated_nodes.append(node.duplicate(
-                prefix=prefix,
-                separator=separator,
-                suffix=suffix))
+            duplicated_nodes.append(
+                node.duplicate(prefix=prefix, separator=separator, suffix=suffix)
+            )
 
         return self.from_components(
             uid=self.uid,
             components=duplicated_nodes,
             timeframe=self.timeframe,
-            global_constraints=self.global_constraints)
+            global_constraints=self.global_constraints,
+        )
 
     @property
     def timeframe(self):
+        """Timeframe representing the optimization time span."""
         return self._timeframe
 
     def pickle(self, location):
@@ -416,68 +426,48 @@ class AbstractEnergySystem:
         """Restore a pickled energy system object."""
         self.__dict__ = pickle.load(open(location, "rb"))
 
-    def tropp(self, what=None, py="3.8", tool=None, version=None):
-        """TRansform, Optimize and PostProcess this Tessif system model."""
-        what = "oemof_4.4_3.8"
+    def tropp(self, plugin):
+        """Transform, Optimize and PostProcess this Tessif system model."""
+        # Sanitize registered plugin
+        rgstrd_plgn = registered_plugins[plugin]
 
-        if not tool:
-            tool = what.split(uid_seperator)[0]
-        if not version:
-            tool_version = what.split(uid_seperator)[1]
-        if not py:
-            py = what.split(uid_seperator)[2]
-
-        requested_plugin = f"{tool}-{tool_version}"
-        registered_plugin = registered_plugins[requested_plugin]
-        registered_plugin += "-python"
-
+        # use a temporary directory to pickle and unpickle system models
+        # and results
         with tempfile.TemporaryDirectory() as tempdir:
 
-            system_model_location = os.path.join(
-                tempdir, "tessif_system_model.tsf")
+            system_model_location = os.path.join(tempdir, "tessif_system_model.tsf")
             self.pickle(system_model_location)
 
-            # subprocess.run(
-            #     [
-            #         "nox",
-            #         "-f",
-            #         # try absolutifying once fully ported
-            #         "/home/tze/Matze/Codes/tsf_release/test_nox.py",
-            #         "-R",
-            #         "-s",
-            #         registered_plugin,
-            #         "--python",
-            #         "3.8",
-            #         "--",
-            #         tempdir,
-            #     ]
-            # )
-
-            PLUGIN = "tessif-oemof-4-4"
-
-            tessif_dir = os.path.join(os.path.expanduser("~"), ".tessif.d")
-            venv_dir = os.path.join(tessif_dir, "plugin-venvs", PLUGIN)
+            venv_dir = os.path.join(tessif_dir, "plugin-venvs", rgstrd_plgn)
             activation_script = os.path.join(venv_dir, "bin", "activate")
 
             activation_command = f". {activation_script}; "
-            tropp_command = f"tessif tropp --directory {tempdir} {PLUGIN}"
+            tropp_command = f"tessif tropp --directory {tempdir} {rgstrd_plgn}"
             subprocess.run(
                 activation_command + tropp_command,
                 shell=True,
                 check=True,
             )
 
-            all_resultier = pickle.load(open(os.path.join(
-                tempdir, "all_resutlier.alr"), "rb"))
-            igr = pickle.load(open(os.path.join(
-                tempdir, "igr_resultier.igr"), "rb"))
+            optimized_system_model = pickle.load(
+                open(os.path.join(tempdir, "opt_sysmod.osm"), "rb")
+            )
+            all_resultier = pickle.load(
+                open(os.path.join(tempdir, "all_resutlier.alr"), "rb")
+            )
+            igr = pickle.load(open(os.path.join(tempdir, "igr_resultier.igr"), "rb"))
 
-        return igr, all_resultier
+        return optimized_system_model, igr, all_resultier
 
     @classmethod
-    def from_components(cls, uid, components, timeframe,
-                        global_constraints={'emissions': float('+inf')},
-                        **kwargs):
+    def from_components(
+        cls,
+        uid,
+        components,
+        timeframe,
+        global_constraints=None,
+        **kwargs,
+    ):
         """
         Create an energy system from a collection of component instances.
 
@@ -525,6 +515,9 @@ class AbstractEnergySystem:
             The newly constructed energy system containing each component
             found in :paramref:`~from_components.components`.
         """
+        if not global_constraints:
+            global_constraints = {"emissions": float("+inf")}
+
         busses, chps, sinks, sources, transformers = [], [], [], [], []
         connectors, storages = [], []
 
@@ -559,22 +552,23 @@ class AbstractEnergySystem:
 
         return es
 
-    # def to_nxgrph(self):
-    #     """
-    #     Transform the :class:`AbstractEnergySystem` object into a
-    #     :class:`networkx.DiGraph` object.
+    def to_nxgrph(self):
+        """Transform tessif system model into networkx graph.
 
-    #     Return
-    #     ------
-    #     directional_graph: networkx.DiGraph
-    #         Networkx Directional Graph representing the abstract energy system.
-    #     """
-    #     grph = nx.DiGraph(name=self._uid)
-    #     for node in self.nodes:
-    #         grph.add_node(
-    #             str(node.uid),
-    #             **node.attributes,
-    #         )
+        Transform the :class:`AbstractEnergySystem` object into a
+        :class:`networkx.DiGraph` object.
 
-    #     nxgrph.create_edges(grph, self.edges, carrier=self._edge_carriers())
-    #     return grph
+        Return
+        ------
+        directional_graph: networkx.DiGraph
+            Networkx Directional Graph representing the abstract energy system.
+        """
+        grph = nx.DiGraph(name=self._uid)
+        for node in self.nodes:
+            grph.add_node(
+                str(node.uid),
+                **node.attributes,
+            )
+
+        nxgraph.create_edges(grph, self.edges, carrier=self._edge_carriers())
+        return grph
