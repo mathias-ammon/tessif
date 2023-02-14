@@ -1,77 +1,89 @@
 # tessif/frused/themes.py
-# -*- coding: utf-8 -*-
-"""
+"""Tessif's themes designed to be used for visualization.
+
 :mod:`~tessif.frused.themes` is a :mod:`tessif` subpackage grouping color and
 hatch themes to :`tessif.frused.namedtuples.NodeColorGroupings` for convenient
 and automated access.
 """
 import collections
 from itertools import cycle
-import matplotlib.pyplot as plt
+
 import matplotlib.colors as mcolors
-#
-from tessif.frused.namedtuples import NodeColorGroupings, Uid
+import matplotlib.pyplot as plt
+
 import tessif.frused.spellings as spellings
 
+#
+from tessif.frused.namedtuples import NodeColorGroupings, Uid
 
 colors = NodeColorGroupings(
-    component=collections.OrderedDict([
-        ('bus', '#9999ff'),  # websafe very light blue
-        ('sink', '#9999ff'),  # websafe very light blue
-        ('storage', '#9999ff'),  # websafe very light blue
-        ('source', '#9999ff'),  # websafe very light blue
-        ('transformer', '#9999ff'),  # websafe very light blue
-        ('connector', '#9999ff'),  # websafe very light blue
-    ]),
-    name=collections.OrderedDict([
-        ('renewables', '#00ff00'),  # websafe mostly pure lime green
-        ('photovoltaic', '#ff9900'),  # websafe mostly pure orange
-        ('solarthermal', '#ff0099'),  # websafe mostly pure pink
-        ('onshore', '#99ccff'),  # websafe very light blue
-        ('offshore', '#00ccff'),  # websafe mosty pure cyan
-        ('hydro_electric', '#000099'),  # websafe dark blue
-        ('combined_heat_power', '#9933cc'),  # websafe strong violet
-        ('power_plant', '#ff6600'),  # websafe mostly pure orange
-        ('heat_plant', '#b30000'),  # strong red
-        ('electrical_line', '#ffcc00'),  # websafe mostly pure yellow
-        ('gas_station', '#6633cc'),
-        ('gas_pipeline', '#336666'),  # websafe very dark desaturated cyan
-        ('gas_delivery', '#006666'),  # websafe very dark cyan
-        ('oil_pipeline', '#666666'),  # websafe very dark grey
-        ('oil_delivery', '#333333'),  # websafe even verier dark grey
-        ('hydro_electrical_storage', '#0000cc'),  # websafe strong blue
-        ('electro_chemical_storage', '#ccff00'),  # websafe mostly pure yellow
-        ('electro_mechanical_storage', '#999900'),  # websafe dark yellow
-        ('thermal_energy_storage', '#cc0033'),  # websafe strong red
-        ('power2x', '#669999'),  # websafe mostly desaturated dark cyan
-        ('power2heat', '#b30000'),  # strong red
-        ('imported', '#ff6600'),  # websafe orange
-        ('backup', '#990099'),  # websafe dark magenta
-        ('demand', '#330099'),  # websafe dark violet
-        ('export', '#006600'),  # websafe dark green
-        ('excess', '#cc0000'),  # websafe pure red
-        ('connector', '#669999'),  # websafe mostly desaturated dark cyan
-    ]),
-    carrier=collections.OrderedDict([
-        ('solar', '#ff9900'),  # websafe mostly pure orange
-        ('wind', '#00ccff'),  # websafe mosty pure cyan
-        ('water', '#000099'),  # websafe dark blue
-        ('biomass', '#009900'),  # websafe dark lime green
-        ('gas', '#336666'),  # websafe very dark desaturated cyan
-        ('oil', '#666666'),  # websafe very dark gray
-        ('lignite', '#993300'),  # websafe dark orange
-        ('hardcoal', '#000000'),  # websafe black
-        ('nuclear', '#cccc00'),  # websafe strong yellow
-        ('electricity', '#FFD700'),  # websafe pure yellow
-        ('steam', '#cc0033'),  # websafe crimson
-        ('hot_water', '#ff3300'),  # websafe mostly pure red
-    ]),
-    sector=collections.OrderedDict([
-        ('power', '#ffff33'),  # websafe vivid yellow
-        ('heat', '#FF0000'),  # websafe red
-        ('mobility', '#669999'),  # websafe mostly desaturated dard cyan
-        ('coupled', '#6633cc'),  # websafe strong violet
-    ]),)
+    component=collections.OrderedDict(
+        [
+            ("bus", "#9999ff"),  # websafe very light blue
+            ("sink", "#9999ff"),  # websafe very light blue
+            ("storage", "#9999ff"),  # websafe very light blue
+            ("source", "#9999ff"),  # websafe very light blue
+            ("transformer", "#9999ff"),  # websafe very light blue
+            ("connector", "#9999ff"),  # websafe very light blue
+        ]
+    ),
+    name=collections.OrderedDict(
+        [
+            ("renewables", "#00ff00"),  # websafe mostly pure lime green
+            ("photovoltaic", "#ff9900"),  # websafe mostly pure orange
+            ("solarthermal", "#ff0099"),  # websafe mostly pure pink
+            ("onshore", "#99ccff"),  # websafe very light blue
+            ("offshore", "#00ccff"),  # websafe mosty pure cyan
+            ("hydro_electric", "#000099"),  # websafe dark blue
+            ("combined_heat_power", "#9933cc"),  # websafe strong violet
+            ("power_plant", "#ff6600"),  # websafe mostly pure orange
+            ("heat_plant", "#b30000"),  # strong red
+            ("electrical_line", "#ffcc00"),  # websafe mostly pure yellow
+            ("gas_station", "#6633cc"),
+            ("gas_pipeline", "#336666"),  # websafe very dark desaturated cyan
+            ("gas_delivery", "#006666"),  # websafe very dark cyan
+            ("oil_pipeline", "#666666"),  # websafe very dark grey
+            ("oil_delivery", "#333333"),  # websafe even verier dark grey
+            ("hydro_electrical_storage", "#0000cc"),  # websafe strong blue
+            # websafe mostly pure yellow
+            ("electro_chemical_storage", "#ccff00"),
+            ("electro_mechanical_storage", "#999900"),  # websafe dark yellow
+            ("thermal_energy_storage", "#cc0033"),  # websafe strong red
+            ("power2x", "#669999"),  # websafe mostly desaturated dark cyan
+            ("power2heat", "#b30000"),  # strong red
+            ("imported", "#ff6600"),  # websafe orange
+            ("backup", "#990099"),  # websafe dark magenta
+            ("demand", "#330099"),  # websafe dark violet
+            ("export", "#006600"),  # websafe dark green
+            ("excess", "#cc0000"),  # websafe pure red
+            ("connector", "#669999"),  # websafe mostly desaturated dark cyan
+        ]
+    ),
+    carrier=collections.OrderedDict(
+        [
+            ("solar", "#ff9900"),  # websafe mostly pure orange
+            ("wind", "#00ccff"),  # websafe mosty pure cyan
+            ("water", "#000099"),  # websafe dark blue
+            ("biomass", "#009900"),  # websafe dark lime green
+            ("gas", "#336666"),  # websafe very dark desaturated cyan
+            ("oil", "#666666"),  # websafe very dark gray
+            ("lignite", "#993300"),  # websafe dark orange
+            ("hardcoal", "#000000"),  # websafe black
+            ("nuclear", "#cccc00"),  # websafe strong yellow
+            ("electricity", "#FFD700"),  # websafe pure yellow
+            ("steam", "#cc0033"),  # websafe crimson
+            ("hot_water", "#ff3300"),  # websafe mostly pure red
+        ]
+    ),
+    sector=collections.OrderedDict(
+        [
+            ("power", "#ffff33"),  # websafe vivid yellow
+            ("heat", "#FF0000"),  # websafe red
+            ("mobility", "#669999"),  # websafe mostly desaturated dard cyan
+            ("coupled", "#6633cc"),  # websafe strong violet
+        ]
+    ),
+)
 """ Tessif color themes.  Stored inside a
 :attr:`~tessif.frused.namedtuples.NodeColorGroupings`
 :class:`~typing.NamedTuple`. Assembled using `colorhexa
@@ -162,112 +174,586 @@ For each category there is a mapping of identifiers to colors
 
 
 cmaps = NodeColorGroupings(
-    component=collections.OrderedDict([
-        ('bus', ['#4d4dff', '#6666ff', '#8080ff', '#9999ff',
-                 '#b3b3ff', '#ccccff', '#e6e6ff']),  # very light blue
-        ('sink', ['#4d4dff', '#6666ff', '#8080ff', '#9999ff',
-                  '#b3b3ff', '#ccccff', '#e6e6ff']),  # very light blue
-        ('storage', ['#4d4dff', '#6666ff', '#8080ff', '#9999ff',
-                     '#b3b3ff', '#ccccff', '#e6e6ff']),  # very light blue
-        ('source', ['#4d4dff', '#6666ff', '#8080ff', '#9999ff',
-                    '#b3b3ff', '#ccccff', '#e6e6ff']),  # very light blue
-        ('transformer', ['#4d4dff', '#6666ff', '#8080ff', '#9999ff',
-                         '#b3b3ff', '#ccccff', '#e6e6ff']),  # very light blue
-        ('connector', ['#4d4dff', '#6666ff', '#8080ff', '#9999ff',
-                       '#b3b3ff', '#ccccff', '#e6e6ff']),  # very light blue
-    ]),
-    carrier=collections.OrderedDict([
-        ('solar', ['#ff5900', '#ff6f00', '#ff8400',
-                   '#ff9900', '#ffae00', '#ffc400', '#ffd900']),  # orange
-        ('wind', ['#002aff', '#008cff', '#00b7ff', '#00ccff',
-                  '#00e1ff', '#00f7ff', '#00fff2']),  # cyan
-        ('water', ['#00004d', '#190099', '#0d0099',
-                   '#000099', '#000d99', '#001a99', '#002699']),  # dark blue
-        ('biomass', ['#004d00', '#006600', '#008000', '#009900',
-                     '#00b300', '#00cc00', '#00e600']),  # dark lime
-        ('gas', ['#1a3333', '#224444', '#2b5555', '#336666',
-                 '#3c7777', '#448888', '#4d9999']),  # dark desaturated cyan
-        ('oil', ['#404040', '#4d4d4d', '#595959', '#666666',
-                 '#737373', '#808080', '#8c8c8c']),  # very dark grey
-        ('lignite', ['#4d1a00', '#662200', '#802b00', '#993300',
-                     '#b33c00', '#cc4400', '#e64d00']),  # dark brown
-        ('hardcoal', ['#000000', '#0d0d0d', '#191919', '#262626',
-                      '#333333', '#404040', '#4c4c4c']),  # black
-        ('nuclear', ['#808000', '#999900', '#b3b300', '#cccc00',
-                     '#e6e600', '#ffff00', '#ffff1a']),  # strong yellow
-        ('electricity', ['#b39700', '#ccac00', '#e6c200', '#ffd700',
-                         '#ffdb1a', '#ffdf33', '#ffe34d']),  # pure yellow
-        ('steam', ['#800020', '#990026', '#b3002a', '#cc0033',
-                   '#e60039', '#ff0040', '#ff1a53']),  # crimson
-        ('hot_water', ['#b32400', '#cc2900', '#e62e00', '#ff3300',
-                       '#ff471a', '#ff5c33', '#ff704d']),  # pure red
-    ]),
-    sector=collections.OrderedDict([
-        ('power', ['#ff5900', '#ff6f00', '#ff8400', '#ff9900',
-                   '#ffae00', '#ffc400', '#ffd900']),  # vivid yellow
-        ('heat', ['#b30000', '#cc0000', '#e60000',
-                  '#ff0000', '#ff1a1a', '#ff3333', '#ff4d4d']),  # red
-        ('mobility', ['#476b6b', '#527a7a', '#5c8a8a', '#669999', '#75a3a3',
-                      '#85adad', '#94b8b8']),  # desaturated dark cyan
-        ('coupled', ['#47248f', '#5229a3', '#5c2eb8', '#6633cc',
-                     '#7547d1', '#855cd6', '#9470db', ]),  # strong violet
-    ]),
-    name=collections.OrderedDict([
-        ('renewables', ['#00b300', '#00cc00', '#00e600', '#00ff00',
-                        '#1aff1a', '#33ff33', '#4dff4d']),  # lime green
-        ('photovoltaic', ['#b37400', '#cc8400', '#e69500', '#ffa500',
-                          '#ffae1a', '#ffb733', '#ffc04d']),  # pure orange
-        ('solarthermal', ['#b300b6', '#cc007a', '#e6008a', '#ff0099',
-                          '#ff1aa3', '#ff33ad', '#ff4db8']),  # pure pink
-        ('offshore', ['#4da6ff', '#66b3ff', '#80bfff', '#99ccff',
-                      '#b3d9ff', '#cce6ff', '#e6f2ff']),  # pure cyan
-        ('onshore', ['#002aff', '#008cff', '#00b7ff', '#00ccff',
-                     '#00e1ff', '#00f7ff', '#00fff2']),  # very light blue
-        ('hydro_electric', ['#00004d', '#190099', '#0d0099',
-                            '#000099', '#000d99', '#001a99', '#002699']),  # dark blue
-        ('combined_heat_power', ['#6b248f', '#7a29a3', '#8a2eb8', '#9933cc',
-                                 '#a347d1', '#ad5cd6', '#b870db']),  # violet
-        ('power_plant', ['#b34700', '#cc5200', '#c65c00', '#ff6600',
-                         '#ff751a', '#ff8533', '#ff944d']),  # pure orange
-        ('heat_plant', ['#670000', '#800000', '#9a0000', '#b30000',
-                        '#cd0000', '#e60000', '#ff0000']),  # strong red
-        ('electrical_line', ['#b38f00', '#cca300', '#e6b800', '#ffcc00',
-                             '#ffd11a', '#ffd633', '#ffdb4d']),  # pure yellow
-        ('gas_pipeline', ['#1a3333', '#224444', '#2b5555', '#336666',
-                          '#3c7777', '#448888', '#4d9999']),  # v. dark d. cyan
-        ('gas_delivery', ['#003434', '#004d4d', '#006767', '#008080',
-                          '#009a9a', '#00b3b3', '#00cdcd']),  # very dark cyan
-        ('oil_pipeline', ['#404040', '#4d4d4d', '#595959', '#666666',
-                          '#737373', '#808080', '#8c8c8c']),  # very dark grey
-        ('oil_delivery', ['#0d0d0d', '#1a1a1a', '#262626', '#333333',
-                          '#404040', '#4d4d4d', '#595959']),  # darker grey
-        ('hydro_electrical_storage', ['#000080', '#000099', '#0000b3',
-                                      '#0000cc', '#0000c6',
-                                      '#0000ff', '#1a1aff']),  # strong blue
-        ('electro_chemical_storage', ['#8fb300', '#a3cc00', '#b8e600',
-                                      '#ccff00', '#d1ff1a', '#d6ff33',
-                                      '#dbff4d']),  # pure yellow
-        ('electro_mechanical_storage', ['#343400', '#4d4d00', '#676700',
-                                        '#808000', '#9a9a00', '#b3b300',
-                                        '#cdcd00']),  # dark yellow
-        ('thermal_energy_storage', ['#800020', '#990026', '#b3002a',
-                                    '#cc0033', '#e60039', '#ff0040',
-                                    '#ff1a53']),  # strong red
-        ('power2x', ['#476b6b', '#527a7a', '#5c8a8a', '#669999',
-                     '#75a3a3', '#85adad', '#94b8b8']),  # desaturat. dark cyan
-        ('power2heat', ['#670000', '#800000', '#9a0000', '#b30000',
-                        '#cd0000', '#e60000', '#ff0000']),  # strong red
-        ('imported', ['#b33500', '#cc3d00', '#e64400', '#ff4c00',
-                      '#ff5e1a', '#ff7033', '#ff824d']),  # orange
-        ('backup', ['#340034', '#4d004d', '#670067', '#800080',
-                    '#9a009a', '#b300b3', '#cd00cd']),  # dark magenta
-        ('demand', ['#1a004d', '#220066', '#2b0080', '#330099',
-                    '#3b00b3', '#4400cc', '#4c00e6']),  # dark violet
-        ('export', ['#001800', '#003100', '#004b00', '#006400',
-                    '#007e00', '#009700', '#00b100']),  # dark green
-        ('excess', ['#800000', '#990000', '#b30000', '#cc0000',
-                    '#e60000', '#ff0000', '#ff1a1a']),  # pure red
-    ]),
+    component=collections.OrderedDict(
+        [
+            (
+                "bus",
+                [
+                    "#4d4dff",
+                    "#6666ff",
+                    "#8080ff",
+                    "#9999ff",
+                    "#b3b3ff",
+                    "#ccccff",
+                    "#e6e6ff",
+                ],
+            ),  # very light blue
+            (
+                "sink",
+                [
+                    "#4d4dff",
+                    "#6666ff",
+                    "#8080ff",
+                    "#9999ff",
+                    "#b3b3ff",
+                    "#ccccff",
+                    "#e6e6ff",
+                ],
+            ),  # very light blue
+            (
+                "storage",
+                [
+                    "#4d4dff",
+                    "#6666ff",
+                    "#8080ff",
+                    "#9999ff",
+                    "#b3b3ff",
+                    "#ccccff",
+                    "#e6e6ff",
+                ],
+            ),  # very light blue
+            (
+                "source",
+                [
+                    "#4d4dff",
+                    "#6666ff",
+                    "#8080ff",
+                    "#9999ff",
+                    "#b3b3ff",
+                    "#ccccff",
+                    "#e6e6ff",
+                ],
+            ),  # very light blue
+            (
+                "transformer",
+                [
+                    "#4d4dff",
+                    "#6666ff",
+                    "#8080ff",
+                    "#9999ff",
+                    "#b3b3ff",
+                    "#ccccff",
+                    "#e6e6ff",
+                ],
+            ),  # very light blue
+            (
+                "connector",
+                [
+                    "#4d4dff",
+                    "#6666ff",
+                    "#8080ff",
+                    "#9999ff",
+                    "#b3b3ff",
+                    "#ccccff",
+                    "#e6e6ff",
+                ],
+            ),  # very light blue
+        ]
+    ),
+    carrier=collections.OrderedDict(
+        [
+            (
+                "solar",
+                [
+                    "#ff5900",
+                    "#ff6f00",
+                    "#ff8400",
+                    "#ff9900",
+                    "#ffae00",
+                    "#ffc400",
+                    "#ffd900",
+                ],
+            ),  # orange
+            (
+                "wind",
+                [
+                    "#002aff",
+                    "#008cff",
+                    "#00b7ff",
+                    "#00ccff",
+                    "#00e1ff",
+                    "#00f7ff",
+                    "#00fff2",
+                ],
+            ),  # cyan
+            (
+                "water",
+                [
+                    "#00004d",
+                    "#190099",
+                    "#0d0099",
+                    "#000099",
+                    "#000d99",
+                    "#001a99",
+                    "#002699",
+                ],
+            ),  # dark blue
+            (
+                "biomass",
+                [
+                    "#004d00",
+                    "#006600",
+                    "#008000",
+                    "#009900",
+                    "#00b300",
+                    "#00cc00",
+                    "#00e600",
+                ],
+            ),  # dark lime
+            (
+                "gas",
+                [
+                    "#1a3333",
+                    "#224444",
+                    "#2b5555",
+                    "#336666",
+                    "#3c7777",
+                    "#448888",
+                    "#4d9999",
+                ],
+            ),  # dark desaturated cyan
+            (
+                "oil",
+                [
+                    "#404040",
+                    "#4d4d4d",
+                    "#595959",
+                    "#666666",
+                    "#737373",
+                    "#808080",
+                    "#8c8c8c",
+                ],
+            ),  # very dark grey
+            (
+                "lignite",
+                [
+                    "#4d1a00",
+                    "#662200",
+                    "#802b00",
+                    "#993300",
+                    "#b33c00",
+                    "#cc4400",
+                    "#e64d00",
+                ],
+            ),  # dark brown
+            (
+                "hardcoal",
+                [
+                    "#000000",
+                    "#0d0d0d",
+                    "#191919",
+                    "#262626",
+                    "#333333",
+                    "#404040",
+                    "#4c4c4c",
+                ],
+            ),  # black
+            (
+                "nuclear",
+                [
+                    "#808000",
+                    "#999900",
+                    "#b3b300",
+                    "#cccc00",
+                    "#e6e600",
+                    "#ffff00",
+                    "#ffff1a",
+                ],
+            ),  # strong yellow
+            (
+                "electricity",
+                [
+                    "#b39700",
+                    "#ccac00",
+                    "#e6c200",
+                    "#ffd700",
+                    "#ffdb1a",
+                    "#ffdf33",
+                    "#ffe34d",
+                ],
+            ),  # pure yellow
+            (
+                "steam",
+                [
+                    "#800020",
+                    "#990026",
+                    "#b3002a",
+                    "#cc0033",
+                    "#e60039",
+                    "#ff0040",
+                    "#ff1a53",
+                ],
+            ),  # crimson
+            (
+                "hot_water",
+                [
+                    "#b32400",
+                    "#cc2900",
+                    "#e62e00",
+                    "#ff3300",
+                    "#ff471a",
+                    "#ff5c33",
+                    "#ff704d",
+                ],
+            ),  # pure red
+        ]
+    ),
+    sector=collections.OrderedDict(
+        [
+            (
+                "power",
+                [
+                    "#ff5900",
+                    "#ff6f00",
+                    "#ff8400",
+                    "#ff9900",
+                    "#ffae00",
+                    "#ffc400",
+                    "#ffd900",
+                ],
+            ),  # vivid yellow
+            (
+                "heat",
+                [
+                    "#b30000",
+                    "#cc0000",
+                    "#e60000",
+                    "#ff0000",
+                    "#ff1a1a",
+                    "#ff3333",
+                    "#ff4d4d",
+                ],
+            ),  # red
+            (
+                "mobility",
+                [
+                    "#476b6b",
+                    "#527a7a",
+                    "#5c8a8a",
+                    "#669999",
+                    "#75a3a3",
+                    "#85adad",
+                    "#94b8b8",
+                ],
+            ),  # desaturated dark cyan
+            (
+                "coupled",
+                [
+                    "#47248f",
+                    "#5229a3",
+                    "#5c2eb8",
+                    "#6633cc",
+                    "#7547d1",
+                    "#855cd6",
+                    "#9470db",
+                ],
+            ),  # strong violet
+        ]
+    ),
+    name=collections.OrderedDict(
+        [
+            (
+                "renewables",
+                [
+                    "#00b300",
+                    "#00cc00",
+                    "#00e600",
+                    "#00ff00",
+                    "#1aff1a",
+                    "#33ff33",
+                    "#4dff4d",
+                ],
+            ),  # lime green
+            (
+                "photovoltaic",
+                [
+                    "#b37400",
+                    "#cc8400",
+                    "#e69500",
+                    "#ffa500",
+                    "#ffae1a",
+                    "#ffb733",
+                    "#ffc04d",
+                ],
+            ),  # pure orange
+            (
+                "solarthermal",
+                [
+                    "#b300b6",
+                    "#cc007a",
+                    "#e6008a",
+                    "#ff0099",
+                    "#ff1aa3",
+                    "#ff33ad",
+                    "#ff4db8",
+                ],
+            ),  # pure pink
+            (
+                "offshore",
+                [
+                    "#4da6ff",
+                    "#66b3ff",
+                    "#80bfff",
+                    "#99ccff",
+                    "#b3d9ff",
+                    "#cce6ff",
+                    "#e6f2ff",
+                ],
+            ),  # pure cyan
+            (
+                "onshore",
+                [
+                    "#002aff",
+                    "#008cff",
+                    "#00b7ff",
+                    "#00ccff",
+                    "#00e1ff",
+                    "#00f7ff",
+                    "#00fff2",
+                ],
+            ),  # very light blue
+            (
+                "hydro_electric",
+                [
+                    "#00004d",
+                    "#190099",
+                    "#0d0099",
+                    "#000099",
+                    "#000d99",
+                    "#001a99",
+                    "#002699",
+                ],
+            ),  # dark blue
+            (
+                "combined_heat_power",
+                [
+                    "#6b248f",
+                    "#7a29a3",
+                    "#8a2eb8",
+                    "#9933cc",
+                    "#a347d1",
+                    "#ad5cd6",
+                    "#b870db",
+                ],
+            ),  # violet
+            (
+                "power_plant",
+                [
+                    "#b34700",
+                    "#cc5200",
+                    "#c65c00",
+                    "#ff6600",
+                    "#ff751a",
+                    "#ff8533",
+                    "#ff944d",
+                ],
+            ),  # pure orange
+            (
+                "heat_plant",
+                [
+                    "#670000",
+                    "#800000",
+                    "#9a0000",
+                    "#b30000",
+                    "#cd0000",
+                    "#e60000",
+                    "#ff0000",
+                ],
+            ),  # strong red
+            (
+                "electrical_line",
+                [
+                    "#b38f00",
+                    "#cca300",
+                    "#e6b800",
+                    "#ffcc00",
+                    "#ffd11a",
+                    "#ffd633",
+                    "#ffdb4d",
+                ],
+            ),  # pure yellow
+            (
+                "gas_pipeline",
+                [
+                    "#1a3333",
+                    "#224444",
+                    "#2b5555",
+                    "#336666",
+                    "#3c7777",
+                    "#448888",
+                    "#4d9999",
+                ],
+            ),  # v. dark d. cyan
+            (
+                "gas_delivery",
+                [
+                    "#003434",
+                    "#004d4d",
+                    "#006767",
+                    "#008080",
+                    "#009a9a",
+                    "#00b3b3",
+                    "#00cdcd",
+                ],
+            ),  # very dark cyan
+            (
+                "oil_pipeline",
+                [
+                    "#404040",
+                    "#4d4d4d",
+                    "#595959",
+                    "#666666",
+                    "#737373",
+                    "#808080",
+                    "#8c8c8c",
+                ],
+            ),  # very dark grey
+            (
+                "oil_delivery",
+                [
+                    "#0d0d0d",
+                    "#1a1a1a",
+                    "#262626",
+                    "#333333",
+                    "#404040",
+                    "#4d4d4d",
+                    "#595959",
+                ],
+            ),  # darker grey
+            (
+                "hydro_electrical_storage",
+                [
+                    "#000080",
+                    "#000099",
+                    "#0000b3",
+                    "#0000cc",
+                    "#0000c6",
+                    "#0000ff",
+                    "#1a1aff",
+                ],
+            ),  # strong blue
+            (
+                "electro_chemical_storage",
+                [
+                    "#8fb300",
+                    "#a3cc00",
+                    "#b8e600",
+                    "#ccff00",
+                    "#d1ff1a",
+                    "#d6ff33",
+                    "#dbff4d",
+                ],
+            ),  # pure yellow
+            (
+                "electro_mechanical_storage",
+                [
+                    "#343400",
+                    "#4d4d00",
+                    "#676700",
+                    "#808000",
+                    "#9a9a00",
+                    "#b3b300",
+                    "#cdcd00",
+                ],
+            ),  # dark yellow
+            (
+                "thermal_energy_storage",
+                [
+                    "#800020",
+                    "#990026",
+                    "#b3002a",
+                    "#cc0033",
+                    "#e60039",
+                    "#ff0040",
+                    "#ff1a53",
+                ],
+            ),  # strong red
+            (
+                "power2x",
+                [
+                    "#476b6b",
+                    "#527a7a",
+                    "#5c8a8a",
+                    "#669999",
+                    "#75a3a3",
+                    "#85adad",
+                    "#94b8b8",
+                ],
+            ),  # desaturat. dark cyan
+            (
+                "power2heat",
+                [
+                    "#670000",
+                    "#800000",
+                    "#9a0000",
+                    "#b30000",
+                    "#cd0000",
+                    "#e60000",
+                    "#ff0000",
+                ],
+            ),  # strong red
+            (
+                "imported",
+                [
+                    "#b33500",
+                    "#cc3d00",
+                    "#e64400",
+                    "#ff4c00",
+                    "#ff5e1a",
+                    "#ff7033",
+                    "#ff824d",
+                ],
+            ),  # orange
+            (
+                "backup",
+                [
+                    "#340034",
+                    "#4d004d",
+                    "#670067",
+                    "#800080",
+                    "#9a009a",
+                    "#b300b3",
+                    "#cd00cd",
+                ],
+            ),  # dark magenta
+            (
+                "demand",
+                [
+                    "#1a004d",
+                    "#220066",
+                    "#2b0080",
+                    "#330099",
+                    "#3b00b3",
+                    "#4400cc",
+                    "#4c00e6",
+                ],
+            ),  # dark violet
+            (
+                "export",
+                [
+                    "#001800",
+                    "#003100",
+                    "#004b00",
+                    "#006400",
+                    "#007e00",
+                    "#009700",
+                    "#00b100",
+                ],
+            ),  # dark green
+            (
+                "excess",
+                [
+                    "#800000",
+                    "#990000",
+                    "#b30000",
+                    "#cc0000",
+                    "#e60000",
+                    "#ff0000",
+                    "#ff1a1a",
+                ],
+            ),  # pure red
+        ]
+    ),
 )
 """ Tessif colormap themes. Stored inside a
 :attr:`~tessif.frused.namedtuples.NodeColorGroupings`
@@ -353,11 +839,17 @@ For each category there is a mapping of identifiers to colors
     :alt: Image showing the supported sector colormap
 """
 
-ccycles = NodeColorGroupings(*[
-    collections.OrderedDict([
-        (catgry, cycle(color_list))
-        for catgry, color_list in cmaps._asdict()[key].items()])
-    for key in cmaps._asdict().keys()])
+ccycles = NodeColorGroupings(
+    *[
+        collections.OrderedDict(
+            [
+                (catgry, cycle(color_list))
+                for catgry, color_list in cmaps._asdict()[key].items()
+            ]
+        )
+        for key in cmaps._asdict().keys()
+    ]
+)
 """
 :mod:`~tessif` cycled colormaps. Stored inside a
 :attr:`~tessif.frused.namedtuples.NodeColorGroupings`
@@ -365,55 +857,63 @@ ccycles = NodeColorGroupings(*[
 """
 
 hatches = NodeColorGroupings(
-    component=collections.OrderedDict([
-        ('bus', '/'),
-        ('sink', '\\'),
-        ('source', '.'),
-        ('storage', '|'),
-        ('transformer', '-'),
-        ('connector', 'x'),
-    ]),
-    carrier=collections.OrderedDict([
-        ('solar', '/'),
-        ('wind', '\\'),
-        ('water', '.'),
-        ('biomass', '|'),
-        ('gas', '-'),
-        ('oil', '+/'),
-        ('lignite', 'o'),
-        ('hardcoal', '.'),
-        ('nuclear', '*'),
-        ('electricity', '//'),
-        ('steam', '\\\\'),
-        ('hot_water', '||'),
-    ]),
-    sector=collections.OrderedDict([
-        ('power', '/'),
-        ('heat', '\\'),
-        ('mobility', '|'),
-        ('coupled', 'x'),
-    ]),
-    name=collections.OrderedDict([
-        ('photovoltaic', '/'),
-        ('solarthermal', '//'),
-        ('onshore', '\\'),
-        ('offshore', '\\\\'),
-        ('hydro_electric', 'o'),
-        ('combined_heat_power', '+'),
-        ('power_plant', '|'),
-        ('heat_plant', '-'),
-        ('electrical_line', '++'),
-        ('gas_pipeline', '--'),
-        ('gas_delivery', '---'),
-        ('oil_pipeline', '+/'),
-        ('oil_delivery', '+/+/'),
-        ('bus', '.'),
-        ('hydro_electrical_storage', 'oo'),
-        ('electro_chemical_storage', 'xx'),
-        ('electro_mechanical_storage', '||'),
-        ('thermal_energy_storage', '--'),
-        ('power2x', 'xxx'),
-    ]),
+    component=collections.OrderedDict(
+        [
+            ("bus", "/"),
+            ("sink", "\\"),
+            ("source", "."),
+            ("storage", "|"),
+            ("transformer", "-"),
+            ("connector", "x"),
+        ]
+    ),
+    carrier=collections.OrderedDict(
+        [
+            ("solar", "/"),
+            ("wind", "\\"),
+            ("water", "."),
+            ("biomass", "|"),
+            ("gas", "-"),
+            ("oil", "+/"),
+            ("lignite", "o"),
+            ("hardcoal", "."),
+            ("nuclear", "*"),
+            ("electricity", "//"),
+            ("steam", "\\\\"),
+            ("hot_water", "||"),
+        ]
+    ),
+    sector=collections.OrderedDict(
+        [
+            ("power", "/"),
+            ("heat", "\\"),
+            ("mobility", "|"),
+            ("coupled", "x"),
+        ]
+    ),
+    name=collections.OrderedDict(
+        [
+            ("photovoltaic", "/"),
+            ("solarthermal", "//"),
+            ("onshore", "\\"),
+            ("offshore", "\\\\"),
+            ("hydro_electric", "o"),
+            ("combined_heat_power", "+"),
+            ("power_plant", "|"),
+            ("heat_plant", "-"),
+            ("electrical_line", "++"),
+            ("gas_pipeline", "--"),
+            ("gas_delivery", "---"),
+            ("oil_pipeline", "+/"),
+            ("oil_delivery", "+/+/"),
+            ("bus", "."),
+            ("hydro_electrical_storage", "oo"),
+            ("electro_chemical_storage", "xx"),
+            ("electro_mechanical_storage", "||"),
+            ("thermal_energy_storage", "--"),
+            ("power2x", "xxx"),
+        ]
+    ),
 )
 """
 :mod:`~tessif` hatch themes. Stored inside a
@@ -505,11 +1005,13 @@ For each category there is a mapping of identifiers to hatches
 
 
 hmaps = {
-    'sector': collections.OrderedDict([
-        ('power', ['/', '\\', '//', '\\\\', '///', '\\\\\\']),
-        ('heat', ['-', '|', '--', '||', '---', '|||']),
-        ('mobility', ['x', '+/', 'xx', '+/+/', 'xxx', '+/+/+/']),
-    ]),
+    "sector": collections.OrderedDict(
+        [
+            ("power", ["/", "\\", "//", "\\\\", "///", "\\\\\\"]),
+            ("heat", ["-", "|", "--", "||", "---", "|||"]),
+            ("mobility", ["x", "+/", "xx", "+/+/", "xxx", "+/+/+/"]),
+        ]
+    ),
 }
 """
 Mapping of :mod:`~tessif` hatchmaps. Usefull when plotting sector grouped
@@ -555,12 +1057,11 @@ results to distinguish the individual components without coloring.
 
 
 def _plot_colortable(colors, title, sort_colors=True, emptycols=0):
-    """
-    Utility for plotting color themes. Inspired by
-    matplotlib's `documentation
+    """Plot color themes.
+
+    Inspired by matplotlib's `documentation
     <https://matplotlib.org/3.2.2/gallery/color/named_colors.html>`_.
     """
-
     cell_width = 212
     cell_height = 22
     swatch_width = 48
@@ -569,9 +1070,10 @@ def _plot_colortable(colors, title, sort_colors=True, emptycols=0):
 
     # Sort colors by hue, saturation, value and name.
     if sort_colors is True:
-        by_hsv = sorted((tuple(mcolors.rgb_to_hsv(mcolors.to_rgb(color))),
-                         name)
-                        for name, color in colors.items())
+        by_hsv = sorted(
+            (tuple(mcolors.rgb_to_hsv(mcolors.to_rgb(color))), name)
+            for name, color in colors.items()
+        )
         names = [name for hsv, name in by_hsv]
     else:
         names = list(colors)
@@ -585,10 +1087,14 @@ def _plot_colortable(colors, title, sort_colors=True, emptycols=0):
     dpi = 72
 
     fig, ax = plt.subplots(figsize=(width / dpi, height / dpi), dpi=dpi)
-    fig.subplots_adjust(margin/width, margin/height,
-                        (width-margin)/width, (height-topmargin)/height)
+    fig.subplots_adjust(
+        margin / width,
+        margin / height,
+        (width - margin) / width,
+        (height - topmargin) / height,
+    )
     ax.set_xlim(0, cell_width * 4)
-    ax.set_ylim(cell_height * (nrows-0.5), -cell_height/2.)
+    ax.set_ylim(cell_height * (nrows - 0.5), -cell_height / 2.0)
     ax.yaxis.set_visible(False)
     ax.xaxis.set_visible(False)
     ax.set_axis_off()
@@ -603,18 +1109,23 @@ def _plot_colortable(colors, title, sort_colors=True, emptycols=0):
         swatch_end_x = cell_width * col + swatch_width
         text_pos_x = cell_width * col + swatch_width + 7
 
-        ax.text(text_pos_x, y, name, fontsize=14,
-                horizontalalignment='left',
-                verticalalignment='center')
+        ax.text(
+            text_pos_x,
+            y,
+            name,
+            fontsize=14,
+            horizontalalignment="left",
+            verticalalignment="center",
+        )
 
-        ax.hlines(y, swatch_start_x, swatch_end_x,
-                  color=colors[name], linewidth=18)
+        ax.hlines(y, swatch_start_x, swatch_end_x, color=colors[name], linewidth=18)
 
     return fig
 
 
 def _plot_color_gradients(category, cmap_dct):
-    """
+    """Plot color gradients.
+
     Utility for plotting colormap examples. Inspired by
     matplotlib's `documentation
     <https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html>`_.
@@ -626,15 +1137,14 @@ def _plot_color_gradients(category, cmap_dct):
 
     fig, axes = plt.subplots(nrows=len(cmap_dct))
     fig.subplots_adjust(top=0.95, bottom=0.01, left=0.2, right=0.99)
-    axes[0].set_title(category + ' colormaps', fontsize=14)
+    axes[0].set_title(category + " colormaps", fontsize=14)
 
     for ax, name in zip(axes, cmap_dct):
-        ax.imshow(gradient, aspect='auto',
-                  cmap=mcolors.ListedColormap(cmap_dct[name]))
+        ax.imshow(gradient, aspect="auto", cmap=mcolors.ListedColormap(cmap_dct[name]))
         pos = list(ax.get_position().bounds)
         x_text = pos[0] - 0.01
-        y_text = pos[1] + pos[3]/2.
-        fig.text(x_text, y_text, name, va='center', ha='right', fontsize=10)
+        y_text = pos[1] + pos[3] / 2.0
+        fig.text(x_text, y_text, name, va="center", ha="right", fontsize=10)
 
     # Turn off *all* ticks & spines, not just the ones with colormaps.
     for ax in axes:
@@ -644,7 +1154,8 @@ def _plot_color_gradients(category, cmap_dct):
 
 
 def _plot_hatches(category, hatch_map, sort_colors=True, emptycols=0):
-    """
+    """Plot hatches.
+
     Utility for plotting color themes. Inspired by
     matplotlib's `documentation
     <https://matplotlib.org/3.2.2/gallery/color/named_colors.html>`_.
@@ -652,8 +1163,8 @@ def _plot_hatches(category, hatch_map, sort_colors=True, emptycols=0):
     And a pach hatching example from `so
     <https://stackoverflow.com/a/25185432>`
     """
-    import matplotlib.pyplot as plt
     import matplotlib.patches as patches
+    import matplotlib.pyplot as plt
 
     cell_width = 212
     cell_height = 22
@@ -670,10 +1181,14 @@ def _plot_hatches(category, hatch_map, sort_colors=True, emptycols=0):
     dpi = 72
 
     fig, ax = plt.subplots(figsize=(width / dpi, height / dpi), dpi=dpi)
-    fig.subplots_adjust(margin/width, margin/height,
-                        (width-margin)/width, (height-topmargin)/height)
+    fig.subplots_adjust(
+        margin / width,
+        margin / height,
+        (width - margin) / width,
+        (height - topmargin) / height,
+    )
     ax.set_xlim(0, cell_width * 4)
-    ax.set_ylim(cell_height * (nrows-0.5), -cell_height/2.)
+    ax.set_ylim(cell_height * (nrows - 0.5), -cell_height / 2.0)
     ax.yaxis.set_visible(False)
     ax.xaxis.set_visible(False)
     ax.set_axis_off()
@@ -688,23 +1203,40 @@ def _plot_hatches(category, hatch_map, sort_colors=True, emptycols=0):
         swatch_end_x = cell_width * col + swatch_width
         text_pos_x = cell_width * col + swatch_width + 7
 
-        ax.text(text_pos_x, y, name, fontsize=14,
-                horizontalalignment='left',
-                verticalalignment='center')
+        ax.text(
+            text_pos_x,
+            y,
+            name,
+            fontsize=14,
+            horizontalalignment="left",
+            verticalalignment="center",
+        )
 
-        ax.add_patch(patches.Rectangle(
-            (swatch_start_x, y-9), swatch_end_x-swatch_start_x, 18,
-            hatch=hatch_map[name], fill=False, snap=False, linewidth=0))
+        ax.add_patch(
+            patches.Rectangle(
+                (swatch_start_x, y - 9),
+                swatch_end_x - swatch_start_x,
+                18,
+                hatch=hatch_map[name],
+                fill=False,
+                snap=False,
+                linewidth=0,
+            )
+        )
 
     return fig
 
 
-def match_theme(strings, theme='colors', grouping='name',):
+def match_theme(
+    strings,
+    theme="colors",
+    grouping="name",
+):
     """
-    Match a collection of strings to tessf's theme groupings
+    Match a collection of strings to tessf's theme groupings.
 
     Parameters
-    ---------
+    ----------
     strings: ~collections.abc.Iterable
         Iterable of strings which are tried to be matched to registerd theme
         values.
@@ -762,8 +1294,10 @@ def match_theme(strings, theme='colors', grouping='name',):
 
         # match reconstructed uid groupings attribute to spellings:
         for registered_key in theme_group:
-            if any(tag == getattr(uid, grouping) for tag in getattr(
-                    spellings, registered_key)):
+            if any(
+                tag == getattr(uid, grouping)
+                for tag in getattr(spellings, registered_key)
+            ):
                 matched_theme[string] = theme_group[registered_key]
 
     return matched_theme
