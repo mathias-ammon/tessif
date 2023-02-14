@@ -1,20 +1,26 @@
 # tessif/frused/paths.py
-# -*- coding: utf-8 -*-
-"""
+"""Tessif's most used paths.
+
 :mod:`~tessif.frused.paths` is a :mod:`tessif` subpackage aggregating
 frequently used path implementations for conveniently accessing utilities and
 data coming with tessif.
 """
-import sys
+import inspect
 import os
 import pathlib
+import sys
+
 import ittools
-import inspect
 
 
-def find_subpath_incwd(path, includes=['tessif', ], excludes=['.git', ]):
-    """ Function to find location of path. Credit to:
-    https://stackoverflow.com/a/41546830
+def find_subpath_incwd(
+    path,
+    includes=("tessif",),
+    excludes=(".git",),
+):
+    """Find location of  given path.
+
+    Credit to: https://stackoverflow.com/a/41546830
 
     Note
     -----
@@ -39,9 +45,8 @@ def find_subpath_incwd(path, includes=['tessif', ], excludes=['.git', ]):
     found_paths : list
         List of found paths
     """
-
     excludes = ittools.itrify(excludes)
-    if getattr(sys, 'frozen', False):
+    if getattr(sys, "frozen", False):
         # The application is frozen
         datadir = os.path.dirname(sys.executable)
 
@@ -51,37 +56,25 @@ def find_subpath_incwd(path, includes=['tessif', ], excludes=['.git', ]):
         datadir = os.path.dirname(os.getcwd())
 
     candidates = list(
-        pathlib.Path(pathlib.Path(datadir).parent).glob(
-            os.path.join('**', path)))
+        pathlib.Path(pathlib.Path(datadir).parent).glob(os.path.join("**", path))
+    )
 
-    found_paths = [candidate.as_posix() for candidate in candidates
-                   if not any(exclude in candidate.as_posix()
-                              for exclude in excludes)
-                   and all(include in candidate.as_posix()
-                           for include in includes)]
+    found_paths = [
+        candidate.as_posix()
+        for candidate in candidates
+        if not any(exclude in candidate.as_posix() for exclude in excludes)
+        and all(include in candidate.as_posix() for include in includes)
+    ]
     return found_paths
 
 
-root_dir = os.path.normpath(os.path.join(inspect.getfile(
-    inspect.currentframe()).split('paths')[0], '..', ))
+root_dir = os.path.normpath(
+    os.path.join(
+        inspect.getfile(inspect.currentframe()).split("paths")[0],
+        "..",
+    )
+)
 """ Tessif's root directory."""
 
-#: Tessif's documentation directory
-doc_dir = example_dir = os.path.normpath(
-    os.path.join(root_dir, '..', '..', 'docs'))
-
-log_dir = os.path.join(root_dir, 'write', 'logs')
-""" Tessif's log directory. """
-
-# Make sure the logging path exists.
-pathlib.Path(log_dir).mkdir(parents=True, exist_ok=True)
-
-example_dir = os.path.join(root_dir, 'examples')
-""" Tessif's example directory """
-
-write_dir = os.path.join(root_dir, 'write')
-""" Tessif's write (output) directory"""
-
-#: Tessif's tests directory
-tests_dir = os.path.normpath(
-    os.path.join(root_dir, '..', '..', 'tests'))
+tessif_dir = os.path.join(os.path.expanduser("~"), ".tessif.d")
+logging_file = os.path.join(tessif_dir, "logs", "tessif_log.log")
