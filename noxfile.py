@@ -51,6 +51,7 @@ def tests(session):
     ]
     session.run("poetry", "install", "--no-dev", external=True)
     session.install(
+        "tessif-examples",
         "coverage[toml]",
         "pytest",
         "pytest-cov",
@@ -140,10 +141,10 @@ def docs_live(session):
         "sphinx",
         "sphinx-autobuild",
         "sphinx-click",
-        "furo",
         "sphinx-paramlinks",
         "sphinx-rtd-theme",
         "pytest",
+        "tessif-examples",
     )
 
     build_dir = Path("docs", "_build")
@@ -160,10 +161,10 @@ def docs_rebuild(session):
     session.install(
         "sphinx",
         "sphinx-click",
-        "furo",
         "sphinx-paramlinks",
         "sphinx-rtd-theme",
         "pytest",
+        "tessif-examples",
     )
     build_dir = Path("docs", "_build")
     if build_dir.exists():
