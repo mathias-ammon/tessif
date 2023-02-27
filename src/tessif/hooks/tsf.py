@@ -8,8 +8,8 @@ change tessif energy systems after their creation.
 Usually used for auto comparing a singular tessif energy system on
 contradicting model assumptions. Like for example in :ref:`AutoCompare_HH`.
 """
-import tessif.model.components as comps
-from tessif.model.energy_system import AbstractEnergySystem
+import tessif.components as comps
+from tessif.system_model import AbstractEnergySystem
 
 
 def reparameterize_components(es, components=None):
