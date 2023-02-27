@@ -1,0 +1,6 @@
+bus,bus,,,,,
+sink,sink,demand,export,excess,,
+source,source,renewables,export,import,backup,commodity
+storage,storage,generic_storage,,,,
+transformer,transformer,mimo_transformer,,,,
+connector,connector,link,line,connection,,

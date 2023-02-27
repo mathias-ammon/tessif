@@ -39,7 +39,8 @@ import tessif.frused.defaults as conventions
 import tessif.logging as tessif_logging
 from tessif.frused.namedtuples import Edge
 
-logger = tessif_logging.logger
+logger = tessif_logging.create_logger(__name__)
+logger.setLevel(30)  # level = WARNING ^= 30
 
 
 def create_nodes(graph, nodes, defaults=None, **kwargs):

@@ -1,0 +1,23 @@
+Accumulated Max,Max_summed,accumulated Maximum,max_total
+Accumulated Maximum,Max_total,accumulated max,maximum Accumulated
+Accumulated max,Maximum Accumulated,accumulated maximum,maximum accumulated
+Accumulated maximum,Maximum accumulated,accumulated_Max,maximum_Accumulated
+Accumulated_Max,Maximum_Accumulated,accumulated_Maximum,maximum_accumulated
+Accumulated_Maximum,Maximum_accumulated,accumulated_max,sm
+Accumulated_max,Sm,accumulated_maximum,summed Max
+Accumulated_maximum,Summed Max,amount,summed max
+Amount,Summed max,boundary Upper,summed_Max
+Boundary Upper,Summed_Max,boundary upper,summed_max
+Boundary upper,Summed_max,boundary_Upper,tm
+Boundary_Upper,Tm,boundary_upper,total Max
+Boundary_upper,Total Max,max Accumulated,total max
+Max Accumulated,Total max,max Summed,total_Max
+Max Summed,Total_Max,max Total,total_max
+Max Total,Total_max,max accumulated,ub
+Max accumulated,Ub,max summed,ul
+Max summed,Ul,max total,upper Boundary
+Max total,Upper Boundary,max_Accumulated,upper boundary
+Max_Accumulated,Upper boundary,max_Summed,upper_Boundary
+Max_Summed,Upper_Boundary,max_Total,upper_boundary
+Max_Total,Upper_boundary,max_accumulated,
+Max_accumulated,accumulated Max,max_summed,

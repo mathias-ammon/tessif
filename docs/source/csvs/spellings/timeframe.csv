@@ -1,0 +1,22 @@
+Frame Time,Temporal horizont,frame time,temporal scope
+Frame time,Temporal scope,frame_Time,temporal_Horizont
+Frame_Time,Temporal_Horizont,frame_time,temporal_Scope
+Frame_time,Temporal_Scope,horizont Temporal,temporal_horizont
+Horizont Temporal,Temporal_horizont,horizont temporal,temporal_scope
+Horizont temporal,Temporal_scope,horizont_Temporal,time Frame
+Horizont_Temporal,Time Frame,horizont_temporal,time Index
+Horizont_temporal,Time Index,index Time,time Series
+Index Time,Time Series,index time,time frame
+Index time,Time frame,index_Time,time index
+Index_Time,Time index,index_time,time series
+Index_time,Time series,scope Temporal,time_Frame
+Scope Temporal,Time_Frame,scope temporal,time_Index
+Scope temporal,Time_Index,scope_Temporal,time_Series
+Scope_Temporal,Time_Series,scope_temporal,time_frame
+Scope_temporal,Time_frame,series Time,time_index
+Series Time,Time_index,series time,time_series
+Series time,Time_series,series_Time,timeframe
+Series_Time,Timeframe,series_time,timeindex
+Series_time,Timeindex,temporal Horizont,timeseries
+Temporal Horizont,Timeseries,temporal Scope,
+Temporal Scope,frame Time,temporal horizont,

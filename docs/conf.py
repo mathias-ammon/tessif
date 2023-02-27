@@ -26,9 +26,6 @@ unittest_path = pathlib.Path(__file__).resolve() / ".." / ".."
 sys.path.insert(0, os.path.abspath(unittest_path))
 sys.path.insert(0, os.path.abspath(src_path))
 
-print(unittest_path)
-print(sys.path)
-
 # -- Project information -----------------------------------------------------
 
 project = "tessif - Transforming Energy Supply System modell I ng Frameworks"
@@ -53,7 +50,6 @@ html_theme_options = {
     "canonical_url": "https://github.com/tZ3ma/tessif/",
     "display_version": True,
     "sticky_navigation": True,
-    # 'style_nav_header_background': '#009682',
 }
 
 # Example configuration for intersphinx: refer to the Python standard library.

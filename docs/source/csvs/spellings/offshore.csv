@@ -1,0 +1,13 @@
+Off Shore,Shore Off,off Wind,shore off
+Off Wind,Shore off,off shore,shore_Off
+Off shore,Shore_Off,off wind,shore_off
+Off wind,Shore_off,off_Shore,wind Off
+Off_Shore,Wind Off,off_Wind,wind Offshore
+Off_Wind,Wind Offshore,off_shore,wind off
+Off_shore,Wind off,off_wind,wind offshore
+Off_wind,Wind offshore,offshore,wind_Off
+Offshore,Wind_Off,offshore Wind,wind_Offshore
+Offshore Wind,Wind_Offshore,offshore wind,wind_off
+Offshore wind,Wind_off,offshore_Wind,wind_offshore
+Offshore_Wind,Wind_offshore,offshore_wind,
+Offshore_wind,off Shore,shore Off,

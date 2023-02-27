@@ -1,0 +1,8 @@
+name,name,,,,,,,
+qualname,name,latitude,longitude,region,sector,carrier,component,node_type
+coords,name,latitude,longitude,,,,,
+region,name,region,,,,,,
+sector,name,sector,,,,,,
+carrier,name,carrier,,,,,,
+component,name,component,,,,,,
+node_type,name,node_type,,,,,,

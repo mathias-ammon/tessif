@@ -1,6 +1,36 @@
 # src/tessif/energy_system.py
-# pylint: disable=too-few-public-methods
-"""Dummy energy_system module to enebale tessif-examples."""
+"""Tessifs energy supply syste model.
+
+Serving as primary input data harmonization.
+
+.. rubric:: Main Class/Functionality
+.. autosummary::
+   :nosignatures:
+
+   AbstractEnergySystem
+   AbstractEnergySystem.tropp
+
+.. rubric:: Alternative Ways of Creation
+.. autosummary::
+   :nosignatures:
+
+   AbstractEnergySystem.from_components
+
+.. rubric:: Frequently Used Methods
+.. autosummary::
+   :nosignatures:
+
+   AbstractEnergySystem.connect
+   AbstractEnergySystem.duplicate
+   AbstractEnergySystem.to_nxgrph
+
+   AbstractEnergySystem.serialize
+   AbstractEnergySystem.deserialize
+   AbstractEnergySystem.pickle
+   AbstractEnergySystem.unpickle
+"""
+
+import json
 
 # standard library
 import os
@@ -17,8 +47,10 @@ import pandas as pd
 import tessif.components as tessif_components
 import tessif.frused.namedtuples as nts
 from tessif import nxgraph
+from tessif.deserialize import RestoredResults, SystemModelDecoder
 from tessif.frused.defaults import registered_plugins
 from tessif.frused.paths import tessif_dir
+from tessif.serialize import SystemModelEncoder
 
 
 class AbstractEnergySystem:
@@ -65,13 +97,9 @@ class AbstractEnergySystem:
         Dictionary of :class:`numeric <numbers.Number>` values mapped to
         global constraint naming :class:`strings <str>`.
 
-        Recognized constraint keys are:
+        Currently recognized constraint keys are:
 
             - ``emissions``
-            - ...
-
-        For a more detailed explanation see the user guide's section:
-        :ref:`Secondary_Objectives`
     """
 
     def __init__(self, uid, *args, **kwargs):
@@ -86,7 +114,7 @@ class AbstractEnergySystem:
             "sources": (),
             "transformers": (),
             "storages": (),
-            "timeframe": pd.Series(),
+            "timeframe": pd.Series(dtype="object"),
             "global_constraints": {"emissions": float("+inf")},
         }
 
@@ -121,6 +149,16 @@ class AbstractEnergySystem:
                 ")",
             ]
         )
+
+    _plurals_mapping = {
+        "busses": "Bus",
+        "chps": "CHP",
+        "connectors": "Connector",
+        "sinks": "Sink",
+        "sources": "Source",
+        "transformers": "Transformer",
+        "storages": "Storage",
+    }
 
     @property
     def uid(self):
@@ -158,7 +196,6 @@ class AbstractEnergySystem:
         :class:`~tessif.model.components.Connectors` objects part
         of the energy system.
         """
-
         yield from self._connectors
 
     @property
@@ -411,6 +448,79 @@ class AbstractEnergySystem:
         """Timeframe representing the optimization time span."""
         return self._timeframe
 
+    def serialize(self, fp=None):
+        """Serialize this system model."""
+        # prepare dictionairy
+        serialized_dict = {}
+        for attribute in self._es_attributes:
+
+            # parse timeframe:
+            if attribute == "timeframe":
+                serialized_dict["timeframe"] = self.timeframe.to_series().to_json()
+
+            # parse global constraints
+            elif attribute == "global_constraints":
+                serialized_dict["global_constraints"] = self.global_constraints
+
+            # parse components:
+            else:
+                serialized_dict[attribute] = []
+                for component in getattr(self, attribute):
+                    serialized_dict[attribute].append(component.serialize())
+
+        serialized_dict["uid"] = self.uid
+
+        serialized_system_model = json.dumps(
+            serialized_dict,
+            cls=SystemModelEncoder,
+        )
+
+        return serialized_system_model
+
+    @classmethod
+    def deserialize(cls, stream):
+        """Load from stored system."""
+        system_dict = json.loads(stream)
+        for attribute_name, value in system_dict.copy().items():
+
+            # deserialize uid
+            if attribute_name == "uid":
+                system_dict["uid"] = value
+
+            # deserialize timeframe
+            elif attribute_name == "timeframe":
+                dct = json.loads(value)
+                # datetime index was serialized using a pandas series
+                datetimeindex_in_ms = tuple(dct.keys())
+
+                # recreate datetimeindex using "ms" which Series.to_json uses
+                index = pd.to_datetime(datetimeindex_in_ms, unit="ms")
+                freq = pd.infer_freq(index)
+
+                # Use the inferred frequency to restore the DatetimeIndex object
+                # with its original frequency
+                restored_index = pd.date_range(start=index[0], end=index[-1], freq=freq)
+                system_dict["timeframe"] = restored_index
+
+            elif attribute_name == "global_constraints":
+                system_dict["global_constraints"] = value
+
+            else:
+                list_of_jsoned_component_attributes = value
+                # map "busses" to bus, etc
+                component_type = cls._plurals_mapping[attribute_name]
+                system_dict[attribute_name] = []
+
+                for component_attributes in list_of_jsoned_component_attributes:
+                    system_dict[attribute_name].append(
+                        # recreate tessif components using "form_attributes"
+                        getattr(tessif_components, component_type).from_attributes(
+                            json.loads(component_attributes, cls=SystemModelDecoder)
+                        )
+                    )
+
+        return cls(**system_dict)
+
     def pickle(self, location):
         """Pickle this system model.
 
@@ -426,38 +536,125 @@ class AbstractEnergySystem:
         """Restore a pickled energy system object."""
         self.__dict__ = pickle.load(open(location, "rb"))
 
-    def tropp(self, plugin):
-        """Transform, Optimize and PostProcess this Tessif system model."""
-        # Sanitize registered plugin
-        rgstrd_plgn = registered_plugins[plugin]
+    def tropp(
+        self, plugins, trans_ops=None, opt_ops=None, quiet=False, parent_dir=None
+    ):
+        """Transform, Optimize and PostProcess this Tessif system model.
 
-        # use a temporary directory to pickle and unpickle system models
-        # and results
-        with tempfile.TemporaryDirectory() as tempdir:
+        Parameters
+        ----------
+        plugins:
+            Iterable of plugin strings used for tropping.
+        trans_ops : dict, None
+            Dictionairy of transformation options.
+        opt_ops : dict, None
+            Dictionairy of optimization options.
+        quite : bool
+            If True tropp logging level is set to logging.WARNING
+        parent_dir : str, None
+            Parent directory aka tessif's main user directory. Usually
+            established using ``tessif init my_parent_dir``. If default
+            initialization is used (``tessif init`` recommended) then the main
+            user directory
+            is ``~/.tessif.d/`` and this parameter can and should be ignored.
 
-            system_model_location = os.path.join(tempdir, "tessif_system_model.tsf")
-            self.pickle(system_model_location)
+        Returns
+        -------
+        dict
+            Dictionairy holding the :class:`tessif.deserialize.RestoredResults`
+            keyed by:
 
-            venv_dir = os.path.join(tessif_dir, "plugin-venvs", rgstrd_plgn)
-            activation_script = os.path.join(venv_dir, "bin", "activate")
+            - "igr" for the restored integrated global results (restored
+              :class:`tessif.post_process.IntegratedGlobalResultier` like)
+            - "alr" for the the of the restored results (restored AllResultier
+              like)
+        """
+        # Sanitize Plugins
+        sanitized_plugins = []
 
-            activation_command = f". {activation_script}; "
-            tropp_command = f"tessif tropp --directory {tempdir} {rgstrd_plgn}"
-            subprocess.run(
-                activation_command + tropp_command,
-                shell=True,
-                check=True,
-            )
+        for plugin in plugins:
+            if plugin not in registered_plugins.keys():
+                pass
+            else:
+                sanitized_plugins.append(registered_plugins[plugin])
 
-            optimized_system_model = pickle.load(
-                open(os.path.join(tempdir, "opt_sysmod.osm"), "rb")
-            )
-            all_resultier = pickle.load(
-                open(os.path.join(tempdir, "all_resutlier.alr"), "rb")
-            )
-            igr = pickle.load(open(os.path.join(tempdir, "igr_resultier.igr"), "rb"))
+        # parse working directory
+        if not parent_dir:
+            parent_dir = tessif_dir
 
-        return optimized_system_model, igr, all_resultier
+        tropp_results = {}
+        for rgstrd_plgn in sanitized_plugins:
+            tropp_results[rgstrd_plgn] = {}
+
+            # use a temporary directory to pickle and unpickle system models
+            # and results
+            with tempfile.TemporaryDirectory() as tempdir:
+
+                # store the system model to disk, so it can be reloaded inside
+                # the pluging virtual environment
+                system_model_location = os.path.join(tempdir, "tessif_system_model.tsf")
+
+                serialized_sys_mod = self.serialize()
+
+                json.dump(
+                    serialized_sys_mod,
+                    fp=open(system_model_location, "w"),
+                )
+
+                venv_dir = os.path.join(parent_dir, "plugin-venvs", rgstrd_plgn)
+                activation_script = os.path.join(venv_dir, "bin", "activate")
+
+                activation_command = f". {activation_script}; "
+                # tropp_command = f"tessif tropp --directory {tempdir} {rgstrd_plgn}"
+                tropp_command = " ".join(
+                    [
+                        "tessif",
+                        "tropp",
+                        "--directory",
+                        tempdir,
+                        rgstrd_plgn,
+                    ]
+                )
+
+                if quiet:
+                    tropp_command = " ".join([tropp_command, "--quiet"])
+
+                if trans_ops:
+                    tropp_command = " ".join(
+                        [tropp_command, "--trans_ops", f"'{json.dumps(trans_ops)}'"]
+                    )
+
+                subprocess.run(
+                    activation_command + tropp_command,
+                    shell=True,
+                    check=True,
+                )
+
+                deserialized_results = json.loads(
+                    json.load(
+                        open(
+                            os.path.join(tempdir, f"{rgstrd_plgn}_all_resutlier.alr"),
+                        )
+                    )
+                )
+
+                tropp_results[rgstrd_plgn]["alr"] = RestoredResults(
+                    deserialized_results
+                )
+
+                deserialized_results = json.loads(
+                    json.load(
+                        open(
+                            os.path.join(tempdir, f"{rgstrd_plgn}_igr_resultier.igr"),
+                        ),
+                    ),
+                )
+
+                tropp_results[rgstrd_plgn]["igr"] = RestoredResults(
+                    deserialized_results
+                )
+
+        return tropp_results
 
     @classmethod
     def from_components(
@@ -504,10 +701,6 @@ class AbstractEnergySystem:
             Recognized constraint keys are:
 
                 - ``emissions``
-                - ...
-
-            For a more detailed explanation see the user guide's section:
-            :ref:`Secondary_Objectives`
 
         Return
         ------

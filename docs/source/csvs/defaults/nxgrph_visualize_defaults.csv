@@ -1,0 +1,14 @@
+node_labels,None,edge_arrowstyle,simple
+node_shape,o,edge_arrowsize,7
+node_size,3000,edge_vmin,0.0
+node_minimum_size,300.0,edge_vmax,1.0
+node_variable_size_scaling,0.5,edge_cmap,matplotlib.pyplot.cm.Greys
+node_fill_size,3000,edge_len,1.0
+node_color,#AFAFAF,edge_minimum_grey,0.15
+node_color_map,['#AFAFAF'],edge_minimum_weight,0.1
+node_alpha,1.0,edge_minimum_width,0.1
+node_font_size,11,legend_labelspacing,1
+node_font_weight,light,legend_title,None
+edge_labels,None,legend_bbox_to_anchor,"(1.0, 1)"
+edge_width,1,legend_loc,best
+edge_color,black,legend_borderaxespad,0

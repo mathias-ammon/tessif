@@ -1,0 +1,6 @@
+Boiler,Hp,heat Plant,plant heat
+HP,Plant Heat,heat plant,plant_Heat
+Heat Plant,Plant heat,heat_Plant,plant_heat
+Heat plant,Plant_Heat,heat_plant,
+Heat_Plant,Plant_heat,hp,
+Heat_plant,boiler,plant Heat,

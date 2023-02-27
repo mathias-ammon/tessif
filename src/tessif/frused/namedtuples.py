@@ -1,9 +1,36 @@
-# tessif/frused/namedtuples
+# src/tessif/frused/namedtuples.py
 """Tessif's nameduptles, designed to increase verbosity of parameterization.
 
 :mod:`~tessif.frused.namedtuples` is a :mod:`tessif` subpackage aggregating
 utility objects for cleaner and more verbose code in the context of naming
 things.
+
+.. rubric:: Labeling Concept
+.. autosummary::
+   :nosignatures:
+
+   UidBase
+   Uid
+   node_uid_styles
+   Coordinates
+
+.. rubric:: Tessif's Energy System Parameters
+.. autosummary::
+   :nosignatures:
+
+   MinMax
+   OnOff
+   InOut
+   PositiveNegative
+
+.. rubric:: Result Parsing
+.. autosummary::
+   :nosignatures:
+
+   NodeColorGroupings
+   AttributeGroupings
+   MemoryTime
+   SimulationProcessStepResults
 """
 import collections
 import typing
@@ -172,28 +199,8 @@ style.
 
 Currently supported styles are (first column identifies the mapping key):
 
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
-        :hide_output:
-
-        import tessif.frused.namedtuples as nts
-        from tessif.frused.paths import doc_dir
-        import pandas as pd
-        import os
-
-        df = pd.DataFrame(
-            index=nts.node_uid_styles.keys(),
-            data=nts.node_uid_styles.values())
-
-        path = os.path.join(
-            doc_dir, 'source', 'api', 'frused',
-            'namedtuples', 'node_uid_styles.csv')
-
-        df.to_csv(path, header=None)
-
     .. csv-table::
-        :file: source/api/frused/namedtuples/node_uid_styles.csv
+        :file: docs/source/csvs/node_uid_styles.csv
         :stub-columns: 1
 
 Combined with :attr:`~tessif.frused.configurations.node_uid_seperator`
@@ -209,30 +216,16 @@ a node of::
         component='source',
         node_type='renewable')
 
-results into following representaion, depending on the mapping used:
+results into following representaion, depending on the mapping used::
 
-    .. execute_code::
-        :hide_code:
-        :hide_headers:
-
-        import tessif.frused.namedtuples as nts
-        import tessif.frused.configurations as configs
-
-        lbl = nts.Uid(
-            name='test',
-            latitude='lat',
-            longitude='long',
-            region='hamburg',
-            sector='power',
-            carrier='wind',
-            component='source',
-            node_type='renewable')
-
-        nls = nts.node_uid_styles
-
-        for key in nls.keys():
-            configs.node_uid_style = key
-            print(configs.node_uid_style, '->', lbl)
+    name -> test
+    qualname -> test_lat_long_hamburg_power_wind_source_renewable
+    coords -> test_lat_long
+    region -> test_hamburg
+    sector -> test_power
+    carrier -> test_wind
+    component -> test_source
+    node_type -> test_renewable
 """
 
 Edge = collections.namedtuple("Edge", ["source", "target"])
@@ -245,12 +238,12 @@ As of tessif's convention an Edge is describe as directional going from
 Parameters
 ----------
 source: str
-    :ref:`Uid representation <Labeling_Concept>` of the :ref:`energy system
-    component <Models_Tessif_Concept_ESC>` representing the edges start.
+    :ref:`Uid representation <Labeling_Concept>` of the component representing
+    the edges start.
 
 target: str
-    :ref:`Uid representation <Labeling_Concept>` of the :ref:`energy system
-    component <Models_Tessif_Concept_ESC>` representing the edges end.
+    :ref:`Uid representation <Labeling_Concept>` of the component representing
+    the edges end.
 """
 
 MinMax = collections.namedtuple("MinMax", ["min", "max"])

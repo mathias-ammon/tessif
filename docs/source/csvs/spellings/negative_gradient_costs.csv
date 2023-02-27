@@ -1,0 +1,81 @@
+Cost Gradient,Neg cost ramp,cost Gradient,neg cost ramp
+Cost Neg Ramp,Neg ramp Cost,cost Neg Ramp,neg ramp Cost
+Cost Neg ramp,Neg ramp cost,cost Neg ramp,neg ramp cost
+Cost Negative Ramp,Neg_Cost_Ramp,cost Negative Ramp,neg_Cost_Ramp
+Cost Negative ramp,Neg_Cost_ramp,cost Negative ramp,neg_Cost_ramp
+Cost Ramp,Neg_Ramp_Cost,cost Ramp,neg_Ramp_Cost
+Cost Ramp Neg,Neg_Ramp_cost,cost Ramp Neg,neg_Ramp_cost
+Cost Ramp Negative,Neg_cost_Ramp,cost Ramp Negative,neg_cost_Ramp
+Cost Ramp neg,Neg_cost_ramp,cost Ramp neg,neg_cost_ramp
+Cost Ramp negative,Neg_ramp_Cost,cost Ramp negative,neg_ramp_Cost
+Cost gradient,Neg_ramp_cost,cost gradient,neg_ramp_cost
+Cost neg Ramp,Negative Cost Ramp,cost neg Ramp,negative Cost Ramp
+Cost neg ramp,Negative Cost ramp,cost neg ramp,negative Cost ramp
+Cost negative Ramp,Negative Costs Gradient,cost negative Ramp,negative Costs Gradient
+Cost negative ramp,Negative Costs gradient,cost negative ramp,negative Costs gradient
+Cost ramp,Negative Gradient Costs,cost ramp,negative Gradient Costs
+Cost ramp Neg,Negative Gradient costs,cost ramp Neg,negative Gradient costs
+Cost ramp Negative,Negative Ramp Cost,cost ramp Negative,negative Ramp Cost
+Cost ramp neg,Negative Ramp cost,cost ramp neg,negative Ramp cost
+Cost ramp negative,Negative cost Ramp,cost ramp negative,negative cost Ramp
+Cost_Gradient,Negative cost ramp,cost_Gradient,negative cost ramp
+Cost_Neg_Ramp,Negative costs Gradient,cost_Neg_Ramp,negative costs Gradient
+Cost_Neg_ramp,Negative costs gradient,cost_Neg_ramp,negative costs gradient
+Cost_Negative_Ramp,Negative gradient Costs,cost_Negative_Ramp,negative gradient Costs
+Cost_Negative_ramp,Negative gradient costs,cost_Negative_ramp,negative gradient costs
+Cost_Ramp,Negative ramp Cost,cost_Ramp,negative ramp Cost
+Cost_Ramp_Neg,Negative ramp cost,cost_Ramp_Neg,negative ramp cost
+Cost_Ramp_Negative,Negative_Cost_Ramp,cost_Ramp_Negative,negative_Cost_Ramp
+Cost_Ramp_neg,Negative_Cost_ramp,cost_Ramp_neg,negative_Cost_ramp
+Cost_Ramp_negative,Negative_Costs_Gradient,cost_Ramp_negative,negative_Costs_Gradient
+Cost_gradient,Negative_Costs_gradient,cost_gradient,negative_Costs_gradient
+Cost_neg_Ramp,Negative_Gradient_Costs,cost_neg_Ramp,negative_Gradient_Costs
+Cost_neg_ramp,Negative_Gradient_costs,cost_neg_ramp,negative_Gradient_costs
+Cost_negative_Ramp,Negative_Ramp_Cost,cost_negative_Ramp,negative_Ramp_Cost
+Cost_negative_ramp,Negative_Ramp_cost,cost_negative_ramp,negative_Ramp_cost
+Cost_ramp,Negative_cost_Ramp,cost_ramp,negative_cost_Ramp
+Cost_ramp_Neg,Negative_cost_ramp,cost_ramp_Neg,negative_cost_ramp
+Cost_ramp_Negative,Negative_costs_Gradient,cost_ramp_Negative,negative_costs_Gradient
+Cost_ramp_neg,Negative_costs_gradient,cost_ramp_neg,negative_costs_gradient
+Cost_ramp_negative,Negative_gradient_Costs,cost_ramp_negative,negative_gradient_Costs
+Costs Gradient Negative,Negative_gradient_costs,costs Gradient Negative,negative_gradient_costs
+Costs Gradient negative,Negative_ramp_Cost,costs Gradient negative,negative_ramp_Cost
+Costs Negative Gradient,Negative_ramp_cost,costs Negative Gradient,negative_ramp_cost
+Costs Negative gradient,Ngc,costs Negative gradient,ngc
+Costs gradient Negative,Nrc,costs gradient Negative,nrc
+Costs gradient negative,Ramp Cost,costs gradient negative,ramp Cost
+Costs negative Gradient,Ramp Cost Neg,costs negative Gradient,ramp Cost Neg
+Costs negative gradient,Ramp Cost Negative,costs negative gradient,ramp Cost Negative
+Costs_Gradient_Negative,Ramp Cost neg,costs_Gradient_Negative,ramp Cost neg
+Costs_Gradient_negative,Ramp Cost negative,costs_Gradient_negative,ramp Cost negative
+Costs_Negative_Gradient,Ramp Neg Cost,costs_Negative_Gradient,ramp Neg Cost
+Costs_Negative_gradient,Ramp Neg cost,costs_Negative_gradient,ramp Neg cost
+Costs_gradient_Negative,Ramp Negative Cost,costs_gradient_Negative,ramp Negative Cost
+Costs_gradient_negative,Ramp Negative cost,costs_gradient_negative,ramp Negative cost
+Costs_negative_Gradient,Ramp cost,costs_negative_Gradient,ramp cost
+Costs_negative_gradient,Ramp cost Neg,costs_negative_gradient,ramp cost Neg
+Gradient Cost,Ramp cost Negative,gradient Cost,ramp cost Negative
+Gradient Costs Negative,Ramp cost neg,gradient Costs Negative,ramp cost neg
+Gradient Costs negative,Ramp cost negative,gradient Costs negative,ramp cost negative
+Gradient Negative Costs,Ramp neg Cost,gradient Negative Costs,ramp neg Cost
+Gradient Negative costs,Ramp neg cost,gradient Negative costs,ramp neg cost
+Gradient cost,Ramp negative Cost,gradient cost,ramp negative Cost
+Gradient costs Negative,Ramp negative cost,gradient costs Negative,ramp negative cost
+Gradient costs negative,Ramp_Cost,gradient costs negative,ramp_Cost
+Gradient negative Costs,Ramp_Cost_Neg,gradient negative Costs,ramp_Cost_Neg
+Gradient negative costs,Ramp_Cost_Negative,gradient negative costs,ramp_Cost_Negative
+Gradient_Cost,Ramp_Cost_neg,gradient_Cost,ramp_Cost_neg
+Gradient_Costs_Negative,Ramp_Cost_negative,gradient_Costs_Negative,ramp_Cost_negative
+Gradient_Costs_negative,Ramp_Neg_Cost,gradient_Costs_negative,ramp_Neg_Cost
+Gradient_Negative_Costs,Ramp_Neg_cost,gradient_Negative_Costs,ramp_Neg_cost
+Gradient_Negative_costs,Ramp_Negative_Cost,gradient_Negative_costs,ramp_Negative_Cost
+Gradient_cost,Ramp_Negative_cost,gradient_cost,ramp_Negative_cost
+Gradient_costs_Negative,Ramp_cost,gradient_costs_Negative,ramp_cost
+Gradient_costs_negative,Ramp_cost_Neg,gradient_costs_negative,ramp_cost_Neg
+Gradient_negative_Costs,Ramp_cost_Negative,gradient_negative_Costs,ramp_cost_Negative
+Gradient_negative_costs,Ramp_cost_neg,gradient_negative_costs,ramp_cost_neg
+Neg Cost Ramp,Ramp_cost_negative,neg Cost Ramp,ramp_cost_negative
+Neg Cost ramp,Ramp_neg_Cost,neg Cost ramp,ramp_neg_Cost
+Neg Ramp Cost,Ramp_neg_cost,neg Ramp Cost,ramp_neg_cost
+Neg Ramp cost,Ramp_negative_Cost,neg Ramp cost,ramp_negative_Cost
+Neg cost Ramp,Ramp_negative_cost,neg cost Ramp,ramp_negative_cost

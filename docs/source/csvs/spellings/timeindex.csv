@@ -1,0 +1,16 @@
+Date,Time,date,time Date
+Date Time,Time Date,date Time,time Frame
+Date time,Time Frame,date time,time Index
+Date_Time,Time Index,date_Time,time date
+Date_time,Time date,date_time,time frame
+Dates,Time frame,dates,time index
+Frame Time,Time index,frame Time,timeIndex
+Frame time,Time_Date,frame time,time_Date
+Frame_Time,Time_Frame,frame_Time,time_Frame
+Frame_time,Time_Index,frame_time,time_Index
+Index Time,Time_date,index Time,time_date
+Index time,Time_frame,index time,time_frame
+Index_Time,Time_index,index_Time,time_index
+Index_time,Timeframe,index_time,timeframe
+TI,Timeindex,ti,timeindex
+Ti,Times,time,times

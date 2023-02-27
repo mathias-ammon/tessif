@@ -1,5 +1,5 @@
-tessif (**T**\ ransforming **E**\ nergy **S**\ upply **S**\ ystem model\ **I**\ ng **F**\ ramework)
-===================================================================================================
+tessif (**T**\ ransforming **E**\ nergy **S**\ upply **S**\ ystem model \ **I**\  ng **F**\ ramework)
+=====================================================================================================
 
 Tessif has been developed for unifying various free and open source modelling tools designed for analysing energy supply systems considering power heat and mobility.
 
@@ -8,6 +8,7 @@ Tessif has been developed for unifying various free and open source modelling to
    :caption: Getting Started
 
    source/getting_started/installation
+   source/getting_started/initialization
    source/getting_started/quick_start
    source/getting_started/examples
 
@@ -15,6 +16,9 @@ Tessif has been developed for unifying various free and open source modelling to
    :maxdepth: 1
    :caption: User Guide
 
+   source/user_guide/supported_essmos
+   source/user_guide/secondary_constraints
+   source/user_guide/labeling_concept
    source/user_guide/faq
 
 .. toctree::

@@ -1,0 +1,34 @@
+CHP,Heat power combined,Power_heat_combined,heat_Combined_Power
+CHPS,Heat_Combined_Power,chp,heat_Combined_power
+Chp,Heat_Combined_power,chp Plant,heat_Power
+Chp Plant,Heat_Power,chp plant,heat_Power_Combined
+Chp plant,Heat_Power_Combined,chp_Plant,heat_Power_combined
+Chp_Plant,Heat_Power_combined,chp_plant,heat_combined_Power
+Chp_plant,Heat_combined_Power,chps,heat_combined_power
+Chps,Heat_combined_power,combined,heat_power
+Combined,Heat_power,combined Heat Power,heat_power_Combined
+Combined Heat Power,Heat_power_Combined,combined Heat power,heat_power_combined
+Combined Heat power,Heat_power_combined,combined Power Heat,plant Chp
+Combined Power Heat,Plant Chp,combined Power heat,plant chp
+Combined Power heat,Plant chp,combined heat Power,plant_Chp
+Combined heat Power,Plant_Chp,combined heat power,plant_chp
+Combined heat power,Plant_chp,combined power Heat,power Combined Heat
+Combined power Heat,Power Combined Heat,combined power heat,power Combined heat
+Combined power heat,Power Combined heat,combined_Heat_Power,power Heat
+Combined_Heat_Power,Power Heat,combined_Heat_power,power Heat Combined
+Combined_Heat_power,Power Heat Combined,combined_Power_Heat,power Heat combined
+Combined_Power_Heat,Power Heat combined,combined_Power_heat,power combined Heat
+Combined_Power_heat,Power combined Heat,combined_heat_Power,power combined heat
+Combined_heat_Power,Power combined heat,combined_heat_power,power heat
+Combined_heat_power,Power heat,combined_power_Heat,power heat Combined
+Combined_power_Heat,Power heat Combined,combined_power_heat,power heat combined
+Combined_power_heat,Power heat combined,heat Combined Power,power_Combined_Heat
+Heat Combined Power,Power_Combined_Heat,heat Combined power,power_Combined_heat
+Heat Combined power,Power_Combined_heat,heat Power,power_Heat
+Heat Power,Power_Heat,heat Power Combined,power_Heat_Combined
+Heat Power Combined,Power_Heat_Combined,heat Power combined,power_Heat_combined
+Heat Power combined,Power_Heat_combined,heat combined Power,power_combined_Heat
+Heat combined Power,Power_combined_Heat,heat combined power,power_combined_heat
+Heat combined power,Power_combined_heat,heat power,power_heat
+Heat power,Power_heat,heat power Combined,power_heat_Combined
+Heat power Combined,Power_heat_Combined,heat power combined,power_heat_combined

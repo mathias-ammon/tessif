@@ -1,0 +1,25 @@
+Beta,Loss_Index_Power,index Loss Power,loss_Index_power
+Index Loss Power,Loss_Index_power,index Loss power,loss_Power_Index
+Index Loss power,Loss_Power_Index,index Power Loss,loss_Power_index
+Index Power Loss,Loss_Power_index,index Power loss,loss_index_Power
+Index Power loss,Loss_index_Power,index loss Power,loss_index_power
+Index loss Power,Loss_index_power,index loss power,loss_power_Index
+Index loss power,Loss_power_Index,index power Loss,loss_power_index
+Index power Loss,Loss_power_index,index power loss,power Index Loss
+Index power loss,Power Index Loss,index_Loss_Power,power Index loss
+Index_Loss_Power,Power Index loss,index_Loss_power,power Loss Index
+Index_Loss_power,Power Loss Index,index_Power_Loss,power Loss index
+Index_Power_Loss,Power Loss index,index_Power_loss,power index Loss
+Index_Power_loss,Power index Loss,index_loss_Power,power index loss
+Index_loss_Power,Power index loss,index_loss_power,power loss Index
+Index_loss_power,Power loss Index,index_power_Loss,power loss index
+Index_power_Loss,Power loss index,index_power_loss,power_Index_Loss
+Index_power_loss,Power_Index_Loss,loss Index Power,power_Index_loss
+Loss Index Power,Power_Index_loss,loss Index power,power_Loss_Index
+Loss Index power,Power_Loss_Index,loss Power Index,power_Loss_index
+Loss Power Index,Power_Loss_index,loss Power index,power_index_Loss
+Loss Power index,Power_index_Loss,loss index Power,power_index_loss
+Loss index Power,Power_index_loss,loss index power,power_loss_Index
+Loss index power,Power_loss_Index,loss power Index,power_loss_index
+Loss power Index,Power_loss_index,loss power index,
+Loss power index,beta,loss_Index_Power,

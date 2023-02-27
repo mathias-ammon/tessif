@@ -30,11 +30,11 @@ Useful for conveniently changing internal mapping behaviour. Must be one of
 
 Somehting like ``name`` allows for quick and intuitive node accessing while
 sacrificing the possibility of 2 nodes having the same
-:paramref:`~tessif.frused.namedtuples.uid.name`.
+:paramref:`~tessif.frused.namedtuples.Uid.name`.
 
 ``qualname`` on the other hand maps everything to the fully qualified name.
 Meaning only ever the full combination of all
-:class:`~tessif.frused.namedtuples.uid` attributes has to be unique per
+:class:`~tessif.frused.namedtuples.Uid` attributes has to be unique per
 energy system.
 
 .. warning::
@@ -59,7 +59,7 @@ Seperate different tags of the same
 :attr:`node uid <tessif.frused.namedtuples.uid>`
 
 Seperate symbol for (uniquely) identifying a node's uid using various tags of
-the :attr:`namedtuples implementation <tessif.frused.namedtuples.uid>`.
+the :attr:`namedtuples implementation <tessif.frused.namedtuples.Uid>`.
 
 Currently set to::
 

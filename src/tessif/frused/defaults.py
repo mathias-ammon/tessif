@@ -28,7 +28,7 @@ nxgrph_node_shapes = {
 :mod:`~tessif.visualize.nxgrph` node shape visualization defaults.
 
 .. csv-table::
-    :file: source/api/frused/defaults/node_shapes.csv
+    :file: docs/source/csvs/defaults/node_shapes.csv
 """
 
 dcgrph_node_shapes = {
@@ -80,11 +80,8 @@ nxgrph_visualize_defaults = {
 """
 :mod:`~tessif.visualize.nxgrph` drawing defaults.
 
-Used as described in :func:`~tessif.visualize.nxgrph.draw_graph`'s
-:paramref:`~tessif.visualize.nxgrph.draw_graph.kwargs`.
-
 .. csv-table::
-    :file: source/api/frused/defaults/nxgrph_visualize_defaults.csv
+    :file: docs/source/csvs/defaults/nxgrph_visualize_defaults.csv
 """
 
 dcgrph_visualize_defaults = {
@@ -119,24 +116,18 @@ dcgrph_visualize_defaults = {
     "edge_minimum_grey": 0.15,
     "edge_minimum_weight": nxgrph_visualize_defaults["edge_minimum_weight"],
 }
-""":mod:`~tessif.visualize.dcgrph` drawing defaults.
-
-Used as described in :func:`~tessif.visualize.dcgrph.draw_graph`'s
-:paramref:`~tessif.visualize.dcgrph.draw_graph.kwargs`.
-"""
+""":mod:`~tessif.visualize.dcgrph` drawing defaults."""
 
 nxgrph_visualize_tags = nts.AttributeGroupings("node_", "edge_", "legend_")
 """
-:mod:`~tessif.visualize.nxgrph` attribute tags. Used as described in
-:func:`~tessif.visualize.nxgrph.draw_graph`'s
-:paramref:`~tessif.visualize.nxgrph.draw_graph.kwargs`. Using
+:attr:`tessif-visualize.nxgrph` attribute tags. Using
 :attr:`~tessif.frused.namedtuples.AttributeGroupings` for sub categorization
 as well as easy to maintain and expand code.
 
 Currently used tags:
 
 .. csv-table:: first column labels the namedtuples field
-    :file: source/api/frused/defaults/nxgrph_visualize_tags.csv
+    :file: docs/source/csvs/defaults/nxgrph_visualize_tags.csv
     :stub-columns: 1
 """
 
@@ -149,16 +140,14 @@ nxgrph_visualize_xcptns = nts.AttributeGroupings(
     [],
 )
 """
-:mod:`~tessif.visualize.nxgrph` filter exceptions. Used as described in
-:func:`~tessif.visualize.nxgrph.draw_graph`'s
-:paramref:`~tessif.visualize.nxgrph.draw_graph.kwargs`. Using
+:attr:`tessif-visualize.nxgrph` filter exceptions. Using
 :attr:`~tessif.frused.namedtuples.AttributeGroupings` for sub categorization
 as well as easy to maintain and expand code.
 
 Currently used exceptions:
 
 .. csv-table:: first column labels the namedtuples field
-    :file: source/api/frused/defaults/nxgrph_visualize_xcptns.csv
+    :file: docs/source/csvs/defaults/nxgrph_visualize_xcptns.csv
     :stub-columns: 1
 """
 
@@ -235,7 +224,7 @@ here for easily maintained and expanded code.
 Currently used exceptions:
 
 .. csv-table:: first column labels the keys
-    :file: source/api/frused/defaults/nx_label_kwargs.csv
+    :file: docs/source/csvs/defaults/nx_label_kwargs.csv
     :stub-columns: 1
 """
 
@@ -313,7 +302,7 @@ here for easily maintained and expanded code.
 Currently used exceptions:
 
 .. csv-table:: first column labels the keys
-    :file: source/api/frused/defaults/nx_label_kwargs.csv
+    :file: docs/source/csvs/defaults/nx_label_kwargs.csv
     :stub-columns: 1
 """
 
@@ -393,7 +382,7 @@ energy_system_nodes = {
 Fallback defaults for creating energy system nodes.
 
 .. csv-table::
-    :file: source/api/frused/defaults/energy_system_nodes.csv
+    :file: docs/source/csvs/defaults/energy_system_nodes.csv
 """
 
 
@@ -428,7 +417,7 @@ Currently registered component types and their
 :ref:`identifiers <Spellings_EnergySystemComponentIdentifiers>`.
 
 .. csv-table:: first column labels the registration key
-    :file: source/api/frused/defaults/registered_component_types.csv
+    :file: docs/source/csvs/defaults/registered_component_types.csv
     :stub-columns: 1
 """
 
@@ -447,14 +436,12 @@ components.
 
 Note
 ----
-Expand this dictionary when adding new speciality
-:ref:`energy system components <Models_Tessif_Concept_ESC>` that are not quite
-parseable using tessif's :ref:`approach <Models_Tessif_Concept>` but where a
-specialised parsers exists or will be added. Like for example in
-:meth:`tessif.transform.mapping2es.omf.generate_sito_flex_transformers`.
+Expand this dictionary when adding new speciality components
+that are not quite parseable using tessif's ESSMOS plugins but where a
+specialised parsers exists or can be added.
 
 .. csv-table:: first column labels the registration key
-    :file: source/api/frused/defaults/addon_component_types.csv
+    :file: docs/source/csvs/defaults/addon_component_types.csv
     :stub-columns: 1
 """
 
@@ -474,10 +461,30 @@ See Also
 """
 
 registered_plugins = {
+    # omeof
+    "tessif-oemof-4-4": "tessif-oemof-4-4",
     "oemof-4.4": "tessif-oemof-4-4",
     "omeof-latest": "tessif-oemof-4-4",
     "oemof": "tessif-oemof-4-4",
     "omf": "tessif-oemof-4-4",
+    # pypsa
+    "tessif-pypsa-0-19-3": "tessif-pypsa-0-19-3",
+    "pypsa-0-19-3": "tessif-pypsa-0-19-3",
+    "pypsa-latest": "tessif-pypsa-0-19-3",
+    "pypsa": "tessif-pypsa-0-19-3",
+    "ppsa": "tessif-pypsa-0-19-3",
+    # fine
+    "tessif-fine-2-2-2": "tessif-fine-2-2-2",
+    "fine-2-2-2": "tessif-fine-2-2-2",
+    "fine-latest": "tessif-fine-2-2-2",
+    "fine": "tessif-fine-2-2-2",
+    "fn": "tessif-fine-2-2-2",
+    # calliope
+    "tessif-calliope-0-6-6post1": "tessif-calliope-0-6-6post1",
+    "calliope-0-6-6post1": "tessif-calliope-0-6-6post1",
+    "calliope-latest": "tessif-calliope-0-6-6post1",
+    "calliope": "tessif-calliope-0-6-6post1",
+    "cllp": "tessif-calliope-0-6-6post1",
 }
 """
 Registered Energy Supply System Modelling and Optimization Software (ESSMOS)

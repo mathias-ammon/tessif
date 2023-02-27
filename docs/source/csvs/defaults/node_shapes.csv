@@ -1,0 +1,5 @@
+bus,o,solar,s
+connector,o,storage,s
+commodity_source,o,transformer,8
+default_source,o,wind,h
+sink,8,,

@@ -1,17 +1,23 @@
 # src/tessif/cli.py
 """Module providing the Tessif Command Line Interface (CLI)."""
-import importlib
+import json
+import logging
 import os
-import pickle
 import subprocess
+import sys
 import venv
+from pathlib import Path
 
 import click
 
-import tessif.logging as tessif_logging  # nopep8
+import tessif.tropp
+from tessif.frused.defaults import registered_plugins
 from tessif.frused.paths import tessif_dir
+from tessif.logging import create_logger, reset_basic_config
+from tessif.serialize import ResultierEncoder
+from tessif.system_model import AbstractEnergySystem
 
-logger = tessif_logging.logger
+logger = create_logger(__name__)
 
 
 @click.group()
@@ -23,16 +29,39 @@ def main_cli_entry():
 @main_cli_entry.command()
 @click.option(
     "-d",
-    "--tessif_directory",
+    "--tessif-directory",
     help="(Optional) Venv directory the plugin will be installed into.",
-    default="~/.emacs.d/",
+    default="~/.tessif.d/",
     show_default=True,
 )
-def init(tessif_directory=None):
-    """Initialize Tessif's working directory."""
+@click.option(
+    "--dry",
+    help="Execute integration with actually installing anything",
+    is_flag=True,
+)
+def init(tessif_directory=None, dry=False):
+    """Initialize tessif's working directory."""
     if not tessif_directory:
-        tessif_directory = os.path.join(os.path.expanduser("~"), ".tessif.d")
-    click.echo(f"Initializing Tessif's main directory at {tessif_directory}")
+        tessif_directory = tessif_dir
+
+    # Create a Path object for the new folder
+    working_directory = Path(tessif_directory)
+
+    logger.info(
+        "Attempting to initialize tessif's working directory at %s",
+        working_directory,
+    )
+
+    if not dry:
+        # Create the folder if it doesn't exist, with parents as needed
+        working_directory.mkdir(parents=True, exist_ok=True)
+
+    logger.info(
+        "Succesfully initialized tessif's working directory at %s",
+        working_directory,
+    )
+
+    return sys.exit(os.EX_OK)
 
 
 @main_cli_entry.command()
@@ -44,29 +73,92 @@ def init(tessif_directory=None):
     default=None,
     show_default=True,
 )
-def install(plugin, venv_dir=None):
-    """Install ESSMOS-Plugin."""
+@click.option(
+    "--dry",
+    help="Execute integration with actually installing anything",
+    is_flag=True,
+)
+def integrate(plugin, venv_dir=None, dry=False):
+    """Integrate ESSMOS-Plugin."""
+    # Sanitize Plugin Input
+    if plugin not in registered_plugins.keys():
+        msg = " ".join(
+            [
+                f"Plugin {plugin} not recognized.",
+                "Available plugins are:",
+                *(plg for plg in registered_plugins.keys()),
+            ]
+        )
+        raise KeyError(msg)
+    else:
+        plugin = registered_plugins[plugin]
+
+    logger.info("Establish plugin venv directory at")
     if not venv_dir:
         venv_dir = os.path.join(tessif_dir, "plugin-venvs", plugin)
+
+    logger.info("%s", venv_dir)
+
     python_bin = os.path.join(venv_dir, "bin", "python")
-    venv.create(venv_dir, upgrade_deps=True, with_pip=True)
-    subprocess.run(
-        [
-            python_bin,
-            "-m",
-            "pip",
-            "install",
-            "-U",  # update plugin
-            plugin,
-        ]
+    logger.info("Initializing new python binary at %s", python_bin)
+
+    if not dry:
+        venv.create(venv_dir, upgrade_deps=True, with_pip=True)
+
+    logger.info(
+        "Succesfully created venv for plugin %s at %s",
+        plugin,
+        venv_dir,
     )
+
+    logger.info(
+        "Attempting to integrate plugin %s to %s using %s",
+        plugin,
+        venv_dir,
+        python_bin,
+    )
+
+    if not dry:
+        subprocess.run(
+            [
+                python_bin,
+                "-m",
+                "pip",
+                "install",
+                "-U",  # update plugin
+                plugin,
+            ]
+        )
+    else:
+        logger.info("Performing a dry pip run:\n")
+        subprocess.run(
+            [
+                python_bin,
+                "-m",
+                "pip",
+                "install",
+                "--dry-run",  # perfrom dry run
+                plugin,
+            ]
+        )
+
+    logger.info(
+        "Succesfully added plugin %s to %s using %s",
+        plugin,
+        venv_dir,
+        python_bin,
+    )
+
+    return sys.exit(os.EX_OK)
 
 
 @main_cli_entry.command()
+@click.argument("plugin")
 @click.option(
+    "-d",
     "--directory",
     help="Directory the system_model.tsf and the results are/will be stored in",
-    default=tessif_dir,
+    default=os.path.join(tessif_dir, "tropp"),
     show_default=True,
 )
 @click.option(
@@ -75,60 +167,102 @@ def install(plugin, venv_dir=None):
     help="Silences the stdout info level logging",
     is_flag=True,
 )
-@click.argument("plugin")
-def tropp(directory, plugin, quiet):
+@click.option(
+    "--trans_ops",
+    help="Dictionairy holding the transformation options",
+    default=None,
+    show_default=True,
+)
+@click.option(
+    "--opt_ops",
+    help="Dictionairy holding the optimization options (not yet implemented)",
+    default=None,
+    show_default=True,
+)
+def tropp(plugin, directory, quiet, trans_ops, opt_ops):
     """Transform Optimize and Post-Process."""
+    # Parse the arguments
+
+    # logger.setLevel(logging.INFO)
     if quiet:
-        tessif_logging.set_logger_level(logger, tessif_logging.logging.WARNING)
+        logger.setLevel(logging.WARNING)
 
+    # Create the folder if it doesn't exist, with parents as needed
+    working_directory = Path(directory)
+    working_directory.mkdir(parents=True, exist_ok=True)
+
+    # initialize storage locations
     system_model_location = os.path.join(directory, "tessif_system_model.tsf")
-    all_resultier_location = os.path.join(directory, "all_resutlier.alr")
-    igr_resultier_location = os.path.join(directory, "igr_resultier.igr")
-    opt_sysmod_location = os.path.join(directory, "optimized_system_model.osm")
 
-    logger.info("TRansform Optimize and Post-Process!\n")
+    # start tropp process
+    logger.info(60 * "-")
+    logger.info("TRansform Optimize and Post-Process!")
+    logger.info(f"Using Plugin: {plugin}")
 
-    module_name = plugin.replace("-", "_")
-    plugin_module = importlib.import_module(module_name)
+    restored_sys_mod = AbstractEnergySystem.deserialize(
+        json.load(open(system_model_location))
+    )
 
-    import oemof.solph
+    # restored_es = AbstractEnergySystem(uid="This Instance Is Restored")
+    # restored_es.unpickle(system_model_location)
 
-    logger.info("Using Plugin:")
-    logger.info(f"{plugin} version {plugin_module.__version__}\n")
-    logger.info("Using the modelling suit:")
-    logger.info(f"oemof.solph version {oemof.solph.__version__}\n")
+    # logger.info("On The System Model Stored In:")
+    # logger.info(system_model_location)
+    # logger.info("")
 
-    logger.info("On System Model Stored In:")
-    logger.info(system_model_location)
-    logger.info("")
+    logger.info(f"Transform to {plugin} System Model")
+    plugin_system_model = tessif.tropp.transform(
+        tessif_system_model=restored_sys_mod,
+        plugin=plugin,
+        trans_ops=trans_ops,
+    )
+    reset_basic_config()
+    logger.info("Transformation Succesfull!\n")
 
-    from tessif.system_model import AbstractEnergySystem
+    # lgers = logging.Logger.manager.loggerDict
+    # for lger, value in lgers.items():
+    #     print(lger, value)
 
-    restored_es = AbstractEnergySystem(uid="This Instance Is Restored")
-    restored_es.unpickle(system_model_location)
-    logger.info("Succesfully deserialized tessif system model!")
-    logger.info("Nodes present in the tessif system model:")
-    logger.info([node.uid.name for node in restored_es.nodes])
-    logger.info("")
+    logger.info(f"Optimize {plugin} System Model")
+    optimized_plugin_system_model = tessif.tropp.optimize(
+        plugin_system_model=plugin_system_model,
+        plugin=plugin,
+        opt_ops=opt_ops,
+    )
+    logger.info("Optimization Succesful!\n")
 
-    # t2o = importlib.import_module(f"{module_name}.tsf2omf")
-    tool_system_model = plugin_module.transform(restored_es)
+    logger.info(f"Post-Process {plugin} System Model")
+    global_resultier, all_resultier = tessif.tropp.post_process(
+        optimized_plugin_system_model=optimized_plugin_system_model,
+        plugin=plugin,
+    )
+    # post_opt_logger.disable = True
+    # logger = create_logger(f"{__name__}.post_post_processing")
+    logger.info("Post-Processing Succesful!\n")
 
-    logger.info("Nodes present in the oemof system model:")
-    logger.info([str(node) for node in tool_system_model.nodes])
+    igr_resultier_location = os.path.join(directory, f"{plugin}_igr_resultier.igr")
 
-    optimized_system_model = plugin_module.optimize(tool_system_model)
+    serialized_global_resultier = json.dumps(
+        global_resultier.dct_repr(),
+        cls=ResultierEncoder,
+    )
 
-    logger.info("Optimization Succesfull!")
-    pickle.dump(optimized_system_model, open(opt_sysmod_location, "wb"))
-    logger.info(f"Stored optmized system model to {opt_sysmod_location}")
-
-    logger.info("Post-Process Tool System Model")
-    post_process = importlib.import_module(f"{module_name}.post_process")
-    global_resultier = post_process.IntegratedGlobalResultier(optimized_system_model)
-    global_resultier.pickle(igr_resultier_location)
+    json.dump(
+        serialized_global_resultier,
+        fp=open(igr_resultier_location, "w"),
+        # cls=ResultierEncoder,
+    )
     logger.info(f"Stored global results to {igr_resultier_location}")
 
-    all_resultier = post_process.AllResultier(optimized_system_model)
-    all_resultier.pickle(all_resultier_location)
+    all_resultier_location = os.path.join(directory, f"{plugin}_all_resutlier.alr")
+    serialized_all_resultier = json.dumps(
+        all_resultier.dct_repr(),
+        cls=ResultierEncoder,
+    )
+    json.dump(
+        serialized_all_resultier,
+        fp=open(all_resultier_location, "w"),
+        # cls=ResultierEncoder,
+    )
     logger.info(f"Stored all other results to {all_resultier_location}")
+    logger.info(60 * "-" + "\n")
