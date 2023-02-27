@@ -261,7 +261,7 @@ class SystemModelDecoder(json.JSONDecoder):
     def parse_edge_key(self, edge_string):
         """Parse the edge string key."""
         # remove stringified container strings
-        remove_chars = "[]() '"
+        remove_chars = "[]()'"
 
         # create a translation table that maps each character to None
         translation_table = str.maketrans("", "", remove_chars)
@@ -270,7 +270,7 @@ class SystemModelDecoder(json.JSONDecoder):
         destringified_edge = edge_string.translate(translation_table)
 
         # split the edge string in source and target and create the edge
-        edge = Edge(*destringified_edge.split(","))
+        edge = Edge(*(item.strip() for item in destringified_edge.split(",")))
 
         return edge
 
