@@ -70,10 +70,8 @@ class ESTransformer(abc.ABC):
 
     Parameters
     ----------
-    optimized_es : energy_system
-        Object returned a supported energy system simulation library. See
-        :ref:`SupportedModels` for a list of supported energy system simulation
-        tools.
+    optimized_es
+        Optimized energy system model.
     """
 
     #: Dictionary of node and edge attribute defaults. Used by all attribute
@@ -101,13 +99,11 @@ class ESTransformer(abc.ABC):
 
         Parameters
         ----------
-        optimized_es : energy_system
-            Object returned by the energy system simulation library. See
-            :ref:`SupportedModels` for a list of supported energy system
-            simulation tools.
+        optimized_es
+            Optimized energy system model.
 
-        Return
-        ------
+        Returns
+        -------
         nodes : :class:`collections.abc.Iterable`
             Iterable of nodes
 
@@ -139,10 +135,8 @@ class ESTransformer(abc.ABC):
 
         Parameters
         ----------
-        optimized_es : energy_system
-            Object returned by the energy system simulation library. See
-            :ref:`SupportedModels` for a list of supported energy system
-            simulation tools.
+        optimized_es
+            Optimized energy system model.
 
         Return
         ------
@@ -173,10 +167,8 @@ class ESTransformer(abc.ABC):
 
         Parameters
         ----------
-        optimized_es : energy_system
-            Object returned by the energy system simulation library.
-            See :attr:`~tessif.transform.es2mapping.base.supported` for a list
-            of supported energy system simulation tools.
+        optimized_es
+            Optimized energy system model.
 
         Return
         ------
@@ -342,17 +334,18 @@ class ESTransformer(abc.ABC):
 
         return {attr_name: getattr(self, attr_name) for attr_name in _edge_data}
 
-        # get all attributes of this instance as a list of (name, value):
-        attributes = inspect.getmembers(self, lambda a: not (inspect.isroutine(a)))
+        # # get all attributes of this instance as a list of (name, value):
+        # attributes = inspect.getmembers(
+        #     self, lambda a: not (inspect.isroutine(a)))
 
-        # get all attributes starting with edge_ but not _edge
-        edge_attribute_names = list(
-            a[0] for a in attributes if "edge_" in a[0] and "_edge" not in a[0]
-        )
+        # # get all attributes starting with edge_ but not _edge
+        # edge_attribute_names = list(
+        #     a[0] for a in attributes if "edge_" in a[0] and "_edge" not in a[0]
+        # )
 
-        return {
-            attr_name: getattr(self, attr_name) for attr_name in edge_attribute_names
-        }
+        # return {
+        #     attr_name: getattr(self, attr_name) for attr_name in edge_attribute_names
+        # }
 
     def pickle(self, location):
         """Pickle the resultier.
@@ -369,6 +362,10 @@ class ESTransformer(abc.ABC):
     # def unpickle(cls, location):
     #     """Restore a pickled energy system object."""
     #     self.__dict__ = pickle.load(open(location, "rb"))
+
+    def dct_repr(self):
+        """Dictionairy Representation."""
+        return self.__dict__
 
 
 class XmplResultier(ESTransformer):
@@ -492,9 +489,8 @@ class Resultier(ESTransformer):
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
     """
 
     def __init__(self, optimized_es, **kwargs):
@@ -519,13 +515,12 @@ class IntegratedGlobalResultier(Resultier):
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
 
     See Also
     --------
-    For examples check one of the :ref:`model <SupportedModels>` specific
+    For examples check one of the plugin specific
     LoadResultier children like, e.g..:
     :class:`es2mapping.omf.IntegratedGlobalResultier
     <tessif.transform.es2mapping.omf.IntegratedGlobalResultier>`.
@@ -562,7 +557,7 @@ class IntegratedGlobalResultier(Resultier):
         """Do the mapping.
 
         Interface to extract the integrated global results out of the
-        :ref:`model <SupportedModels>` specific, optimized energy system and
+        plugin specific, optimized energy system and
         map them to their result names (``costs``, ``emissions``, ``time``,
         ``memory``)
 
@@ -576,18 +571,61 @@ class IntegratedGlobalResultier(Resultier):
         pass
 
 
+class ScaleResultier(Resultier):
+    """
+    Extract number of constraints and store them as int.
+
+    Parameters
+    ----------
+    optimized_es
+        Optimized energy system model.
+
+    See Also
+    --------
+    For examples check one of the plugin specific
+    ScaleResultier children like
+    :class:`es2mapping.omf.ScaleResultier
+    <tessif.transform.es2mapping.omf.ScaleResultier>`.
+    """
+
+    def __init__(self, optimized_es, **kwargs):
+        super().__init__(optimized_es=optimized_es, **kwargs)
+
+        self._number_of_constraints = self._map_number_of_constraints(optimized_es)
+
+    @property
+    def number_of_constraints(self):
+        """Number of constraints describing the system model's opt problem."""
+        return self._number_of_constraints
+
+    @abc.abstractmethod
+    def _map_number_of_constraints(self, optimized_es):
+        """Map number of constraints to system model.
+
+        Interface to extract the number of constraints out of the
+        plugin specific, optimized energy system.
+
+        Note
+        ----
+        Needs to be overridden by the model specific child class!
+
+        Check :class:`es2mapping.omf.ScaleResultier` source code
+        for exemplary implementation.
+        """
+        pass
+
+
 class LoadResultier(Resultier):
     """Transform flow results into dictionaries keyed by node.
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
 
     See Also
     --------
-    For examples check one of the :ref:`model <SupportedModels>` specific
+    For examples check one of the plugin specific
     LoadResultier children like, e.g..: :class:`es2mapping.omf.LoadResultier
     <tessif.transform.es2mapping.omf.LoadResultier>`.
     """
@@ -831,9 +869,8 @@ class CapacityResultier(Resultier):
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
 
     reference_capacity: ~numbers.Number, None default=None
         Number to externally set reference capacity.
@@ -844,7 +881,7 @@ class CapacityResultier(Resultier):
 
     See Also
     --------
-    For examples check one of the :ref:`model <SupportedModels>` specific
+    For examples check one of the plugin specific
     CapacityResultier children like, e.g..:
     :class:`es2mapping.omf.CapacityResultier
     <tessif.transform.es2mapping.omf.CapacityResultier>`.
@@ -946,9 +983,8 @@ class CapacityResultier(Resultier):
 
                 - :class:`~tessif.model.components.Transformer` objects
 
-        The **node fillsize** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the
-        **characteristic value**.
+        The **node fillsize** of the advanced system visualization scales with
+        the **characteristic value**.
         If no capacity is defined (i.e for nodes of variable size, like busses
         or excess sources and sinks, node size is set to it's default (
         :attr:`nxgrph_visualize_defaults[node_fill_size]
@@ -970,7 +1006,7 @@ class CapacityResultier(Resultier):
     def load_resultier(self):
         """Used load resultier.
 
-        :ref:`Model <SupportedModels>` specific :class:`LoadResultier`, used
+        Plugin specific :class:`LoadResultier`, used
         for calculating the :attr:`characteristic values
         <node_characteristic_value>`.
         """
@@ -998,7 +1034,7 @@ class CapacityResultier(Resultier):
         """Map characteristic to node uid representations.
 
         Interface to extract installed capacity and flow results out of the
-        :ref:`model <SupportedModels>` specific, optimized energy system to
+        plugin specific, optimized energy system to
         calculate a characteristic value for each component and map this value
         the respective component's :ref:`node uid representation
         <Labeling_Concept>`.
@@ -1040,13 +1076,12 @@ class StorageResultier(Resultier):
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
 
     See Also
     --------
-    For examples check one of the :ref:`model <SupportedModels>` specific
+    For examples check one of the plugin specific
     StorageResultier children like, e.g..:
     :class:`es2mapping.omf.StorageResultier
     <tessif.transform.es2mapping.omf.StorageResultier>`.
@@ -1069,7 +1104,7 @@ class StorageResultier(Resultier):
         """Map state of charge results.
 
         Interface to extract the state of charge results out of the
-        :ref:`model <SupportedModels>` specific, optimized energy system and
+        plugin specific, optimized energy system and
         map them to their :ref:`node uid representation <Labeling_Concept>`.
 
         Note
@@ -1091,8 +1126,7 @@ class NodeCategorizer(Resultier):
 
         - Energy :paramref:`component
           <tessif.frused.namedtuples.Uid.component>`
-          (One of the :ref:`energy system component identifiers
-          <Models_Tessif_Concept_ESC>` 'Bus', 'Sink', etc..)
+          (One of the component identifiers Bus', 'Sink', etc..)
 
         - Energy :paramref:`sector <tessif.frused.namedtuples.Uid.sector>`
           ('power', 'heat', 'mobility', 'coupled')
@@ -1111,13 +1145,12 @@ class NodeCategorizer(Resultier):
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
 
     See Also
     --------
-    For examples check one of the :ref:`model <SupportedModels>` specific
+    For examples check one of the plugin specific
     NodeCategorizer children like, e.g.:
     :class:`es2mapping.omf.NodeCategorizer
     <tessif.transform.es2mapping.omf.NodeCategorizer>`.
@@ -1224,8 +1257,7 @@ class NodeCategorizer(Resultier):
     def node_components(self):
         """Mapped component identifiers to node uid representations.
 
-        :ref:`energy system component identifiers
-        <Models_Tessif_Concept_ESC>` of each node
+        component identifiers of each node
         present in the energy system mapped to their `node uid representation
         <Labeling_Concept>`.
         """
@@ -1301,13 +1333,12 @@ class FlowResultier(Resultier):
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
 
     See Also
     --------
-    For examples check one of the :ref:`model <SupportedModels>` specific
+    For examples check one of the plugin specific
     FlowResultier children like, e.g.:
     :class:`es2mapping.omf.FlowResultier
     <tessif.transform.es2mapping.omf.FlowResultier>`.
@@ -1576,9 +1607,8 @@ class LabelFormatier(Resultier):
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
     """
 
     def __init__(self, optimized_es, **kwargs):
@@ -1785,9 +1815,8 @@ class MplLegendFormatier(Resultier):
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
 
     cgrp: str, default='name'
         Which group of color attribute(s) to return. One of::
@@ -2244,9 +2273,8 @@ class NodeFormatier(Resultier):
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
 
     cgrp: str, default='name'
         Which group of color attribute(s) to return. One of::
@@ -2309,7 +2337,7 @@ class NodeFormatier(Resultier):
         :ref:`node uid representation <Labeling_Concept>`.
 
         .. csv-table::
-            :file: ../../../../docs/source/api/frused/defaults/node_shapes.csv
+            :file: /docs/source/csvs/defaults/node_shapes.csv
         """
         return self._node_shape
 
@@ -2423,7 +2451,7 @@ class NodeFormatier(Resultier):
     def _map_nx_node_shapes(self):
         """Map nx node shapes to uid representations.
 
-        Interface to map the :ref:`model <SupportedModels>` specific,
+        Interface to map the plugin specific,
         optimized energy system component :ref:`uid representations
         <Labeling_Concept>` to a node shape specifying string.
         """
@@ -2484,7 +2512,7 @@ class NodeFormatier(Resultier):
     def _map_dc_node_shapes(self):
         """Map dcgraph node shapes to uid representations.
 
-        Interface to map the :ref:`model <SupportedModels>` specific,
+        Interface to map the plugin specific,
         optimized energy system component :ref:`uid representations
         <Labeling_Concept>` to a node shape specifying string.
         """
@@ -2887,9 +2915,8 @@ class EdgeFormatier(Resultier):
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
     drawutil: str, default='nx'
         Which drawuing utility backend to format node size, fil_size and
         shape to. ``'dc'`` for :mod:`plotly-dash-cytoscape
@@ -3157,14 +3184,13 @@ class EdgeFormatier(Resultier):
 class ICRHybridier(Resultier):
     """Hybrid Resultier and Formatier.
 
-    Aggregate numerical and visual information for visualizing
-    the :ref:`Integrated_Component_Results` (ICR).
+    Aggregate numerical and visual information for drawing the
+    advanced system visualization.
 
     Parameters
     ----------
-    optimized_es:
-        :ref:`Model <SupportedModels>` specific, optimized energy system
-        containing its results.
+    optimized_es
+        Optimized energy system model.
     """
 
     def __init__(
@@ -3187,8 +3213,8 @@ class ICRHybridier(Resultier):
     def edge_color(self):
         r"""Edge colors mapped to their Edge names.
 
-        The **edge greyscale** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the **specific emissions**.
+        The **edge greyscale** of the advanced system visualization
+        scales with the **specific emissions**.
         """
         return self._edge_formatier.edge_color
 
@@ -3197,9 +3223,8 @@ class ICRHybridier(Resultier):
         r"""
         Edge length mapped to their Edge names.
 
-        The **edge length** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the
-        **specific flow costs**.
+        The **edge length** of the advanced system visualization
+        scales with the **specific flow costs**.
         """
         return self._edge_formatier.edge_len
 
@@ -3208,9 +3233,8 @@ class ICRHybridier(Resultier):
         r"""
         Edge length mapped to their Edge names.
 
-        The **edge length** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the
-        **specific flow costs**.
+        The **edge length** of the advanced system visualization
+        scales with the **specific flow costs**.
         """
         return self._edge_formatier.edge_weight
 
@@ -3223,8 +3247,8 @@ class ICRHybridier(Resultier):
 
         :math:`\sum\limits_{t} \text{flow}\left(Edge\right)`
 
-        The **edge width** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the **net energy flow**.
+        The **edge width** of the advanced system visualization
+        scales with the **net energy flow**.
         """
         return self._edge_formatier.edge_net_energy_flow
 
@@ -3238,9 +3262,8 @@ class ICRHybridier(Resultier):
         :math:`c_{\text{flow}}` in
         :math:`\frac{\text{cost unit}}{\text{energy unit}}`
 
-        The **edge length** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the
-        **specific flow costs**.
+        The **edge length** of the advanced system visualization
+        scales with the **specific flow costs**.
         """
         return self._edge_formatier.edge_specific_flow_costs
 
@@ -3254,8 +3277,8 @@ class ICRHybridier(Resultier):
         :math:`e_{\text{flow}}` in
         :math:`\frac{\text{emission unit}}{\text{energy unit}}`
 
-        The **edge greyscale** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the **specific emissions**.
+        The **edge greyscale** of the advanced system visualization
+        scales with the **specific emissions**.
         """
         return self._edge_formatier.edge_specific_emissions
 
@@ -3264,8 +3287,8 @@ class ICRHybridier(Resultier):
         r"""
         Edge widths mapped to their Edge names.
 
-        The **edge width** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the **net energy flow**.
+        The **edge width** of the advanced system visualization
+        scales with the **net energy flow**.
         """
         return self._edge_formatier.edge_width
 
@@ -3306,9 +3329,9 @@ class ICRHybridier(Resultier):
 
                 - :class:`~tessif.model.components.Transformer` objects
 
-        The **node fillsize** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the
+        The **node fillsize** of the advanced system visualization scales with the
         **characteristic value**.
+
         If no capacity is defined (i.e for nodes of variable size, like busses
         or excess sources and sinks, node size is set to it's default (
         :attr:`nxgrph_visualize_defaults[node_fill_size]
@@ -3340,8 +3363,9 @@ class ICRHybridier(Resultier):
 
         :math:`P_{cap}= \text{installed capacity}`
 
-        The **node size** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the **installed capacity**.
+        The **node size** of the advanced system visualization
+        scales with the **installed capacity**.
+
         If no capacity is defined (i.e for nodes of variable size, like busses
         or excess sources and sinks, node size is set to it's default (
         :attr:`nxgrph_visualize_defaults[node_size]
@@ -3378,8 +3402,9 @@ class ICRHybridier(Resultier):
         are evaluated using :class:`CapacityResultier` on
         :paramref:`~NodeFormatier.optimized_es`.
 
-        The **node size** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the **installed capacity**.
+        The **node size** of the advanced system visualization
+        scales with the **installed capacity**.
+
         If no capacity is defined (i.e for nodes of variable size, like busses
         or excess sources and sinks, node size is set to it's default (
         :attr:`nxgrph_visualize_defaults[node_size]
@@ -3400,9 +3425,9 @@ class ICRHybridier(Resultier):
         is evaluated using :class:`CapacityResultier` on
         :paramref:`~NodeFormatier.optimized_es`.
 
-        The **node fillsize** of :ref:`integrated component results graphs
-        <Integrated_Component_Results>` scales with the
-        **characteristic value**.
+        The **node fillsize** of the advanced system visualization
+        scales with the **characteristic value**.
+
         If no capacity is defined (i.e for nodes of variable size, like busses
         or excess sources and sinks, node size is set to it's default (
         :attr:`nxgrph_visualize_defaults[node_fill_size]
@@ -3445,8 +3470,7 @@ class ICRHybridier(Resultier):
         """Mapped edge style legends.
 
         Matplotlib legend attributes mapped to their parameters to describe
-        the edge style of :ref:`integrated component results graphs
-        <Integrated_Component_Results>`. As in:
+        the edge style of the advanced system visualization. As in:
 
             - **edge length** scaling with **specific flow costs**
             - **edge width** scaling with **net energy flow**
