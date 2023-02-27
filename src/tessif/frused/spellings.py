@@ -14,7 +14,6 @@ import strutils
 
 import tessif.frused.namedtuples as nts
 from tessif.frused.configurations import mimos
-from tessif.logging import registered_logging_levels
 
 logger = logging.getLogger(__name__)
 
@@ -3582,10 +3581,7 @@ def match_key_from(mppng, smth_like, dflt=None):
     >>> print(match_key_from(lookup, smth_like='random_key', dflt='42'))
     42
     """
-    # reimport configurations for not overwriting user patched config
-    from tessif.frused.configurations import spellings_logging_level
-
-    log_level = registered_logging_levels[spellings_logging_level]
+    log_level = logging.DEBUG
 
     logger.debug(50 * "-")
     logger.debug(f"Try getting a key similiar to {smth_like}...")
