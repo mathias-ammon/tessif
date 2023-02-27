@@ -1117,7 +1117,7 @@ timeindex = sorted(timeindex)
 """Supported ``timeindex`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/timeindex.csv
+   :file: docs/source/csvs/spellings/timeindex.csv
 """
 
 timeseries = set()
@@ -1129,7 +1129,7 @@ timeseries = sorted(timeseries)
 """Supported ``timeseries`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/timeseries.csv
+   :file: docs/source/csvs/spellings/timeseries.csv
 """
 
 timeframe = set()
@@ -1141,7 +1141,7 @@ timeframe = sorted(timeframe)
 """Supported ``timeframe`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/timeframe.csv
+   :file: docs/source/csvs/spellings/timeframe.csv
 """
 
 global_constraints = set()
@@ -1153,7 +1153,7 @@ global_constraints = sorted(global_constraints)
 """Supported ``global_constraints`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/global_constraints.csv
+   :file: docs/source/csvs/spellings/global_constraints.csv
 """
 
 # TESSiF's  Energy System Model
@@ -1168,7 +1168,7 @@ accumulated_amounts = sorted(accumulated_amounts)
 """Supported ``accumulated_amounts`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/accumulated_amounts.csv
+   :file: docs/source/csvs/spellings/accumulated_amounts.csv
 """
 
 costs_for_being_active = set()
@@ -1180,7 +1180,7 @@ costs_for_being_active = sorted(costs_for_being_active)
 """Supported ``costs_for_being_active`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/costs_for_being_active.csv
+   :file: docs/source/csvs/spellings/costs_for_being_active.csv
 """
 
 expandable = set()
@@ -1192,7 +1192,7 @@ expandable = sorted(expandable)
 """Supported ``expandable`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/expandable.csv
+   :file: docs/source/csvs/spellings/expandable.csv
 """
 
 expansion_costs = set()
@@ -1204,7 +1204,7 @@ expansion_costs = sorted(expansion_costs)
 """Supported ``expansion_costs`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/expansion_costs.csv
+   :file: docs/source/csvs/spellings/expansion_costs.csv
 """
 
 expansion_limits = set()
@@ -1216,7 +1216,7 @@ expansion_limits = sorted(expansion_limits)
 """Supported ``expansion_limits`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/expansion_limits.csv
+   :file: docs/source/csvs/spellings/expansion_limits.csv
 """
 
 fixed_expansion_ratios = set()
@@ -1228,7 +1228,7 @@ fixed_expansion_ratios = sorted(fixed_expansion_ratios)
 """Supported ``fixed_expansion_ratios`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/fixed_expansion_ratios.csv
+   :file: docs/source/csvs/spellings/fixed_expansion_ratios.csv
 """
 
 flow_costs = set()
@@ -1240,7 +1240,7 @@ flow_costs = sorted(flow_costs)
 """Supported ``flow_costs`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/flow_costs.csv
+   :file: docs/source/csvs/spellings/flow_costs.csv
 """
 
 flow_efficiencies = set()
@@ -1252,7 +1252,7 @@ flow_efficiencies = sorted(flow_efficiencies)
 """Supported ``flow_efficiencies`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/flow_efficiencies.csv
+   :file: docs/source/csvs/spellings/flow_efficiencies.csv
 """
 
 flow_emissions = set()
@@ -1264,7 +1264,7 @@ flow_emissions = sorted(flow_emissions)
 """Supported ``flow_emissions`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/flow_emissions.csv
+   :file: docs/source/csvs/spellings/flow_emissions.csv
 """
 
 flow_gradients = set()
@@ -1276,7 +1276,7 @@ flow_gradients = sorted(flow_gradients)
 """Supported ``flow_gradients`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/flow_gradients.csv
+   :file: docs/source/csvs/spellings/flow_gradients.csv
 """
 
 flow_rates = set()
@@ -1288,7 +1288,7 @@ flow_rates = sorted(flow_rates)
 """Supported ``flow_rates`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/flow_rates.csv
+   :file: docs/source/csvs/spellings/flow_rates.csv
 """
 
 gradient_costs = set()
@@ -1300,7 +1300,7 @@ gradient_costs = sorted(gradient_costs)
 """Supported ``gradient_costs`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/gradient_costs.csv
+   :file: docs/source/csvs/spellings/gradient_costs.csv
 """
 
 idle_changes = set()
@@ -1312,7 +1312,7 @@ idle_changes = sorted(idle_changes)
 """Supported ``idle_changes`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/idle_changes.csv
+   :file: docs/source/csvs/spellings/idle_changes.csv
 """
 
 initial_soc = set()
@@ -1324,7 +1324,7 @@ initial_soc = sorted(initial_soc)
 """Supported ``initial_soc`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/initial_soc.csv
+   :file: docs/source/csvs/spellings/initial_soc.csv
 """
 
 initial_status = set()
@@ -1336,7 +1336,7 @@ initial_status = sorted(initial_status)
 """Supported ``initial_status`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/initial_status.csv
+   :file: docs/source/csvs/spellings/initial_status.csv
 """
 
 inputs = set()
@@ -1348,7 +1348,7 @@ inputs = sorted(inputs)
 """Supported ``inputs`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/inputs.csv
+   :file: docs/source/csvs/spellings/inputs.csv
 """
 
 interfaces = set()
@@ -1360,7 +1360,7 @@ interfaces = sorted(interfaces)
 """Supported ``interfaces`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/interfaces.csv
+   :file: docs/source/csvs/spellings/interfaces.csv
 """
 
 number_of_status_changes = set()
@@ -1372,7 +1372,7 @@ number_of_status_changes = sorted(number_of_status_changes)
 """Supported ``number_of_status_changes`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/number_of_status_changes.csv
+   :file: docs/source/csvs/spellings/number_of_status_changes.csv
 """
 
 status_inertia = set()
@@ -1384,7 +1384,7 @@ status_inertia = sorted(status_inertia)
 """Supported ``status_inertia`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/status_inertia.csv
+   :file: docs/source/csvs/spellings/status_inertia.csv
 """
 
 status_changing_costs = set()
@@ -1396,7 +1396,7 @@ status_changing_costs = sorted(status_changing_costs)
 """Supported ``status_changing_costs`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/status_changing_costs.csv
+   :file: docs/source/csvs/spellings/status_changing_costs.csv
 """
 
 outputs = set()
@@ -1408,7 +1408,7 @@ outputs = sorted(outputs)
 """Supported ``outputs`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/outputs.csv
+   :file: docs/source/csvs/spellings/outputs.csv
 """
 
 # Singular Values
@@ -1423,7 +1423,7 @@ active = sorted(active)
 """Supported ``active`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/active.csv
+   :file: docs/source/csvs/spellings/active.csv
 """
 
 expansion_problem = set()
@@ -1435,7 +1435,7 @@ expansion_problem = sorted(expansion_problem)
 """Supported ``expansion_problem`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/expansion_problem.csv
+   :file: docs/source/csvs/spellings/expansion_problem.csv
 """
 
 minimum_expansion = set()
@@ -1447,7 +1447,7 @@ minimum_expansion = sorted(minimum_expansion)
 """Supported ``minimum_expansion`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/minimum_expansion.csv
+   :file: docs/source/csvs/spellings/minimum_expansion.csv
 """
 
 maximum_expansion = set()
@@ -1459,7 +1459,7 @@ maximum_expansion = sorted(maximum_expansion)
 """Supported ``maximum_expansion`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/maximum_expansion.csv
+   :file: docs/source/csvs/spellings/maximum_expansion.csv
 """
 
 expansion_costs = set()
@@ -1471,7 +1471,7 @@ expansion_costs = sorted(expansion_costs)
 """Supported ``expansion_costs`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/expansion_costs.csv
+   :file: docs/source/csvs/spellings/expansion_costs.csv
 """
 
 oemof = set()
@@ -1483,7 +1483,7 @@ oemof = sorted(oemof)
 """Supported ``oemof`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/oemof.csv
+   :file: docs/source/csvs/spellings/oemof.csv
 """
 
 pypsa = set()
@@ -1495,7 +1495,7 @@ pypsa = sorted(pypsa)
 """Supported ``pypsa`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/pypsa.csv
+   :file: docs/source/csvs/spellings/pypsa.csv
 """
 
 fine = set()
@@ -1507,7 +1507,7 @@ fine = sorted(fine)
 """Supported ``fine`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/fine.csv
+   :file: docs/source/csvs/spellings/fine.csv
 """
 
 calliope = set()
@@ -1519,7 +1519,7 @@ calliope = sorted(calliope)
 """Supported ``calliope`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/calliope.csv
+   :file: docs/source/csvs/spellings/calliope.csv
 """
 
 name = set()
@@ -1531,7 +1531,7 @@ name = sorted(name)
 """Supported ``name`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/name.csv
+   :file: docs/source/csvs/spellings/name.csv
 """
 
 latitude = set()
@@ -1543,7 +1543,7 @@ latitude = sorted(latitude)
 """Supported ``latitude`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/latitude.csv
+   :file: docs/source/csvs/spellings/latitude.csv
 """
 
 longitude = set()
@@ -1555,7 +1555,7 @@ longitude = sorted(longitude)
 """Supported ``longitude`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/longitude.csv
+   :file: docs/source/csvs/spellings/longitude.csv
 """
 
 region = set()
@@ -1567,7 +1567,7 @@ region = sorted(region)
 """Supported ``region`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/region.csv
+   :file: docs/source/csvs/spellings/region.csv
 """
 
 sector = set()
@@ -1579,7 +1579,7 @@ sector = sorted(sector)
 """Supported ``sector`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/sector.csv
+   :file: docs/source/csvs/spellings/sector.csv
 """
 
 carrier = set()
@@ -1591,7 +1591,7 @@ carrier = sorted(carrier)
 """Supported ``carrier`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/carrier.csv
+   :file: docs/source/csvs/spellings/carrier.csv
 """
 
 component = set()
@@ -1603,7 +1603,7 @@ component = sorted(component)
 """Supported ``component`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/component.csv
+   :file: docs/source/csvs/spellings/component.csv
 """
 
 node_type = set()
@@ -1615,7 +1615,7 @@ node_type = sorted(node_type)
 """Supported ``node_type`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/node_type.csv
+   :file: docs/source/csvs/spellings/node_type.csv
 """
 
 number_of_connections = set()
@@ -1627,7 +1627,7 @@ number_of_connections = sorted(number_of_connections)
 """Supported ``number_of_connections`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/number_of_connections.csv
+   :file: docs/source/csvs/spellings/number_of_connections.csv
 """
 
 conversion_factor_full_condensation = set()
@@ -1639,7 +1639,7 @@ conversion_factor_full_condensation = sorted(conversion_factor_full_condensation
 """Supported ``conversion_factor_full_condensation`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/conversion_factor_full_condensation.csv
+   :file: docs/source/csvs/spellings/conversion_factor_full_condensation.csv
 """
 
 el_efficiency_wo_dist_heat = set()
@@ -1651,7 +1651,7 @@ el_efficiency_wo_dist_heat = sorted(el_efficiency_wo_dist_heat)
 """Supported ``el_efficiency_wo_dist_heat`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/el_efficiency_wo_dist_heat.csv
+   :file: docs/source/csvs/spellings/el_efficiency_wo_dist_heat.csv
 """
 
 enthalpy_loss = set()
@@ -1663,7 +1663,7 @@ enthalpy_loss = sorted(enthalpy_loss)
 """Supported ``enthalpy_loss`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/enthalpy_loss.csv
+   :file: docs/source/csvs/spellings/enthalpy_loss.csv
 """
 
 min_condenser_load = set()
@@ -1675,7 +1675,7 @@ min_condenser_load = sorted(min_condenser_load)
 """Supported ``min_condenser_load`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/min_condenser_load.csv
+   :file: docs/source/csvs/spellings/min_condenser_load.csv
 """
 
 power_wo_dist_heat = set()
@@ -1687,7 +1687,7 @@ power_wo_dist_heat = sorted(power_wo_dist_heat)
 """Supported ``power_wo_dist_heat`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/power_wo_dist_heat.csv
+   :file: docs/source/csvs/spellings/power_wo_dist_heat.csv
 """
 
 fraction = set()
@@ -1699,7 +1699,7 @@ fraction = sorted(fraction)
 """Supported ``fraction`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/fraction.csv
+   :file: docs/source/csvs/spellings/fraction.csv
 """
 
 fraction_n = set()
@@ -1712,7 +1712,7 @@ fraction_n = sorted(fraction_n)
 """Supported ``fraction_n`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/fractionN.csv
+   :file: docs/source/csvs/spellings/fractionN.csv
 """
 
 input = set()
@@ -1724,7 +1724,7 @@ input = sorted(input)
 """Supported ``input`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/input.csv
+   :file: docs/source/csvs/spellings/input.csv
 """
 
 input_n = set()
@@ -1737,7 +1737,7 @@ input_n = sorted(input_n)
 """Supported ``input_n`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/inputN.csv
+   :file: docs/source/csvs/spellings/inputN.csv
 """
 
 input_maximum = set()
@@ -1749,7 +1749,7 @@ input_maximum = sorted(input_maximum)
 """Supported ``input_maximum`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/input_maximum.csv
+   :file: docs/source/csvs/spellings/input_maximum.csv
 """
 
 input_minimum = set()
@@ -1760,16 +1760,8 @@ for string in variation_base["input_minimum"]:
 input_minimum = sorted(input_minimum)
 """Supported ``input_minimum`` spellings
 
-.. execute_code::
-    :hide_code:
-    :hide_headers:
-    :hide_output:
-
-    import tessif.frused.spellings as sps
-    sps.to_csv(sps.input_minimum, 'input_minimum')
-
 .. csv-table::
-   :file: source/api/frused/spellings/input_minimum.csv
+   :file: docs/source/csvs/spellings/input_minimum.csv
 """
 
 fuel_in = set()
@@ -1781,7 +1773,7 @@ fuel_in = sorted(fuel_in)
 """Supported ``fuel_in`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/fuel_in.csv
+   :file: docs/source/csvs/spellings/fuel_in.csv
 """
 
 output = set()
@@ -1793,7 +1785,7 @@ output = sorted(output)
 """Supported ``output`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/output.csv
+   :file: docs/source/csvs/spellings/output.csv
 """
 
 output_n = set()
@@ -1806,7 +1798,7 @@ output_n = sorted(output_n)
 """Supported ``output_n`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/outputN.csv
+   :file: docs/source/csvs/spellings/outputN.csv
 """
 
 output_maximum = set()
@@ -1818,7 +1810,7 @@ output_maximum = sorted(output_maximum)
 """Supported ``output_maximum`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/output_maximum.csv
+   :file: docs/source/csvs/spellings/output_maximum.csv
 """
 
 output_minimum = set()
@@ -1830,7 +1822,7 @@ output_minimum = sorted(output_minimum)
 """Supported ``output_minimum`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/output_minimum.csv
+   :file: docs/source/csvs/spellings/output_minimum.csv
 """
 
 efficiency = set()
@@ -1842,7 +1834,7 @@ efficiency = sorted(efficiency)
 """Supported ``efficiency`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/efficiency.csv
+   :file: docs/source/csvs/spellings/efficiency.csv
 """
 
 efficiency_n = set()
@@ -1855,7 +1847,7 @@ efficiency_n = sorted(efficiency_n)
 """Supported ``efficiency_n`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/efficiencyN.csv
+   :file: docs/source/csvs/spellings/efficiencyN.csv
 """
 
 maximum_efficiency = set()
@@ -1867,7 +1859,7 @@ maximum_efficiency = sorted(maximum_efficiency)
 """Supported ``maximum_efficiency`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/maximum_efficiency.csv
+   :file: docs/source/csvs/spellings/maximum_efficiency.csv
 """
 
 minimum_efficiency = set()
@@ -1879,7 +1871,7 @@ minimum_efficiency = sorted(minimum_efficiency)
 """Supported ``minimum_efficiency`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/minimum_efficiency.csv
+   :file: docs/source/csvs/spellings/minimum_efficiency.csv
 """
 
 inflow_efficiency = set()
@@ -1891,7 +1883,7 @@ inflow_efficiency = sorted(inflow_efficiency)
 """Supported ``inflow_efficiency`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/inflow_efficiency.csv
+   :file: docs/source/csvs/spellings/inflow_efficiency.csv
 """
 
 outflow_efficiency = set()
@@ -1903,7 +1895,7 @@ outflow_efficiency = sorted(outflow_efficiency)
 """Supported ``outflow_efficiency`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/outflow_efficiency.csv
+   :file: docs/source/csvs/spellings/outflow_efficiency.csv
 """
 
 loss_rate = set()
@@ -1915,7 +1907,7 @@ loss_rate = sorted(loss_rate)
 """Supported ``loss_rate`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/loss_rate.csv
+   :file: docs/source/csvs/spellings/loss_rate.csv
 """
 
 power_out = set()
@@ -1927,7 +1919,7 @@ power_out = sorted(power_out)
 """Supported ``power_out`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/power_out.csv
+   :file: docs/source/csvs/spellings/power_out.csv
 """
 
 maximum_power = set()
@@ -1939,7 +1931,7 @@ maximum_power = sorted(maximum_power)
 """Supported ``maximum_power`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/maximum_power.csv
+   :file: docs/source/csvs/spellings/maximum_power.csv
 """
 
 minimum_power = set()
@@ -1951,7 +1943,7 @@ minimum_power = sorted(minimum_power)
 """Supported ``minimum_power`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/minimum_power.csv
+   :file: docs/source/csvs/spellings/minimum_power.csv
 """
 
 power_efficiency = set()
@@ -1963,7 +1955,7 @@ power_efficiency = sorted(power_efficiency)
 """Supported ``power_efficiency`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/power_efficiency.csv
+   :file: docs/source/csvs/spellings/power_efficiency.csv
 """
 
 power_costs = set()
@@ -1975,7 +1967,7 @@ power_costs = sorted(power_costs)
 """Supported ``power_costs`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/power_costs.csv
+   :file: docs/source/csvs/spellings/power_costs.csv
 """
 
 power_emissions = set()
@@ -1987,7 +1979,7 @@ power_emissions = sorted(power_emissions)
 """Supported ``power_emissions`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/power_emissions.csv
+   :file: docs/source/csvs/spellings/power_emissions.csv
 """
 
 heat_out = set()
@@ -1999,7 +1991,7 @@ heat_out = sorted(heat_out)
 """Supported ``heat_out`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/heat_out.csv
+   :file: docs/source/csvs/spellings/heat_out.csv
 """
 
 heat_in = set()
@@ -2011,7 +2003,7 @@ heat_in = sorted(heat_in)
 """Supported ``heat_in`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/heat_in.csv
+   :file: docs/source/csvs/spellings/heat_in.csv
 """
 
 maximum_heat = set()
@@ -2023,7 +2015,7 @@ maximum_heat = sorted(maximum_heat)
 """Supported ``maximum_heat`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/maximum_heat.csv
+   :file: docs/source/csvs/spellings/maximum_heat.csv
 """
 
 minimum_heat = set()
@@ -2035,7 +2027,7 @@ minimum_heat = sorted(minimum_heat)
 """Supported ``minimum_heat`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/minimum_heat.csv
+   :file: docs/source/csvs/spellings/minimum_heat.csv
 """
 
 heat_efficiency = set()
@@ -2047,7 +2039,7 @@ heat_efficiency = sorted(heat_efficiency)
 """Supported ``heat_efficiency`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/heat_efficiency.csv
+   :file: docs/source/csvs/spellings/heat_efficiency.csv
 """
 
 heat_costs = set()
@@ -2059,7 +2051,7 @@ heat_costs = sorted(heat_costs)
 """Supported ``heat_costs`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/heat_costs.csv
+   :file: docs/source/csvs/spellings/heat_costs.csv
 """
 
 heat_emissions = set()
@@ -2071,7 +2063,7 @@ heat_emissions = sorted(heat_emissions)
 """Supported ``heat_emissions`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/heat_emissions.csv
+   :file: docs/source/csvs/spellings/heat_emissions.csv
 """
 
 maximum_extraction = set()
@@ -2083,7 +2075,7 @@ maximum_extraction = sorted(maximum_extraction)
 """Supported ``maximum_extraction`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/maximum_extraction.csv
+   :file: docs/source/csvs/spellings/maximum_extraction.csv
 """
 
 minimum_extraction = set()
@@ -2095,7 +2087,7 @@ minimum_extraction = sorted(minimum_extraction)
 """Supported ``minimum_extraction`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/minimum_extraction.csv
+   :file: docs/source/csvs/spellings/minimum_extraction.csv
 """
 
 fuelgas_losses = set()
@@ -2107,7 +2099,7 @@ fuelgas_losses = sorted(fuelgas_losses)
 """Supported ``fuelgas_losses`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/fuelgas_losses.csv
+   :file: docs/source/csvs/spellings/fuelgas_losses.csv
 """
 
 maximum_fuelgas_losses = set()
@@ -2119,7 +2111,7 @@ maximum_fuelgas_losses = sorted(maximum_fuelgas_losses)
 """Supported ``maximum_fuelgas_losses`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/maximum_fuelgas_losses.csv
+   :file: docs/source/csvs/spellings/maximum_fuelgas_losses.csv
 """
 
 minimum_fuelgas_losses = set()
@@ -2131,7 +2123,7 @@ minimum_fuelgas_losses = sorted(minimum_fuelgas_losses)
 """Supported ``minimum_fuelgas_losses`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/minimum_fuelgas_losses.csv
+   :file: docs/source/csvs/spellings/minimum_fuelgas_losses.csv
 """
 
 upper_heating_value = set()
@@ -2143,7 +2135,7 @@ upper_heating_value = sorted(upper_heating_value)
 """Supported ``upper_heating_value`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/upper_heating_value.csv
+   :file: docs/source/csvs/spellings/upper_heating_value.csv
 """
 
 lower_heating_value = set()
@@ -2155,7 +2147,7 @@ lower_heating_value = sorted(lower_heating_value)
 """Supported ``lower_heating_value`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/lower_heating_value.csv
+   :file: docs/source/csvs/spellings/lower_heating_value.csv
 """
 
 power_loss_index = set()
@@ -2167,7 +2159,7 @@ power_loss_index = sorted(power_loss_index)
 """Supported ``power_loss_index`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/power_loss_index.csv
+   :file: docs/source/csvs/spellings/power_loss_index.csv
 """
 
 back_pressure = set()
@@ -2179,7 +2171,7 @@ back_pressure = sorted(back_pressure)
 """Supported ``back_pressure`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/back_pressure.csv
+   :file: docs/source/csvs/spellings/back_pressure.csv
 """
 
 gain_rate = set()
@@ -2191,7 +2183,7 @@ gain_rate = sorted(gain_rate)
 """Supported ``gain_rate`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/gain_rate.csv
+   :file: docs/source/csvs/spellings/gain_rate.csv
 """
 
 flow_costs_n = set()
@@ -2204,7 +2196,7 @@ flow_costs_n = sorted(flow_costs_n)
 """Supported ``flow_costs_n`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/flow_costsN.csv
+   :file: docs/source/csvs/spellings/flow_costsN.csv
 """
 
 inflow_costs = set()
@@ -2216,7 +2208,7 @@ inflow_costs = sorted(inflow_costs)
 """Supported ``inflow_costs`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/inflow_costs.csv
+   :file: docs/source/csvs/spellings/inflow_costs.csv
 """
 
 inflow_costs_n = set()
@@ -2229,7 +2221,7 @@ inflow_costs_n = sorted(inflow_costs_n)
 """Supported ``inflow_costs_n`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/inflow_costsN.csv
+   :file: docs/source/csvs/spellings/inflow_costsN.csv
 """
 
 outflow_costs = set()
@@ -2241,7 +2233,7 @@ outflow_costs = sorted(outflow_costs)
 """Supported ``outflow_costs`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/outflow_costs.csv
+   :file: docs/source/csvs/spellings/outflow_costs.csv
 """
 
 outflow_costs_n = set()
@@ -2257,7 +2249,7 @@ outflow_costs_n = sorted(outflow_costs_n)
     sps.to_csv(sps.outflow_costs_n, 'outflow_costs_n', columns=6)
 
 .. csv-table::
-   :file: source/api/frused/spellings/outflow_costsN.csv
+   :file: docs/source/csvs/spellings/outflow_costsN.csv
 """
 
 emissions = set()
@@ -2269,7 +2261,7 @@ emissions = sorted(emissions)
 """Supported ``emissions`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/emissions.csv
+   :file: docs/source/csvs/spellings/emissions.csv
 """
 
 emissions_n = set()
@@ -2282,7 +2274,7 @@ emissions_n = sorted(emissions_n)
 """Supported ``emissions_n`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/emissionsN.csv
+   :file: docs/source/csvs/spellings/emissionsN.csv
 """
 
 inflow_emissions = set()
@@ -2294,7 +2286,7 @@ inflow_emissions = sorted(inflow_emissions)
 """Supported ``inflow_emissions`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/inflow_emissions.csv
+   :file: docs/source/csvs/spellings/inflow_emissions.csv
 """
 
 inflow_emissions_n = set()
@@ -2307,7 +2299,7 @@ inflow_emissions_n = sorted(inflow_emissions_n)
 """Supported ``inflow_emissions_n`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/inflow_emissionsN.csv
+   :file: docs/source/csvs/spellings/inflow_emissionsN.csv
 """
 
 outflow_emissions = set()
@@ -2319,7 +2311,7 @@ outflow_emissions = sorted(outflow_emissions)
 """Supported ``outflow_emissions`` spellings
 
 .. csv-table::
-   :file: source/api/frused/spellings/outflow_emissions.csv
+   :file: docs/source/csvs/spellings/outflow_emissions.csv
 """
 
 outflow_emissions_n = set()
@@ -2332,7 +2324,7 @@ outflow_emissions_n = sorted(outflow_emissions_n)
 """Supported ``outflow_emissions_n`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/outflow_emissionsN.csv
+   :file: docs/source/csvs/spellings/outflow_emissionsN.csv
 """
 
 ideal = set()
@@ -2344,7 +2336,7 @@ ideal = sorted(ideal)
 """Supported ``ideal`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/ideal.csv
+   :file: docs/source/csvs/spellings/ideal.csv
 """
 
 storage_capacity = set()
@@ -2356,7 +2348,7 @@ storage_capacity = sorted(storage_capacity)
 """Supported ``storage_capacity`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/storage_capacity.csv
+   :file: docs/source/csvs/spellings/storage_capacity.csv
 """
 
 installed_capacity = set()
@@ -2368,7 +2360,7 @@ installed_capacity = sorted(installed_capacity)
 """Supported ``installed_capacity`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/installed_capacity.csv
+   :file: docs/source/csvs/spellings/installed_capacity.csv
 """
 
 nominal_value = set()
@@ -2380,7 +2372,7 @@ nominal_value = sorted(nominal_value)
 """Supported ``nominal_value`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/nominal_value.csv
+   :file: docs/source/csvs/spellings/nominal_value.csv
 """
 
 accumulated_minimum = set()
@@ -2392,7 +2384,7 @@ accumulated_minimum = sorted(accumulated_minimum)
 """Supported ``accumulated_minimum`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/accumulated_minimum.csv
+   :file: docs/source/csvs/spellings/accumulated_minimum.csv
 """
 
 accumulated_maximum = set()
@@ -2404,7 +2396,7 @@ accumulated_maximum = sorted(accumulated_maximum)
 """Supported ``accumulated_maximum`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/accumulated_maximum.csv
+   :file: docs/source/csvs/spellings/accumulated_maximum.csv
 """
 
 minimum = set()
@@ -2416,7 +2408,7 @@ minimum = sorted(minimum)
 """Supported ``minimum`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/minimum.csv
+   :file: docs/source/csvs/spellings/minimum.csv
 """
 
 maximum = set()
@@ -2428,7 +2420,7 @@ maximum = sorted(maximum)
 """Supported ``maximum`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/maximum.csv
+   :file: docs/source/csvs/spellings/maximum.csv
 """
 
 positive_gradient = set()
@@ -2440,7 +2432,7 @@ positive_gradient = sorted(positive_gradient)
 """Supported ``positive_gradient`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/positive_gradient.csv
+   :file: docs/source/csvs/spellings/positive_gradient.csv
 """
 
 input_positive_gradient = set()
@@ -2452,7 +2444,7 @@ input_positive_gradient = sorted(input_positive_gradient)
 """Supported ``input_positive_gradient`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/input_positive_gradient.csv
+   :file: docs/source/csvs/spellings/input_positive_gradient.csv
 """
 
 output_positive_gradient = set()
@@ -2464,7 +2456,7 @@ output_positive_gradient = sorted(output_positive_gradient)
 """Supported ``output_positive_gradient`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/output_positive_gradient.csv
+   :file: docs/source/csvs/spellings/output_positive_gradient.csv
 """
 
 positive_gradient_costs = set()
@@ -2476,7 +2468,7 @@ positive_gradient_costs = sorted(positive_gradient_costs)
 """Supported ``positive_gradient_costs`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/positive_gradient_costs.csv
+   :file: docs/source/csvs/spellings/positive_gradient_costs.csv
 """
 
 negative_gradient = set()
@@ -2488,7 +2480,7 @@ negative_gradient = sorted(negative_gradient)
 """Supported ``negative_gradient`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/negative_gradient.csv
+   :file: docs/source/csvs/spellings/negative_gradient.csv
 """
 
 input_negative_gradient = set()
@@ -2500,7 +2492,7 @@ input_negative_gradient = sorted(input_negative_gradient)
 """Supported ``input_negative_gradient`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/input_negative_gradient.csv
+   :file: docs/source/csvs/spellings/input_negative_gradient.csv
 """
 
 output_negative_gradient = set()
@@ -2512,7 +2504,7 @@ output_negative_gradient = sorted(output_negative_gradient)
 """Supported ``output_negative_gradient`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/output_negative_gradient.csv
+   :file: docs/source/csvs/spellings/output_negative_gradient.csv
 """
 
 negative_gradient_costs = set()
@@ -2524,7 +2516,7 @@ negative_gradient_costs = sorted(negative_gradient_costs)
 """Supported ``negative_gradient_costs`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/negative_gradient_costs.csv
+   :file: docs/source/csvs/spellings/negative_gradient_costs.csv
 """
 
 # Energy System Component Identifiers
@@ -2538,7 +2530,7 @@ bus = sorted(bus)
 """Supported ``bus`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/bus.csv
+   :file: docs/source/csvs/spellings/bus.csv
 """
 
 sink = set()
@@ -2550,7 +2542,7 @@ sink = sorted(sink)
 """Supported ``sink`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/sink.csv
+   :file: docs/source/csvs/spellings/sink.csv
 """
 
 source = set()
@@ -2562,7 +2554,7 @@ source = sorted(source)
 """Supported ``source`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/source.csv
+   :file: docs/source/csvs/spellings/source.csv
 """
 
 storage = set()
@@ -2574,7 +2566,7 @@ storage = sorted(storage)
 """Supported ``storage`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/storage.csv
+   :file: docs/source/csvs/spellings/storage.csv
 """
 
 transformer = set()
@@ -2586,7 +2578,7 @@ transformer = sorted(transformer)
 """Supported ``transformer`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/transformer.csv
+   :file: docs/source/csvs/spellings/transformer.csv
 """
 
 connector = set()
@@ -2598,7 +2590,7 @@ connector = sorted(connector)
 """Supported ``connector`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/connector.csv
+   :file: docs/source/csvs/spellings/connector.csv
 """
 
 # Energy System Component Identifiers - Energy Carrier
@@ -2611,7 +2603,7 @@ commodity = sorted(commodity)
 """Supported ``commodity`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/commodity.csv
+   :file: docs/source/csvs/spellings/commodity.csv
 """
 
 hardcoal = set()
@@ -2623,7 +2615,7 @@ hardcoal = sorted(hardcoal)
 """Supported ``hardcoal`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/hardcoal.csv
+   :file: docs/source/csvs/spellings/hardcoal.csv
 """
 
 lignite = set()
@@ -2635,7 +2627,7 @@ lignite = sorted(lignite)
 """Supported ``lignite`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/lignite.csv
+   :file: docs/source/csvs/spellings/lignite.csv
 """
 
 gas = set()
@@ -2647,7 +2639,7 @@ gas = sorted(gas)
 """Supported ``gas`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/gas.csv
+   :file: docs/source/csvs/spellings/gas.csv
 """
 
 nuclear = set()
@@ -2663,7 +2655,7 @@ nuclear = sorted(nuclear)
 """Supported ``nuclear`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/nuclear.csv
+   :file: docs/source/csvs/spellings/nuclear.csv
 """
 
 oil = set()
@@ -2675,7 +2667,7 @@ oil = sorted(oil)
 """Supported ``oil`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/oil.csv
+   :file: docs/source/csvs/spellings/oil.csv
 """
 
 solar = set()
@@ -2687,7 +2679,7 @@ solar = sorted(solar)
 """Supported ``solar`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/solar.csv
+   :file: docs/source/csvs/spellings/solar.csv
 """
 
 wind = set()
@@ -2699,7 +2691,7 @@ wind = sorted(wind)
 """Supported ``wind`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/wind.csv
+   :file: docs/source/csvs/spellings/wind.csv
 """
 
 water = set()
@@ -2711,7 +2703,7 @@ water = sorted(water)
 """Supported ``water`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/water.csv
+   :file: docs/source/csvs/spellings/water.csv
 """
 
 hot_water = set()
@@ -2723,7 +2715,7 @@ hot_water = sorted(hot_water)
 """Supported ``hot_water`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/hot_water.csv
+   :file: docs/source/csvs/spellings/hot_water.csv
 """
 
 steam = set()
@@ -2735,7 +2727,7 @@ steam = sorted(steam)
 """Supported ``steam`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/steam.csv
+   :file: docs/source/csvs/spellings/steam.csv
 """
 
 biomass = set()
@@ -2747,7 +2739,7 @@ biomass = sorted(biomass)
 """Supported ``biomass`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/biomass.csv
+   :file: docs/source/csvs/spellings/biomass.csv
 """
 
 electricity = set()
@@ -2759,7 +2751,7 @@ electricity = sorted(electricity)
 """Supported ``electricity`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/electricity.csv
+   :file: docs/source/csvs/spellings/electricity.csv
 """
 
 # Energy System Component Identifiers - Sector
@@ -2772,7 +2764,7 @@ power = sorted(power)
 """Supported ``power`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/power.csv
+   :file: docs/source/csvs/spellings/power.csv
 """
 
 heat = set()
@@ -2784,7 +2776,7 @@ heat = sorted(heat)
 """Supported ``heat`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/heat.csv
+   :file: docs/source/csvs/spellings/heat.csv
 """
 
 mobility = set()
@@ -2796,7 +2788,7 @@ mobility = sorted(mobility)
 """Supported ``mobility`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/mobility.csv
+   :file: docs/source/csvs/spellings/mobility.csv
 """
 
 coupled = set()
@@ -2808,7 +2800,7 @@ coupled = sorted(coupled)
 """Supported ``coupled`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/coupled.csv
+   :file: docs/source/csvs/spellings/coupled.csv
 """
 
 # Energy System Component Identifiers - Name
@@ -2821,7 +2813,7 @@ renewables = sorted(renewables)
 """Supported ``renewables`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/renewables.csv
+   :file: docs/source/csvs/spellings/renewables.csv
 """
 
 photovoltaic = set()
@@ -2833,7 +2825,7 @@ photovoltaic = sorted(photovoltaic)
 """Supported ``photovoltaic`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/photovoltaic.csv
+   :file: docs/source/csvs/spellings/photovoltaic.csv
 """
 
 solarthermal = set()
@@ -2845,7 +2837,7 @@ solarthermal = sorted(solarthermal)
 """Supported ``solarthermal`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/solarthermal.csv
+   :file: docs/source/csvs/spellings/solarthermal.csv
 """
 
 onshore = set()
@@ -2857,7 +2849,7 @@ onshore = sorted(onshore)
 """Supported ``onshore`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/onshore.csv
+   :file: docs/source/csvs/spellings/onshore.csv
 """
 
 offshore = set()
@@ -2869,7 +2861,7 @@ offshore = sorted(offshore)
 """Supported ``offshore`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/offshore.csv
+   :file: docs/source/csvs/spellings/offshore.csv
 """
 
 hydro_electric = set()
@@ -2881,7 +2873,7 @@ hydro_electric = sorted(hydro_electric)
 """Supported ``hydro_electric`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/hydro_electric.csv
+   :file: docs/source/csvs/spellings/hydro_electric.csv
 """
 
 mimo_transformer = set()
@@ -2893,7 +2885,7 @@ mimo_transformer = sorted(mimo_transformer)
 """Supported ``mimo_transformer`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/mimo_transformer.csv
+   :file: docs/source/csvs/spellings/mimo_transformer.csv
 """
 
 sito_flex_transformer = set()
@@ -2905,7 +2897,7 @@ sito_flex_transformer = sorted(sito_flex_transformer)
 """Supported ``sito_flex_transformer`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/sito_flex_transformer.csv
+   :file: docs/source/csvs/spellings/sito_flex_transformer.csv
 """
 
 generic_chp = set()
@@ -2917,7 +2909,7 @@ generic_chp = sorted(generic_chp)
 """Supported ``generic_chp`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/generic_chp.csv
+   :file: docs/source/csvs/spellings/generic_chp.csv
 """
 
 siso_nonlinear_transformer = set()
@@ -2929,7 +2921,7 @@ siso_nonlinear_transformer = sorted(siso_nonlinear_transformer)
 """Supported ``siso_nonlinear_transformer`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/siso_nonlinear_transformer.csv
+   :file: docs/source/csvs/spellings/siso_nonlinear_transformer.csv
 """
 
 combined_heat_power = set()
@@ -2941,7 +2933,7 @@ combined_heat_power = sorted(combined_heat_power)
 """Supported ``combined_heat_power`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/combined_heat_power.csv
+   :file: docs/source/csvs/spellings/combined_heat_power.csv
 """
 
 power_plant = set()
@@ -2953,7 +2945,7 @@ power_plant = sorted(power_plant)
 """Supported ``power_plant`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/power_plant.csv
+   :file: docs/source/csvs/spellings/power_plant.csv
 """
 
 heat_plant = set()
@@ -2965,7 +2957,7 @@ heat_plant = sorted(heat_plant)
 """Supported ``heat_plant`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/heat_plant.csv
+   :file: docs/source/csvs/spellings/heat_plant.csv
 """
 
 electrical_line = set()
@@ -2977,7 +2969,7 @@ electrical_line = sorted(electrical_line)
 """Supported ``electrical_line`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/electrical_line.csv
+   :file: docs/source/csvs/spellings/electrical_line.csv
 """
 
 gas_station = set()
@@ -2989,7 +2981,7 @@ gas_station = sorted(gas_station)
 """Supported ``gas_station`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/gas_station.csv
+   :file: docs/source/csvs/spellings/gas_station.csv
 """
 
 gas_pipeline = set()
@@ -3001,7 +2993,7 @@ gas_pipeline = sorted(gas_pipeline)
 """Supported ``gas_pipeline`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/gas_pipeline.csv
+   :file: docs/source/csvs/spellings/gas_pipeline.csv
 """
 
 gas_delivery = set()
@@ -3013,7 +3005,7 @@ gas_delivery = sorted(gas_delivery)
 """Supported ``gas_delivery`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/gas_delivery.csv
+   :file: docs/source/csvs/spellings/gas_delivery.csv
 """
 
 oil_pipeline = set()
@@ -3025,7 +3017,7 @@ oil_pipeline = sorted(oil_pipeline)
 """Supported ``oil_pipeline`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/oil_pipeline.csv
+   :file: docs/source/csvs/spellings/oil_pipeline.csv
 """
 
 oil_delivery = set()
@@ -3037,7 +3029,7 @@ oil_delivery = sorted(oil_delivery)
 """Supported ``oil_delivery`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/oil_delivery.csv
+   :file: docs/source/csvs/spellings/oil_delivery.csv
 """
 
 generic_storage = set()
@@ -3049,7 +3041,7 @@ generic_storage = sorted(generic_storage)
 """Supported ``generic_storage`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/generic_storage.csv
+   :file: docs/source/csvs/spellings/generic_storage.csv
 """
 
 hydro_electrical_storage = set()
@@ -3061,7 +3053,7 @@ hydro_electrical_storage = sorted(hydro_electrical_storage)
 """Supported ``hydro_electrical_storage`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/hydro_electrical_storage.csv
+   :file: docs/source/csvs/spellings/hydro_electrical_storage.csv
 """
 
 electro_chemical_storage = set()
@@ -3073,7 +3065,7 @@ electro_chemical_storage = sorted(electro_chemical_storage)
 """Supported ``electro_chemical_storage`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/electro_chemical_storage.csv
+   :file: docs/source/csvs/spellings/electro_chemical_storage.csv
 """
 
 electro_mechanical_storage = set()
@@ -3085,7 +3077,7 @@ electro_mechanical_storage = sorted(electro_mechanical_storage)
 """Supported ``electro_mechanical_storage`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/electro_mechanical_storage.csv
+   :file: docs/source/csvs/spellings/electro_mechanical_storage.csv
 """
 
 thermal_energy_storage = set()
@@ -3097,7 +3089,7 @@ thermal_energy_storage = sorted(thermal_energy_storage)
 """Supported ``thermal_energy_storage`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/thermal_energy_storage.csv
+   :file: docs/source/csvs/spellings/thermal_energy_storage.csv
 """
 
 power2x = set()
@@ -3109,7 +3101,7 @@ power2x = sorted(power2x)
 """Supported ``power2x`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/power2x.csv
+   :file: docs/source/csvs/spellings/power2x.csv
 """
 
 power2heat = set()
@@ -3121,7 +3113,7 @@ power2heat = sorted(power2heat)
 """Supported ``power2heat`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/power2heat.csv
+   :file: docs/source/csvs/spellings/power2heat.csv
 """
 
 imported = set()
@@ -3133,7 +3125,7 @@ imported = sorted(imported)
 """Supported ``imported`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/imported.csv
+   :file: docs/source/csvs/spellings/imported.csv
 """
 
 backup = set()
@@ -3145,7 +3137,7 @@ backup = sorted(backup)
 """Supported ``backup`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/backup.csv
+   :file: docs/source/csvs/spellings/backup.csv
 """
 
 demand = set()
@@ -3157,7 +3149,7 @@ demand = sorted(demand)
 """Supported ``demand`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/demand.csv
+   :file: docs/source/csvs/spellings/demand.csv
 """
 
 export = set()
@@ -3169,7 +3161,7 @@ export = sorted(export)
 """Supported ``export`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/export.csv
+   :file: docs/source/csvs/spellings/export.csv
 """
 
 excess = set()
@@ -3181,7 +3173,7 @@ excess = sorted(excess)
 """Supported ``excess`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/excess.csv
+   :file: docs/source/csvs/spellings/excess.csv
 """
 
 
@@ -3194,7 +3186,7 @@ already_installed = sorted(already_installed)
 """Supported ``already_installed`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/already_installed.csv
+   :file: docs/source/csvs/spellings/already_installed.csv
 """
 
 milp = set()
@@ -3206,7 +3198,7 @@ milp = sorted(milp)
 """Supported ``milp`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/milp.csv
+   :file: docs/source/csvs/spellings/milp.csv
 """
 
 startup_costs = set()
@@ -3218,7 +3210,7 @@ startup_costs = sorted(startup_costs)
 """Supported ``startup_costs`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/startup_costs.csv
+   :file: docs/source/csvs/spellings/startup_costs.csv
 """
 
 shutdown_costs = set()
@@ -3230,7 +3222,7 @@ shutdown_costs = sorted(shutdown_costs)
 """Supported ``shutdown_costs`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/shutdown_costs.csv
+   :file: docs/source/csvs/spellings/shutdown_costs.csv
 """
 
 minimum_uptime = set()
@@ -3242,7 +3234,7 @@ minimum_uptime = sorted(minimum_uptime)
 """Supported ``minimum_uptime`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/minimum_uptime.csv
+   :file: docs/source/csvs/spellings/minimum_uptime.csv
 """
 
 minimum_downtime = set()
@@ -3254,7 +3246,7 @@ minimum_downtime = sorted(minimum_downtime)
 """Supported ``minimum_downtime`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/minimum_downtime.csv
+   :file: docs/source/csvs/spellings/minimum_downtime.csv
 """
 
 initial_status = set()
@@ -3266,7 +3258,7 @@ initial_status = sorted(initial_status)
 """Supported ``initial_status`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/initial_status.csv
+   :file: docs/source/csvs/spellings/initial_status.csv
 """
 
 initial_soc = set()
@@ -3278,7 +3270,7 @@ initial_soc = sorted(initial_soc)
 """Supported ``initial_soc`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/initial_soc.csv
+   :file: docs/source/csvs/spellings/initial_soc.csv
 """
 
 exogenously_set = set()
@@ -3290,7 +3282,7 @@ exogenously_set = sorted(exogenously_set)
 """Supported ``exogenously_set`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/exogenously_set.csv
+   :file: docs/source/csvs/spellings/exogenously_set.csv
 """
 
 exogenously_set_value = set()
@@ -3302,7 +3294,7 @@ exogenously_set_value = sorted(exogenously_set_value)
 """Supported ``exogenously_set_value`` spellings.
 
 .. csv-table::
-   :file: source/api/frused/spellings/exogenously_set_value.csv
+   :file: docs/source/csvs/spellings/exogenously_set_value.csv
 """
 
 energy_system_component_identifiers = nts.NodeColorGroupings(
@@ -3385,7 +3377,7 @@ energy_system_component_identifiers = nts.NodeColorGroupings(
 
 #     name: str
 #         Table is stored in
-#         ``tessif/../doc/source/api/frused/spellings/name.csv``
+#         ``tessif/../doc/docs/source/csvs/spellings/name.csv``
 
 #     columns: int, default=4
 #         Number of columns the csv table will have
@@ -3394,7 +3386,7 @@ energy_system_component_identifiers = nts.NodeColorGroupings(
 #         String representation of the path the csv is written
 #         to. Default of ``None`` translates to::
 
-#             tessif_doc/source/api/frused/spellings/name.csv
+#             tessif_doc/docs/source/csvs/spellings/name.csv
 
 #     kwargs:
 #         kwargs are passed to `pandas.DataFrame.to_csv
@@ -3488,10 +3480,7 @@ def get_from(dct, smth_like, dflt=None):
     >>> print(get_from(lookup, smth_like='co2_emissions', dflt='42'))
     42
     """
-    # reimport configurations for not overwriting user patched config
-    from tessif.frused.configurations import spellings_logging_level
-
-    log_level = registered_logging_levels[spellings_logging_level]
+    log_level = logging.DEBUG
 
     getattr(logger, log_level)(50 * "-")
     getattr(logger, log_level)(f"Try getting a key similar to {smth_like}...")

@@ -92,46 +92,12 @@ Categorized by :attr:`~tessif.frused.namedtuples.NodeColorGroupings`
 
 For each category there is a mapping of identifiers to colors
 
-.. execute_code::
-    :hide_code:
-    :hide_headers:
-    :hide_output:
-
-    from tessif.frused.paths import doc_dir
-    import os
-    import tessif.frused.themes as themes
-    import pandas
-    import dutils
-
-    for pos, dct in enumerate(themes.colors):
-        category = themes.colors._fields[pos]
-
-        path = os.path.join(
-            doc_dir, 'source', 'api', 'frused',
-            'themes', '{}_colors.png'.format(category))
-        fig = themes._plot_colortable(
-            dct, str(category),
-            sort_colors=False, emptycols=0)
-        fig.savefig(path)
-
-
-        csv_path = os.path.join(
-            doc_dir, 'source', 'api', 'frused',
-            'themes', '{}.csv'.format(category))
-
-        df = dutils.to_dataframe(
-            dct, columns=2, fillvalue='')
-
-        df.to_csv(csv_path, header=None, index=None, na_rep='None')
-
-|
-
 **Component Grouped Colors:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/component.csv
+    :file: docs/source/csvs/themes/component.csv
 
-.. image:: themes/component_colors.png
+.. image:: ../../images/themes/component_colors.png
     :align: center
     :alt: Image showing the supported component colors
 
@@ -140,10 +106,10 @@ For each category there is a mapping of identifiers to colors
 **Named Grouped Colors:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/name.csv
+    :file: docs/source/csvs/themes/name.csv
     :stub-columns: 1
 
-.. image:: themes/name_colors.png
+.. image:: ../../images/themes/name_colors.png
     :align: center
     :alt: Image showing the supported name colors
 
@@ -152,10 +118,10 @@ For each category there is a mapping of identifiers to colors
 **Carrier Grouped Colors:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/carrier.csv
+    :file: docs/source/csvs/themes/carrier.csv
     :stub-columns: 1
 
-.. image:: themes/carrier_colors.png
+.. image:: ../../images/themes/carrier_colors.png
     :align: center
     :alt: Image showing the supported carrier colors
 
@@ -164,10 +130,10 @@ For each category there is a mapping of identifiers to colors
 **Sector Grouped Colors:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/sector.csv
+    :file: docs/source/csvs/themes/sector.csv
     :stub-columns: 1
 
-.. image:: themes/sector_colors.png
+.. image:: ../../images/themes/sector_colors.png
     :align: center
     :alt: Image showing the supported sector colors
 """
@@ -763,42 +729,14 @@ Categorized by :attr:`~tessif.frused.namedtuples.NodeColorGroupings`
 
 For each category there is a mapping of identifiers to colors
 
-.. execute_code::
-    :hide_code:
-    :hide_headers:
-    :hide_output:
-
-    from tessif.frused.paths import doc_dir
-    import os
-    import tessif.frused.themes as themes
-    import pandas
-
-    for pos, dct in enumerate(themes.cmaps):
-        category = themes.cmaps._fields[pos]
-
-        path = os.path.join(
-            doc_dir, 'source', 'api', 'frused',
-            'themes', '{}_colormaps.png'.format(category))
-        fig = themes._plot_color_gradients(category, dct)
-        fig.savefig(path)
-
-        csv_path = os.path.join(
-            doc_dir, 'source', 'api', 'frused',
-            'themes', '{}_colormaps.csv'.format(category))
-
-        df = pandas.DataFrame(data=dct.values(),
-                              index=dct.keys())
-
-        df.to_csv(csv_path, header=None)
-
 |
 
 **Component Grouped Colormaps:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/component_colormaps.csv
+    :file: docs/source/csvs/themes/component_colormaps.csv
 
-.. image:: themes/component_colormaps.png
+.. image:: ../../images/themes/component_colormaps.png
     :align: center
     :alt: Image showing the supported component colormaps
 
@@ -807,10 +745,10 @@ For each category there is a mapping of identifiers to colors
 **Name Grouped Colormaps:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/name_colormaps.csv
+    :file: docs/source/csvs/themes/name_colormaps.csv
     :stub-columns: 1
 
-.. image:: themes/name_colormaps.png
+.. image:: ../../images/themes/name_colormaps.png
     :align: center
     :alt: Image showing the supported name colormaps
 
@@ -819,10 +757,10 @@ For each category there is a mapping of identifiers to colors
 **Carrier Grouped Colormaps:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/carrier_colormaps.csv
+    :file: docs/source/csvs/themes/carrier_colormaps.csv
     :stub-columns: 1
 
-.. image:: themes/carrier_colormaps.png
+.. image:: ../../images/themes/carrier_colormaps.png
     :align: center
     :alt: Image showing the supported carrier colormaps
 
@@ -831,10 +769,10 @@ For each category there is a mapping of identifiers to colors
 **Sector Grouped Colormaps:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/sector_colormaps.csv
+    :file: docs/source/csvs/themes/sector_colormaps.csv
     :stub-columns: 1
 
-.. image:: themes/sector_colormaps.png
+.. image:: ../../images/themes/sector_colormaps.png
     :align: center
     :alt: Image showing the supported sector colormap
 """
@@ -922,47 +860,15 @@ hatches = NodeColorGroupings(
 
 For each category there is a mapping of identifiers to hatches
 
-.. execute_code::
-    :hide_code:
-    :hide_headers:
-    :hide_output:
-
-    from tessif.frused.paths import doc_dir
-    import os
-    import tessif.frused.themes as themes
-    import pandas
-    import dutils
-
-    for pos, dct in enumerate(themes.hatches):
-        category = themes.hatches._fields[pos]
-
-        path = os.path.join(
-            doc_dir, 'source', 'api', 'frused',
-            'themes', '{}_hatches.png'.format(category))
-        fig = themes._plot_hatches(category, dct)
-        fig.savefig(path)
-
-        csv_path = os.path.join(
-            doc_dir, 'source', 'api', 'frused',
-            'themes', '{}_hatches.csv'.format(category))
-
-        for key, value in dct.copy().items():
-            dct[key] = '{lit_quote}{value}{lit_quote}'.format(
-                lit_quote='``', value=value)
-
-        df = dutils.to_dataframe(dct, columns=2, fillvalue='')
-
-        df.to_csv(csv_path, header=None)
-
 |
 
 **Component Grouped Hatches:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/component_hatches.csv
+    :file: docs/source/csvs/themes/component_hatches.csv
     :stub-columns: 1
 
-.. image:: themes/component_hatches.png
+.. image:: ../../images/themes/component_hatches.png
     :align: center
     :alt: Image showing the supported name hatches
 
@@ -971,10 +877,10 @@ For each category there is a mapping of identifiers to hatches
 **Name Grouped Hatches:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/name_hatches.csv
+    :file: docs/source/csvs/themes/name_hatches.csv
     :stub-columns: 1
 
-.. image:: themes/name_hatches.png
+.. image:: ../../images/themes/name_hatches.png
     :align: center
     :alt: Image showing the supported name hatches
 
@@ -983,10 +889,10 @@ For each category there is a mapping of identifiers to hatches
 **Carrier Grouped Hatches:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/carrier_hatches.csv
+    :file: docs/source/csvs/themes/carrier_hatches.csv
     :stub-columns: 1
 
-.. image:: themes/carrier_hatches.png
+.. image:: ../../images/themes/carrier_hatches.png
     :align: center
     :alt: Image showing the supported carrier hatches
 
@@ -995,10 +901,10 @@ For each category there is a mapping of identifiers to hatches
 **Sector Grouped Hatches:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/sector_hatches.csv
+    :file: docs/source/csvs/themes/sector_hatches.csv
     :stub-columns: 1
 
-.. image:: themes/sector_hatches.png
+.. image:: ../../images/themes/sector_hatches.png
     :align: center
     :alt: Image showing the supported sector hatches
 """
@@ -1017,41 +923,12 @@ hmaps = {
 Mapping of :mod:`~tessif` hatchmaps. Usefull when plotting sector grouped
 results to distinguish the individual components without coloring.
 
-.. execute_code::
-    :hide_code:
-    :hide_headers:
-    :hide_output:
-
-    from tessif.frused.paths import doc_dir
-    import os
-    import tessif.frused.themes as themes
-    import pandas
-    import dutils
-
-    for category, dct in themes.hmaps.items():
-
-        csv_path = os.path.join(
-            doc_dir, 'source', 'api', 'frused',
-            'themes', '{}_hatchmaps.csv'.format(category))
-
-        for key, value in dct.copy().items():
-            new_list = []
-            for i in value:
-                new_list.append(
-                    '{lit_quote}{i}{lit_quote}'.format(lit_quote='``', i=i))
-            dct[key] = new_list
-
-        df = pandas.DataFrame(data=dct.values(),
-                              index=dct.keys())
-
-        df.to_csv(csv_path, header=None)
-
 |
 
 **Sector Grouped Hatchmap:**
 
 .. csv-table:: internal representation
-    :file: source/api/frused/themes/sector_hatchmaps.csv
+    :file: docs/source/csvs/themes/sector_hatchmaps.csv
     :stub-columns: 1
 """
 
