@@ -1,7 +1,7 @@
 # tessif/model/components.py
 """Tessif component library.
 
-:mod:`~tessif.model.components` is a :mod:`tessif` module
+:mod:`~tessif.components` is a :mod:`tessif` module
 transforming the abstract data representation of an energy system stored as
 `mapping
 <https://docs.python.org/3/library/stdtypes.html#mapping-types-dict>`_ into a
@@ -16,12 +16,29 @@ Tessif's energy system model components are deliberately (somewhat) redundant
 from a computer science point of view. They are designed to be intuitively used
 by engineers. Hence parameters, attributes and namespaces are aggregated in a
 way an engineer would classify such components. For more on that see
-:mod:`tessif.model`.
+:mod:`tessif.system_model`.
+
+
+.. rubric:: Classes
+.. autosummary::
+   :nosignatures:
+
+   AbstractEsComponent
+   Bus
+   Connector
+   Source
+   Sink
+   Transformer
+   CHP
+   Storage
 """
+import json
+
 import numpy as np
 
 import tessif.frused.namedtuples as nts
 from tessif.frused.defaults import energy_system_nodes as es_defaults
+from tessif.serialize import SystemModelEncoder
 
 
 class AbstractEsComponent:
@@ -66,8 +83,7 @@ class AbstractEsComponent:
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
         as :paramref:`uid.carrier<tessif.frused.namedtuples.Uid.carrier>`
     component: str
-        One of the :ref:`energy system component identifiers
-        <Models_Tessif_Concept_ESC>`.
+        String specifying the components type. Used for post-processing.
     node_type: str
         Arbitrary node type categorization string. Parsed into a
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
@@ -110,7 +126,8 @@ class AbstractEsComponent:
         self._parse_arguments(**kwargs)
 
     def duplicate(self, prefix="", separator="_", suffix="copy"):
-        """
+        """Duplicate this component.
+
         Duplicate the energy system component and return it. Potentially
         modifying it's :paramref:`~AbstractEsComponent.name`.
 
@@ -146,14 +163,33 @@ class AbstractEsComponent:
 
     @classmethod
     def from_attributes(cls, attributes):
-        """
+        """Create component from attribute dictionary.
+
         Create an :class:`AbstractEsComponent` object from a dictionary
         of :attr:`~AbstractEsComponent.attributes`.
         """
         return cls(**attributes)
 
+    def serialize(self):
+        """Serialize this component."""
+        dct_repr = self.attributes
+
+        for uid_parameter, parameter in self.uid._asdict().items():
+            dct_repr[uid_parameter] = parameter
+
+        dct_repr.pop("uid")
+
+        serialized_component = json.dumps(
+            dct_repr,
+            cls=SystemModelEncoder,
+        )
+
+        return serialized_component
+
     def _parse_arguments_as_singular_values(self, **arguments):
-        """Utility for parsing key word arguments in to the form of::
+        """Parse singular value arguments during init.
+
+        Utility for parsing key word arguments in to the form of::
 
             parameter = value
 
@@ -169,12 +205,12 @@ class AbstractEsComponent:
         for parameter, default_value in self._parameters_and_defaults[
             "singular_values"
         ].items():
-            setattr(
-                self, "_{}".format(parameter), arguments.get(parameter, default_value)
-            )
+            setattr(self, f"_{parameter}", arguments.get(parameter, default_value))
 
     def _parse_arguments_as_singular_value_mappings(self, **arguments):
-        """Utility for parsing key word arguments in to the form of::
+        """Parse singular value mappings during init.
+
+        Utility for parsing key word arguments in to the form of::
 
             parameter = {input/output_string: value}
 
@@ -197,12 +233,14 @@ class AbstractEsComponent:
                 mapping = default_mapping
             setattr(
                 self,
-                "_{}".format(parameter),
+                f"_{parameter}",
                 {key: mapping[key] for key in sorted(mapping.keys())},
             )
 
     def _parse_arguments_as_namedtuples(self, **arguments):
-        """Utility for parsing key word arguments in to the form of::
+        """Parse namedtuples arguments during init.
+
+        Utility for parsing key word arguments in to the form of::
 
             parameter = namedtuple(*values)
 
@@ -223,10 +261,12 @@ class AbstractEsComponent:
                 if tpl is np.nan:
                     tpl = default_tuple
 
-                setattr(self, "_{}".format(parameter), getattr(nts, ntple)(*tpl))
+                setattr(self, f"_{parameter}", getattr(nts, ntple)(*tpl))
 
     def _parse_arguments_as_mapped_namedtuples(self, **arguments):
-        """Utility for parsing key word arguments in to the form of::
+        """Parse mappings of namedtuples during init.
+
+        Utility for parsing key word arguments in to the form of::
 
             parameter = {input/output_string: namedtuple(*values)}
 
@@ -254,7 +294,7 @@ class AbstractEsComponent:
 
                 setattr(
                     self,
-                    "_{}".format(parameter),
+                    f"_{parameter}",
                     {
                         key: getattr(nts, ntple)(*mapping[key])
                         for key in sorted(mapping.keys())
@@ -262,7 +302,9 @@ class AbstractEsComponent:
                 )
 
     def _parse_timeseries(self, **arguments):
-        """Utility for parsing the key word argument timeseries::
+        """Parse timeseries argument.
+
+        Utility for parsing the key word argument timeseries::
 
         timeseries = None
         timeseries = {input/output_string: MinMax namedtuple}
@@ -286,14 +328,15 @@ class AbstractEsComponent:
         setattr(self, "_{}".format("timeseries"), timeseries)
 
     def _parse_arguments(self, **arguments):
-        """
+        """Parse arguments wrapper.
+
         Key functionality wrapper for parsing component parameters.
 
         Add new functionalities to expand the support of different kind
         of arguments.
 
         Parameters
-        -----------
+        ----------
         kwargs:
             Key word arguments representing the component's parameters. The
             arguments are provided by the user and filtered by the instance
@@ -306,7 +349,8 @@ class AbstractEsComponent:
         self._parse_timeseries(**arguments)
 
     def __repr__(self):
-        """
+        """Modifiy repr to be meaningful.
+
         Returns
         -------
         descriptive_string: str
@@ -314,7 +358,7 @@ class AbstractEsComponent:
 
                 tsf.Component(attribute_name=attribute, ....)
         """
-        return "{!s}(".format(self.__class__) + ", ".join(
+        return f"{self.__class__!s}(" + ", ".join(
             [
                 *[
                     "{!r}={!r}".format(k.lstrip("_"), v)
@@ -326,7 +370,8 @@ class AbstractEsComponent:
         )
 
     def __str__(self):
-        """
+        """Modifiy str_repr to be meaningful.
+
         Returns
         -------
         descriptive_string: str
@@ -337,7 +382,7 @@ class AbstractEsComponent:
                     ....
                 )
         """
-        return "{!s}(\n".format(self.__class__) + ",\n".join(
+        return f"{self.__class__!s}(\n" + ",\n".join(
             [
                 *[
                     "    {!r}={!r}".format(k.lstrip("_"), v)
@@ -350,7 +395,9 @@ class AbstractEsComponent:
 
     @property
     def attributes(self):
-        """:class:`~collections.abc.Mapping` of entity's energy system
+        """Dictionairy of component attributes.
+
+        :class:`~collections.abc.Mapping` of entity's energy system
         component attribute names to its respective attribute values.
         """
         return {
@@ -366,7 +413,9 @@ class AbstractEsComponent:
 
     @property
     def parameters(self):
-        """:class:`~collections.abc.Mapping` of the entity's parameter names
+        """Dictionairy of component parameters (attributes).
+
+        :class:`~collections.abc.Mapping` of the entity's parameter names
         to its respective values.
 
         Note
@@ -380,7 +429,8 @@ class AbstractEsComponent:
 
     @property
     def uid(self):
-        """
+        """Component identifier as Uid namedtuples.
+
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
         as a `hashable
         <https://docs.python.org/3/library/collections.abc.html#collections.abc.Hashable>`_
@@ -458,8 +508,7 @@ class Bus(AbstractEsComponent):
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
         as :paramref:`uid.carrier<tessif.frused.namedtuples.Uid.carrier>`
     component: str
-        One of the :ref:`energy system component identifiers
-        <Models_Tessif_Concept_ESC>`.
+        String specifying the components type. Used for post-processing.
     node_type: str
         Arbitrary node type categorization string. Parsed into a
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
@@ -495,7 +544,8 @@ class Bus(AbstractEsComponent):
 
     @property
     def inputs(self):
-        """
+        """Frozenset of input uids.
+
         :class:`Hashable<collections.abc.Hashable>` container of str(
         :paramref:`uid<AbstractEsComponent.uid>`).output/input strings
         representing the inputs.
@@ -504,7 +554,8 @@ class Bus(AbstractEsComponent):
 
     @property
     def outputs(self):
-        """
+        """Frozenset of output uids.
+
         :class:`Hashable<collections.abc.Hashable>` container of str(
         :paramref:`uid<AbstractEsComponent.uid>`).output/input strings
         representing the outputs.
@@ -564,8 +615,7 @@ class Connector(AbstractEsComponent):
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
         as :paramref:`uid.carrier<tessif.frused.namedtuples.Uid.carrier>`
     component: str
-        One of the :ref:`energy system component identifiers
-        <Models_Tessif_Concept_ESC>`.
+        String specifying the components type. Used for post-processing.
     node_type: str
         Arbitrary node type categorization string. Parsed into a
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
@@ -603,7 +653,7 @@ class Connector(AbstractEsComponent):
     -------
     Default parameterized :class:`Connector` object:
 
-    >>> from tessif.model.components import Connector
+    >>> from tessif.components import Connector
     >>> connector = Connector(name='my_connector',
     ...                       interfaces=('bus_01', 'bus_02'))
     >>> print(connector.uid)
@@ -646,7 +696,8 @@ class Connector(AbstractEsComponent):
 
     @property
     def inputs(self):
-        """
+        """Frozenset of input uids.
+
         :class:`Hashable<collections.abc.Hashable>` container of str(
         :paramref:`uid<Bus.uid>`).output/input strings
         representing the inputs.
@@ -655,7 +706,8 @@ class Connector(AbstractEsComponent):
 
     @property
     def outputs(self):
-        """
+        """Frozenset of output uids.
+
         :class:`Hashable<collections.abc.Hashable>` container of str(
         :paramref:`uid<Bus.uid>`).output/input strings
         representing the outputs.
@@ -664,7 +716,8 @@ class Connector(AbstractEsComponent):
 
     @property
     def conversions(self):
-        """
+        """Dictionairy of conversion efficiencies.
+
         :class:`~collections.abc.Mapping` of connector relevant (input-name,
         output-name) tuples to their respective conversion efficiency. With
         recognized conversion efficiencies between 0 and 1.
@@ -715,8 +768,7 @@ class Source(AbstractEsComponent):
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
         as :paramref:`uid.carrier<tessif.frused.namedtuples.Uid.carrier>`
     component: str
-        One of the :ref:`energy system component identifiers
-        <Models_Tessif_Concept_ESC>`.
+        String specifying the components type. Used for post-processing.
     node_type: str
         Arbitrary node type categorization string. Parsed into a
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
@@ -951,7 +1003,7 @@ class Source(AbstractEsComponent):
     -------
     Default parameterized :class:`Source` object:
 
-    >>> from tessif.model.components import Source
+    >>> from tessif.components import Source
     >>> source = Source(name='my_source', outputs=('fuel',))
     >>> print(source.uid)
     my_source
@@ -1071,7 +1123,8 @@ class Source(AbstractEsComponent):
 
     @property
     def outputs(self):
-        """
+        """Frozenset of output uids.
+
         :class:`Hashable<collections.abc.Hashable>` container of
         hashable unique identifiers. Usually a string aka a name representing
         the outputs.
@@ -1080,7 +1133,9 @@ class Source(AbstractEsComponent):
 
     @property
     def accumulated_amounts(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of accumulated amount constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :paramref:`output name <Source.outputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax`
         :class:`~typing.NamedTuple` describing the minimum/maximum quantity
@@ -1096,7 +1151,9 @@ class Source(AbstractEsComponent):
 
     @property
     def flow_rates(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow rate constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum amount per time.
@@ -1109,7 +1166,9 @@ class Source(AbstractEsComponent):
 
     @property
     def flow_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow cost constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~numbers.Number` specifying its cost.
 
@@ -1120,7 +1179,9 @@ class Source(AbstractEsComponent):
 
     @property
     def flow_emissions(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow emission constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~numbers.Number` specifying its emissions
 
@@ -1136,7 +1197,9 @@ class Source(AbstractEsComponent):
 
     @property
     def flow_gradients(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow gradient constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the maximum positive or negative change between two following
@@ -1150,7 +1213,9 @@ class Source(AbstractEsComponent):
 
     @property
     def gradient_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow gradient costs.
+
+        :class:`~collections.abc.Mapping`
         Mapping of each :paramref:`output name<Source.outputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the costs for the respective
@@ -1164,7 +1229,9 @@ class Source(AbstractEsComponent):
 
     @property
     def timeseries(self):
-        """:class:`~collections.abc.Mapping` of an arbitrary number
+        """Tuple of flow_rates constraining timeserieses.
+
+        :class:`~collections.abc.Mapping` of an arbitrary number
         of :attr:`output names<Source.outputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum :paramref:`flow_rates` respectively.
@@ -1173,7 +1240,9 @@ class Source(AbstractEsComponent):
 
     @property
     def expandable(self):
-        """:class:`~collections.abc.Mapping`
+        """True, if maximum flow_rate is subject to solver changes.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a boolean variable
         describing if the mapped :attr:`Source.flow_rates` value can be
         increased by the  solver or not.
@@ -1182,7 +1251,9 @@ class Source(AbstractEsComponent):
 
     @property
     def expansion_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of maximum flow rate expansion costs.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~numbers.Number` specifying its expansion cost.
 
@@ -1195,7 +1266,9 @@ class Source(AbstractEsComponent):
 
     @property
     def expansion_limits(self):
-        r""":class:`~collections.abc.Mapping`
+        r"""Dictionairy of maximum flow rate expansion limits.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`output name<Source.outputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum expansion limit.
@@ -1209,7 +1282,9 @@ class Source(AbstractEsComponent):
 
     @property
     def initial_status(self):
-        """:class:`Status variable<bool>`, indicating if the entity is
+        """True, if component is milp constrained and active at first time step.
+
+        :class:`Status variable<bool>`, indicating if the entity is
         running, operating, working, doing the things its supposed to do in
         the beginning of the evaluated timeframe.
         """
@@ -1217,7 +1292,8 @@ class Source(AbstractEsComponent):
 
     @property
     def status_inertia(self):
-        """
+        """Tuple of status-inertia (milp) constraints.
+
         :class:`~tessif.frused.namedtuples.OnOff` :class:`~typing.NamedTuple`
         describing the minimum uptime and downtime. With up and downtime
         describing the minimum amount of following discrete timesteps the
@@ -1227,7 +1303,8 @@ class Source(AbstractEsComponent):
 
     @property
     def status_changing_costs(self):
-        """
+        """Tuple of status-changing (milp) constraints.
+
         :class:`~tessif.frused.namedtuples.OnOff` :class:`~typing.NamedTuple`
         describing the cost for changing status from ``on`` to ``off`` and
         from ``off`` to ``on`` respectively.
@@ -1236,7 +1313,9 @@ class Source(AbstractEsComponent):
 
     @property
     def number_of_status_changes(self):
-        """An :class:`~tessif.frused.namedtuples.OnOff`
+        """Tuple of allowed milp status changing constraints.
+
+        An :class:`~tessif.frused.namedtuples.OnOff`
         :class:`~typing.NamedTuple` describing the number of times the entity
         can change its status from ``on`` to ``off`` and from ``off`` to ``on``
         respectively.
@@ -1245,7 +1324,9 @@ class Source(AbstractEsComponent):
 
     @property
     def costs_for_being_active(self):
-        """A :class:`~number.Number`, default = 0
+        """Milp constained activity costs.
+
+        A :class:`~number.Number`, default = 0
         Describing the costs for not being inactive.
 
         Meaning for each discrete time step the entity's boolean status
@@ -1298,8 +1379,7 @@ class Sink(AbstractEsComponent):
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
         as :paramref:`uid.carrier<tessif.frused.namedtuples.Uid.carrier>`
     component: str
-        One of the :ref:`energy system component identifiers
-        <Models_Tessif_Concept_ESC>`.
+        String specifying the components type. Used for post-processing.
     node_type: str
         Arbitrary node type categorization string. Parsed into a
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
@@ -1320,7 +1400,6 @@ class Sink(AbstractEsComponent):
 
     Parameters
     ----------
-
     accumulated_amounts: ~collections.abc.Mapping
         Mapping of each :paramref:`input name <Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax`
@@ -1535,7 +1614,7 @@ class Sink(AbstractEsComponent):
     -------
     Default parameterized :class:`Sink` object:
 
-    >>> from tessif.model.components import Sink
+    >>> from tessif.components import Sink
     >>> sink = Sink(name='my_sink', inputs=('electricity',))
     >>> print(sink.uid)
     my_sink
@@ -1659,7 +1738,8 @@ class Sink(AbstractEsComponent):
 
     @property
     def inputs(self):
-        """
+        """Frozenset of input uids.
+
         :class:`Hashable<collections.abc.Hashable>` container of
         hashable unique identifiers. Usually a string aka a name representing
         the inputs.
@@ -1668,7 +1748,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def accumulated_amounts(self):
-        """:class:`~collections.abc.Mapping` of each
+        """Dictionairy of accumulated amount constraints.
+
+        :class:`~collections.abc.Mapping` of each
         :attr:`input name<Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum/maximum quantity the entity's inflow has available (in total).
@@ -1683,7 +1765,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def flow_rates(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow rate constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum amount per time.
@@ -1696,7 +1780,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def flow_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow cost constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~numbers.Number` specifying its cost.
 
@@ -1707,7 +1793,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def flow_emissions(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow emission constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~numbers.Number` specifying its emissions
 
@@ -1723,7 +1811,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def flow_gradients(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow gradient constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the maximum positive or negative change between two following
@@ -1737,7 +1827,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def gradient_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow gradient costs.
+
+        :class:`~collections.abc.Mapping`
         Mapping of each :paramref:`input name<Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the costs for the respective
@@ -1751,7 +1843,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def timeseries(self):
-        """:class:`~collections.abc.Mapping` of an arbitrary number
+        """Tuple of flow_rates constraining timeserieses.
+
+        :class:`~collections.abc.Mapping` of an arbitrary number
         of :attr:`input names<Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum :paramref:`flow_rates` respectively.
@@ -1760,7 +1854,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def expandable(self):
-        """:class:`~collections.abc.Mapping`
+        """True, if maximum flow_rate is subject to solver changes.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a boolean variable
         describing if the mapped :attr:`Sink.flow_rates` value can be
         increased by the  solver or not.
@@ -1769,7 +1865,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def expansion_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of maximum flow rate expansion costs.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~numbers.Number` specifying its expansion cost.
 
@@ -1782,7 +1880,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def expansion_limits(self):
-        r""":class:`~collections.abc.Mapping`
+        r"""Dictionairy of maximum flow rate expansion limits.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input name<Sink.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum expansion limit.
@@ -1796,7 +1896,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def initial_status(self):
-        """:class:`Status variable<bool>`, indicating if the entity is
+        """True, if component is milp constrained and active at first time step.
+
+        :class:`Status variable<bool>`, indicating if the entity is
         running, operating, working, doing the things its supposed to do in
         the beginning of the evaluated timeframe.
         """
@@ -1804,7 +1906,8 @@ class Sink(AbstractEsComponent):
 
     @property
     def status_inertia(self):
-        """
+        """Tuple of status-inertia (milp) constraints.
+
         :class:`~tessif.frused.namedtuples.OnOff` :class:`~typing.NamedTuple`
         describing the minimum uptime and downtime. With up and downtime
         describing the minimum amount of following discrete timesteps the
@@ -1814,7 +1917,8 @@ class Sink(AbstractEsComponent):
 
     @property
     def status_changing_costs(self):
-        """
+        """Tuple of status-changing (milp) constraints.
+
         :class:`~tessif.frused.namedtuples.OnOff` :class:`~typing.NamedTuple`
         describing the cost for changing status from ``on`` to ``off`` and
         from ``off`` to ``on`` respectively.
@@ -1823,7 +1927,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def number_of_status_changes(self):
-        """An :class:`~tessif.frused.namedtuples.OnOff`
+        """Tuple of allowed milp status changing constraints.
+
+        An :class:`~tessif.frused.namedtuples.OnOff`
         :class:`~typing.NamedTuple` describing the number of times the entity
         can change its status from ``on`` to ``off`` and from ``off`` to ``on``
         respectively.
@@ -1832,7 +1938,9 @@ class Sink(AbstractEsComponent):
 
     @property
     def costs_for_being_active(self):
-        """A :class:`~number.Number`, default = 0
+        """Milp constained activity costs.
+
+        A :class:`~number.Number`, default = 0
         Describing the costs for not being inactive.
 
         Meaning for each discrete time step the entity's boolean status
@@ -1903,8 +2011,7 @@ class Transformer(AbstractEsComponent):
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
         as :paramref:`uid.carrier<tessif.frused.namedtuples.Uid.carrier>`
     component: str
-        One of the :ref:`energy system component identifiers
-        <Models_Tessif_Concept_ESC>`.
+        String specifying the components type. Used for post-processing.
     node_type: str
         Arbitrary node type categorization string. Parsed into a
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
@@ -1925,7 +2032,6 @@ class Transformer(AbstractEsComponent):
 
     Parameters
     ----------
-
     flow_rates: ~collections.abc.Mapping
         Mapping of each :paramref:`input/output name<Transformer.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
@@ -2131,7 +2237,7 @@ class Transformer(AbstractEsComponent):
     Default parameterized :class:`Transformer` object:
 
     >>> import pprint
-    >>> from tessif.model.components import Transformer
+    >>> from tessif.components import Transformer
     >>> transformer = Transformer(
     ...     name='my_transformer', inputs=('fuel',), outputs=('electricity',),
     ...     conversions={('fuel', 'electricity'): 0.42})
@@ -2258,7 +2364,8 @@ class Transformer(AbstractEsComponent):
 
     @property
     def inputs(self):
-        """
+        """Frozenset of input uids.
+
         :class:`Hashable<collections.abc.Hashable>` container of
         hashable unique identifiers. Usually a string aka a name representing
         the inputs.
@@ -2267,7 +2374,8 @@ class Transformer(AbstractEsComponent):
 
     @property
     def outputs(self):
-        """
+        """Frozenset of ouptu uids.
+
         :class:`Hashable<collections.abc.Hashable>` container of
         hashable unique identifiers. Usually a string aka a name representing
         the outputs.
@@ -2276,7 +2384,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def conversions(self):
-        r""":class:`~collections.abc.Mapping` of transformer relevant
+        r"""Dictionairy of conversion constraints.
+
+        :class:`~collections.abc.Mapping` of transformer relevant
         (inflow-name, outflow-name) tuples to their respective conversion
         efficiency. With recognized conversion  efficiencies between 0 and 1
         (:math:`\left[0, 1\right]`)
@@ -2285,7 +2395,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def flow_rates(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow rate constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum amount per time.
@@ -2298,7 +2410,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def flow_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow cost constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~numbers.Number` specifying its cost.
 
@@ -2309,7 +2423,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def flow_emissions(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow emission constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~numbers.Number` specifying its emissions
 
@@ -2325,7 +2441,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def flow_gradients(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow gradient constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the maximum positive or negative change between two following
@@ -2339,7 +2457,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def gradient_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow gradient costs.
+
+        :class:`~collections.abc.Mapping`
         Mapping of each :paramref:`input/output name<Transformer.inputs>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the costs for the respective
@@ -2353,7 +2473,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def timeseries(self):
-        """:class:`~collections.abc.Mapping` of an arbitrary number
+        """Tuple of flow_rates constraining timeserieses.
+
+        :class:`~collections.abc.Mapping` of an arbitrary number
         of :attr:`input/output names<Transformer.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum :paramref:`flow_rates` respectively.
@@ -2362,7 +2484,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def expandable(self):
-        """:class:`~collections.abc.Mapping`
+        """True, if maximum flow_rate is subject to solver changes.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a boolean
         variable describing if the mapped :attr:`Transformer.flow_rates`
         value can be increased by the  solver or not.
@@ -2371,7 +2495,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def expansion_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of maximum flow rate expansion costs.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~numbers.Number` specifying its expansion cost.
 
@@ -2384,7 +2510,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def expansion_limits(self):
-        r""":class:`~collections.abc.Mapping`
+        r"""Dictionairy of maximum flow rate expansion limits.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Transformer.inputs>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum expansion limit.
@@ -2398,7 +2526,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def initial_status(self):
-        """:class:`Status variable<bool>`, indicating if the entity is
+        """True, if component is milp constrained and active at first time step.
+
+        :class:`Status variable<bool>`, indicating if the entity is
         running, operating, working, doing the things its supposed to do in
         the beginning of the evaluated timeframe.
         """
@@ -2406,7 +2536,8 @@ class Transformer(AbstractEsComponent):
 
     @property
     def status_inertia(self):
-        """
+        """Tuple of status-inertia (milp) constraints.
+
         :class:`~tessif.frused.namedtuples.OnOff` :class:`~typing.NamedTuple`
         describing the minimum uptime and downtime. With up and downtime
         describing the minimum amount of following discrete timesteps the
@@ -2416,7 +2547,8 @@ class Transformer(AbstractEsComponent):
 
     @property
     def status_changing_costs(self):
-        """
+        """Tuple of status-changing (milp) constraints.
+
         :class:`~tessif.frused.namedtuples.OnOff` :class:`~typing.NamedTuple`
         describing the cost for changing status from ``on`` to ``off`` and
         from ``off`` to ``on`` respectively.
@@ -2425,7 +2557,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def number_of_status_changes(self):
-        """An :class:`~tessif.frused.namedtuples.OnOff`
+        """Tuple of allowed milp status changing constraints.
+
+        An :class:`~tessif.frused.namedtuples.OnOff`
         :class:`~typing.NamedTuple` describing the number of times the entity
         can change its status from ``on`` to ``off`` and from ``off`` to ``on``
         respectively.
@@ -2434,7 +2568,9 @@ class Transformer(AbstractEsComponent):
 
     @property
     def costs_for_being_active(self):
-        """A :class:`~number.Number`, default = 0
+        """Milp constained activity costs.
+
+        A :class:`~number.Number`, default = 0
         Describing the costs for not being inactive.
 
         Meaning for each discrete time step the entity's boolean status
@@ -2492,8 +2628,7 @@ class CHP(Transformer):
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
         as :paramref:`uid.carrier<tessif.frused.namedtuples.Uid.carrier>`
     component: str
-        One of the :ref:`energy system component identifiers
-        <Models_Tessif_Concept_ESC>`.
+        String specifying the components type. Used for post-processing.
     node_type: str
         Arbitrary node type categorization string. Parsed into a
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
@@ -2514,7 +2649,6 @@ class CHP(Transformer):
 
     Parameters
     ----------
-
     back_pressure: bool,
         Boolean to specify if back-pressure characteristics shall be used.
         Set to True and Q_CW_min to zero for back-pressure turbines.
@@ -2791,7 +2925,7 @@ class CHP(Transformer):
     Variable efficiency :class:`CHP` object:
 
     >>> import pprint
-    >>> from tessif.model.components import CHP
+    >>> from tessif.components import CHP
     >>> chp = CHP(
     ...     name='my_chp', inputs=('fuel',), outputs=('electricity','heat',),
     ...     conversions={('fuel', 'electricity'): 0.3, ('fuel', 'heat'): 0.5},
@@ -2877,14 +3011,18 @@ class CHP(Transformer):
 
     @property
     def back_pressure(self):
-        """Boolean to specify if back-pressure characteristics shall be used.
+        """True if characterized as back-pressure.
+
+        Boolean to specify if back-pressure characteristics shall be used.
         Set to True and Q_CW_min to zero for back-pressure turbines.
         """
         return self._back_pressure
 
     @property
     def conversion_factor_full_condensation(self):
-        r""":class:`~collections.abc.Mapping` where the
+        r"""Dictionairy of efficiencies when fully condensating.
+
+        :class:`~collections.abc.Mapping` where the
         (inflow-name, outflow-name) tuple of the main flow is the only key and
         it's conversion efficiency when there is no tapped flow is it's value.
         Conversion efficiencies are expected to be between 0 and 1
@@ -2997,8 +3135,7 @@ class Storage(AbstractEsComponent):
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
         as :paramref:`uid.carrier<tessif.frused.namedtuples.Uid.carrier>`
     component: str
-        One of the :ref:`energy system component identifiers
-        <Models_Tessif_Concept_ESC>`.
+        String specifying the components type. Used for post-processing.
     node_type: str
         Arbitrary node type categorization string. Parsed into a
         :class:`namedtuples.Uid<tessif.frused.namedtuples.Uid>` instance
@@ -3034,7 +3171,7 @@ class Storage(AbstractEsComponent):
         (:math:`\left[0, \text{capacity}\right]`).
 
         If ``None``, the solver does not constrain the final soc.
-        However since most :ref:`models <SupportedModels>` do not support
+        However since currently no plugin supports
         constraining the final soc, this value is primarily used to force a
         state of charge equilibrium at the beginning and the end of the
         simulated timeframe. Meaning ``final_soc == initial_soc`` so
@@ -3284,7 +3421,7 @@ class Storage(AbstractEsComponent):
     in and outflow:
 
     >>> import pprint
-    >>> from tessif.model.components import Storage
+    >>> from tessif.components import Storage
     >>> storage = Storage(
     ...     name='my_storage', input='electricity', output='electricity',
     ...     capacity=100)
@@ -3440,7 +3577,8 @@ class Storage(AbstractEsComponent):
 
     @property
     def input(self):
-        """
+        """Input uid.
+
         :class:`Hashable<collections.abc.Hashable>` unique identifier. Usually
         a string aka name representing the storage-entity's input.
         """
@@ -3448,7 +3586,8 @@ class Storage(AbstractEsComponent):
 
     @property
     def output(self):
-        """
+        """Output uid.
+
         :class:`Hashable<collections.abc.Hashable>` unique identifier. Usually
         a string aka name representing the storage-entity's output.
         """
@@ -3456,14 +3595,18 @@ class Storage(AbstractEsComponent):
 
     @property
     def capacity(self):
-        r"""Maximum :class:`~numbers.Number` of units the entity is able
+        r"""Maximum installed capacity.
+
+        Maximum :class:`~numbers.Number` of units the entity is able
         to accumulate.
         """
         return self._capacity
 
     @property
     def initial_soc(self):
-        r"""The :class:`~numbers.Number` of units the entity
+        r"""Initial SOC constraint.
+
+        The :class:`~numbers.Number` of units the entity
         has accumulated at the beginning of the evaluated timeframe.
         Usually something between  0 and :attr:`~Storage.capacity`
         (:math:`\left[0, \text{capacity}\right]`).
@@ -3472,7 +3615,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def final_soc(self):
-        r"""The :class:`~numbers.Number` of units the entity
+        r"""Final SOC constriant.
+
+        The :class:`~numbers.Number` of units the entity
         has accumulated at the end of the evaluated timeframe.
         Usually something between  0 and :attr:`~Storage.capacity`
         (:math:`\left[0, \text{capacity}\right]`).
@@ -3483,7 +3628,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def idle_changes(self):
-        """A :class:`~tessif.frused.namedtuples.PositiveNegative`
+        """Namedtuple of idle change constraints.
+
+        A :class:`~tessif.frused.namedtuples.PositiveNegative`
         :class:`~typing.NamedTuple` describing state of charge changes of two
         following discrete timesteps.
         """
@@ -3491,7 +3638,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def flow_rates(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow rate constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Storage.input>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum amount per time.
@@ -3504,7 +3653,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def flow_efficiencies(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow efficiency constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :paramref:`input/output name<Storage.input>` to a
         :class:`~numbers.Number` specifying its efficiency.
 
@@ -3515,7 +3666,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def flow_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow cost constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Storage.input>` to a
         :class:`~numbers.Number` specifying its cost.
 
@@ -3526,7 +3679,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def flow_emissions(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow emission constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Storage.input>` to a
         :class:`~numbers.Number` specifying its emissions
 
@@ -3542,7 +3697,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def flow_gradients(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow gradient constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name<Storage.input>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the maximum positive or negative change between two following
@@ -3556,7 +3713,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def gradient_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of flow gradient costs.
+
+        :class:`~collections.abc.Mapping`
         Mapping of each :paramref:`input/output name<Storage.input>` to a
         :class:`~tessif.frused.namedtuples.PositiveNegative` tuple describing
         the costs for the respective
@@ -3570,7 +3729,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def timeseries(self):
-        """:class:`~collections.abc.Mapping` of an arbitrary number
+        """Tuple of flow_rates constraining timeserieses.
+
+        :class:`~collections.abc.Mapping` of an arbitrary number
         of :attr:`input/output names<Storage.input>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum :paramref:`flow_rates` respectively.
@@ -3579,7 +3740,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def expandable(self):
-        """:class:`~collections.abc.Mapping`
+        """True, if maximum flow_rate is subject to solver changes.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name <Storage.input>` to a boolean
         variable describing if the mapped :attr:`Storage.flow_rates`
         value can be increased by the  solver or not.
@@ -3588,7 +3751,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def fixed_expansion_ratios(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of coupled capacity and flow rate expansion constraints.
+
+        :class:`~collections.abc.Mapping`
         of each :paramref:`input <Storage.input>` and
         :paramref:`output <Storage.output>` name to a boolean variable
         describing if the mapped :attr:`flow rate <Storage.flow_rates>`
@@ -3599,7 +3764,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def expansion_costs(self):
-        """:class:`~collections.abc.Mapping`
+        """Dictionairy of maximum flow rate expansion costs.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name <Storage.input>` to a
         :class:`~numbers.Number` specifying its expansion cost.
 
@@ -3612,7 +3779,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def expansion_limits(self):
-        r""":class:`~collections.abc.Mapping`
+        r"""Dictionairy of maximum flow rate expansion limits.
+
+        :class:`~collections.abc.Mapping`
         of each :attr:`input/output name <Storage.input>` to a
         :class:`~tessif.frused.namedtuples.MinMax` tuple describing the
         minimum and maximum expansion limit.
@@ -3626,7 +3795,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def initial_status(self):
-        """:class:`Status variable <bool>`, indicating if the entity is
+        """True, if component is milp constrained and active at first time step.
+
+        :class:`Status variable <bool>`, indicating if the entity is
         running, operating, working, doing the things its supposed to do in
         the beginning of the evaluated timeframe.
         """
@@ -3634,7 +3805,8 @@ class Storage(AbstractEsComponent):
 
     @property
     def status_inertia(self):
-        """
+        """Tuple of status-inertia (milp) constraints.
+
         :class:`~tessif.frused.namedtuples.OnOff` :class:`~typing.NamedTuple`
         describing the minimum uptime and downtime. With up and downtime
         describing the minimum amount of following discrete timesteps the
@@ -3644,7 +3816,8 @@ class Storage(AbstractEsComponent):
 
     @property
     def status_changing_costs(self):
-        """
+        """Tuple of status-changing (milp) constraints.
+
         :class:`~tessif.frused.namedtuples.OnOff` :class:`~typing.NamedTuple`
         describing the cost for changing status from ``on`` to ``off`` and
         from ``off`` to ``on`` respectively.
@@ -3653,7 +3826,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def number_of_status_changes(self):
-        """An :class:`~tessif.frused.namedtuples.OnOff`
+        """Tuple of allowed milp status changing constraints.
+
+        An :class:`~tessif.frused.namedtuples.OnOff`
         :class:`~typing.NamedTuple` describing the number of times the entity
         can change its status from ``on`` to ``off`` and from ``off`` to ``on``
         respectively.
@@ -3662,7 +3837,9 @@ class Storage(AbstractEsComponent):
 
     @property
     def costs_for_being_active(self):
-        """A :class:`~number.Number`, default = 0
+        """Milp constained activity costs.
+
+        A :class:`~number.Number`, default = 0
         Describing the costs for not being inactive.
 
         Meaning for each discrete time step the entity's boolean status
