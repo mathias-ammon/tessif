@@ -1,0 +1,4 @@
+nodes,ax,nodelist,node_size,node_fill_size,node_color,node_shape,alpha,cmap,vmin,vmax,linewidts,edgecolors,label,,,,,,
+labels,labels,font_size,font_color,font_family,font_weight,alpha,horizontalalignment,verticalalignment,ax,,,,,,,,,,
+edges,edglist,width,edge_color,style,alpha,edge_cmap,edge_vmin,edge_vmax,ax,arrows,arrowstyle,arrowsize,connectionstyle,label,min_source_margin,min_target_margin,node_shape,node_size,nodelist
+edge_labels,ax,alpha,edge_labels,label_pos,font_size,font_color,font_weight,font_family,bbox,clip_on,horizontalalignment,verticalalignment,,,,,,,

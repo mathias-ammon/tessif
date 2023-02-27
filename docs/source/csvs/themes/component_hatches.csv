@@ -1,0 +1,3 @@
+0,bus,``/``,storage,``|``
+1,sink,``\``,transformer,``-``
+2,source,``.``,connector,``x``

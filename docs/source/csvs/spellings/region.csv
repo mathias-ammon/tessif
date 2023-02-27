@@ -1,0 +1,4 @@
+District,Regional,locality,territory
+Locality,Territory,place,zone
+Place,Zone,region,
+Region,district,regional,

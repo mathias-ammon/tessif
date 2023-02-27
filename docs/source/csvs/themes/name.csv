@@ -1,0 +1,14 @@
+renewables,#00ff00,oil_delivery,#333333
+photovoltaic,#ff9900,hydro_electrical_storage,#0000cc
+solarthermal,#ff0099,electro_chemical_storage,#ccff00
+onshore,#99ccff,electro_mechanical_storage,#999900
+offshore,#00ccff,thermal_energy_storage,#cc0033
+hydro_electric,#000099,power2x,#669999
+combined_heat_power,#9933cc,power2heat,#b30000
+power_plant,#ff6600,imported,#ff6600
+heat_plant,#b30000,backup,#990099
+electrical_line,#ffcc00,demand,#330099
+gas_station,#6633cc,export,#006600
+gas_pipeline,#336666,excess,#cc0000
+gas_delivery,#006666,connector,#669999
+oil_pipeline,#666666,,

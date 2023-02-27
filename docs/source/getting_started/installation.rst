@@ -10,11 +10,8 @@ Following Sections provide overview on how to install the package.
    :local:
 
 
-Standard / Usage
-================
-
-Use the following advice to install the standard / user version of this
-package.
+Standard
+========
 
 Linux
 -----

@@ -1,0 +1,57 @@
+Costs Outflow,Outflow variable Costs,costs Outflow Specific,outflow variable costs
+Costs Outflow Specific,Outflow variable costs,costs Outflow Variable,outflow_Costs
+Costs Outflow Variable,Outflow_Costs,costs Outflow specific,outflow_Costs_Specific
+Costs Outflow specific,Outflow_Costs_Specific,costs Outflow variable,outflow_Costs_Variable
+Costs Outflow variable,Outflow_Costs_Variable,costs Outgoing,outflow_Costs_specific
+Costs Outgoing,Outflow_Costs_specific,costs Specific Outflow,outflow_Costs_variable
+Costs Specific Outflow,Outflow_Costs_variable,costs Specific outflow,outflow_Specific_Costs
+Costs Specific outflow,Outflow_Specific_Costs,costs Variable Outflow,outflow_Specific_costs
+Costs Variable Outflow,Outflow_Specific_costs,costs Variable outflow,outflow_Variable_Costs
+Costs Variable outflow,Outflow_Variable_Costs,costs outflow,outflow_Variable_costs
+Costs outflow,Outflow_Variable_costs,costs outflow Specific,outflow_costs
+Costs outflow Specific,Outflow_costs,costs outflow Variable,outflow_costs_Specific
+Costs outflow Variable,Outflow_costs_Specific,costs outflow specific,outflow_costs_Variable
+Costs outflow specific,Outflow_costs_Variable,costs outflow variable,outflow_costs_specific
+Costs outflow variable,Outflow_costs_specific,costs outgoing,outflow_costs_variable
+Costs outgoing,Outflow_costs_variable,costs specific Outflow,outflow_specific_Costs
+Costs specific Outflow,Outflow_specific_Costs,costs specific outflow,outflow_specific_costs
+Costs specific outflow,Outflow_specific_costs,costs variable Outflow,outflow_variable_Costs
+Costs variable Outflow,Outflow_variable_Costs,costs variable outflow,outflow_variable_costs
+Costs variable outflow,Outflow_variable_costs,costs_Outflow,outgoing Costs
+Costs_Outflow,Outgoing Costs,costs_Outflow_Specific,outgoing costs
+Costs_Outflow_Specific,Outgoing costs,costs_Outflow_Variable,outgoing_Costs
+Costs_Outflow_Variable,Outgoing_Costs,costs_Outflow_specific,outgoing_costs
+Costs_Outflow_specific,Outgoing_costs,costs_Outflow_variable,specific Costs Outflow
+Costs_Outflow_variable,Specific Costs Outflow,costs_Outgoing,specific Costs outflow
+Costs_Outgoing,Specific Costs outflow,costs_Specific_Outflow,specific Outflow Costs
+Costs_Specific_Outflow,Specific Outflow Costs,costs_Specific_outflow,specific Outflow costs
+Costs_Specific_outflow,Specific Outflow costs,costs_Variable_Outflow,specific costs Outflow
+Costs_Variable_Outflow,Specific costs Outflow,costs_Variable_outflow,specific costs outflow
+Costs_Variable_outflow,Specific costs outflow,costs_outflow,specific outflow Costs
+Costs_outflow,Specific outflow Costs,costs_outflow_Specific,specific outflow costs
+Costs_outflow_Specific,Specific outflow costs,costs_outflow_Variable,specific_Costs_Outflow
+Costs_outflow_Variable,Specific_Costs_Outflow,costs_outflow_specific,specific_Costs_outflow
+Costs_outflow_specific,Specific_Costs_outflow,costs_outflow_variable,specific_Outflow_Costs
+Costs_outflow_variable,Specific_Outflow_Costs,costs_outgoing,specific_Outflow_costs
+Costs_outgoing,Specific_Outflow_costs,costs_specific_Outflow,specific_costs_Outflow
+Costs_specific_Outflow,Specific_costs_Outflow,costs_specific_outflow,specific_costs_outflow
+Costs_specific_outflow,Specific_costs_outflow,costs_variable_Outflow,specific_outflow_Costs
+Costs_variable_Outflow,Specific_outflow_Costs,costs_variable_outflow,specific_outflow_costs
+Costs_variable_outflow,Specific_outflow_costs,outcosts,variable Costs Outflow
+Outcosts,Variable Costs Outflow,outflow Costs,variable Costs outflow
+Outflow Costs,Variable Costs outflow,outflow Costs Specific,variable Outflow Costs
+Outflow Costs Specific,Variable Outflow Costs,outflow Costs Variable,variable Outflow costs
+Outflow Costs Variable,Variable Outflow costs,outflow Costs specific,variable costs Outflow
+Outflow Costs specific,Variable costs Outflow,outflow Costs variable,variable costs outflow
+Outflow Costs variable,Variable costs outflow,outflow Specific Costs,variable outflow Costs
+Outflow Specific Costs,Variable outflow Costs,outflow Specific costs,variable outflow costs
+Outflow Specific costs,Variable outflow costs,outflow Variable Costs,variable_Costs_Outflow
+Outflow Variable Costs,Variable_Costs_Outflow,outflow Variable costs,variable_Costs_outflow
+Outflow Variable costs,Variable_Costs_outflow,outflow costs,variable_Outflow_Costs
+Outflow costs,Variable_Outflow_Costs,outflow costs Specific,variable_Outflow_costs
+Outflow costs Specific,Variable_Outflow_costs,outflow costs Variable,variable_costs_Outflow
+Outflow costs Variable,Variable_costs_Outflow,outflow costs specific,variable_costs_outflow
+Outflow costs specific,Variable_costs_outflow,outflow costs variable,variable_outflow_Costs
+Outflow costs variable,Variable_outflow_Costs,outflow specific Costs,variable_outflow_costs
+Outflow specific Costs,Variable_outflow_costs,outflow specific costs,
+Outflow specific costs,costs Outflow,outflow variable Costs,

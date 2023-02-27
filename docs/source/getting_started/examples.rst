@@ -3,9 +3,18 @@
 Examples
 ========
 
-Following sections provide more sophisticated details on how to use this package.
-Everything should be copy-pastable and work out of the box, given your
-:ref:`installation` was successful.
+Code
+----
 
-.. contents::
-   :local:
+Please refer to:
+
+    - tessif-examples
+    - tessif-phd
+
+For coding and use-case examples.
+
+Publications
+------------
+For scientific discussions, please refer to the tessif-related publications:
+
+    - https://tore.tuhh.de/simple-search?query=tessif&location=

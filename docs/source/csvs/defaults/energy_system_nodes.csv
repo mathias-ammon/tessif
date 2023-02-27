@@ -1,0 +1,22 @@
+name,unspecified,flow_costs,0.0,negative_gradient_costs,0.0
+latitude,0.0,final_soc,None,output,None
+longitude,0.0,gain_rate,0.0,positive_gradient,inf
+region,None,initial_soc,0.0,positive_gradient_costs,0.0
+sector,None,initial_status,1.0,shutdown_costs,0.0
+carrier,None,input,None,startup_costs,0.0
+component,None,interfaces,None,storage_capacity,0.0
+node_type,None,installed_capacity,0.0,variable_capacity,None
+unspecified,Unspecified,loss_rate,0.0,chp_back_pressure,None
+timeseries,None,maximum,inf,chp_efficiency,{}
+accumulated_maximum,inf,maximum_efficiency,1.0,el_efficiency_wo_dist_heat,"MinMax(min=None, max=None)"
+accumulated_minimum,0.0,maximum_expansion,inf,enthalpy_loss,"MinMax(min=None, max=None)"
+active,1,maximum_flow_rate,inf,min_condenser_load,None
+characteristic_value,None,maximum_shutdowns,inf,power_loss_index,None
+costs_for_being_active,0.0,maximum_startups,inf,power_wo_dist_heat,"MinMax(min=None, max=None)"
+efficiency,1.0,minimum,0.0,already_installed,0.0
+emissions,0.0,minimum_efficiency,0.01,back_pressure,False
+exogenously_set,False,minimum_expansion,0.0,ideal,False
+exogenously_set_value,0,minimum_flow_rate,0.0,milp,False
+expandable,False,minimum_downtime,0.0,number_of_connections,1
+fixed_expansion_ratios,True,minimum_uptime,0.0,fine_region,Default Region
+expansion_costs,0.0,negative_gradient,inf,,

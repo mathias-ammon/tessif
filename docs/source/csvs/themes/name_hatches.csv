@@ -1,0 +1,10 @@
+0,photovoltaic,``/``,gas_delivery,``---``
+1,solarthermal,``//``,oil_pipeline,``+/``
+2,onshore,``\``,oil_delivery,``+/+/``
+3,offshore,``\\``,bus,``.``
+4,hydro_electric,``o``,hydro_electrical_storage,``oo``
+5,combined_heat_power,``+``,electro_chemical_storage,``xx``
+6,power_plant,``|``,electro_mechanical_storage,``||``
+7,heat_plant,``-``,thermal_energy_storage,``--``
+8,electrical_line,``++``,power2x,``xxx``
+9,gas_pipeline,``--``,,

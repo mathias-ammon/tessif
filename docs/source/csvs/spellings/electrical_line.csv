@@ -1,0 +1,18 @@
+Cable,Line electricity,cable,line electricity
+Electrical Line,Line power,electrical Line,line power
+Electrical line,Line_Electrical,electrical line,line_Electrical
+Electrical_Line,Line_Electricity,electrical_Line,line_Electricity
+Electrical_line,Line_Power,electrical_line,line_Power
+Electricity Line,Line_electrical,electricity Line,line_electrical
+Electricity line,Line_electricity,electricity line,line_electricity
+Electricity_Line,Line_power,electricity_Line,line_power
+Electricity_line,Power Grid,electricity_line,power Grid
+Grid Power,Power Line,grid Power,power Line
+Grid power,Power grid,grid power,power grid
+Grid_Power,Power line,grid_Power,power line
+Grid_power,Power_Grid,grid_power,power_Grid
+Line,Power_Line,line,power_Line
+Line Electrical,Power_grid,line Electrical,power_grid
+Line Electricity,Power_line,line Electricity,power_line
+Line Power,Powerline,line Power,powerline
+Line electrical,Wire,line electrical,wire

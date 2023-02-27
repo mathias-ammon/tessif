@@ -1,0 +1,6 @@
+0,solar,``/``,lignite,``o``
+1,wind,``\``,hardcoal,``.``
+2,water,``.``,nuclear,``*``
+3,biomass,``|``,electricity,``//``
+4,gas,``-``,steam,``\\``
+5,oil,``+/``,hot_water,``||``

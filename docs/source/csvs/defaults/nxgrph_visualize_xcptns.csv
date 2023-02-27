@@ -1,0 +1,3 @@
+node,node_size,node_color,node_shape,node_fill_size,
+edge,edge_labels,edge_color,edge_vmin,edge_vmax,edge_cmap
+legend,,,,,

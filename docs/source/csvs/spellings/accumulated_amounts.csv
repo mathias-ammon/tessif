@@ -1,0 +1,13 @@
+Accumulated Amounts,Amounts_Total,accumulated amounts,amounts_accumulated
+Accumulated amounts,Amounts_accumulated,accumulated_Amounts,amounts_summed
+Accumulated_Amounts,Amounts_summed,accumulated_amounts,amounts_total
+Accumulated_amounts,Amounts_total,amounts,summed Amounts
+Amounts,Summed Amounts,amounts Accumulated,summed amounts
+Amounts Accumulated,Summed amounts,amounts Summed,summed_Amounts
+Amounts Summed,Summed_Amounts,amounts Total,summed_amounts
+Amounts Total,Summed_amounts,amounts accumulated,total Amounts
+Amounts accumulated,Total Amounts,amounts summed,total amounts
+Amounts summed,Total amounts,amounts total,total_Amounts
+Amounts total,Total_Amounts,amounts_Accumulated,total_amounts
+Amounts_Accumulated,Total_amounts,amounts_Summed,
+Amounts_Summed,accumulated Amounts,amounts_Total,

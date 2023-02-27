@@ -1,0 +1,6 @@
+solar,#ff9900,lignite,#993300
+wind,#00ccff,hardcoal,#000000
+water,#000099,nuclear,#cccc00
+biomass,#009900,electricity,#FFD700
+gas,#336666,steam,#cc0033
+oil,#666666,hot_water,#ff3300

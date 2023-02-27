@@ -1,0 +1,32 @@
+Changes Idle,Losses gains Storage,changes Idle,losses gains Storage
+Changes Soc,Losses gains storage,changes Soc,losses gains storage
+Changes idle,Losses storage Gains,changes idle,losses storage Gains
+Changes soc,Losses storage gains,changes soc,losses storage gains
+Changes_Idle,Losses_Gains_Storage,changes_Idle,losses_Gains_Storage
+Changes_Soc,Losses_Gains_storage,changes_Soc,losses_Gains_storage
+Changes_idle,Losses_Storage_Gains,changes_idle,losses_Storage_Gains
+Changes_soc,Losses_Storage_gains,changes_soc,losses_Storage_gains
+Gains Losses Storage,Losses_gains_Storage,gains Losses Storage,losses_gains_Storage
+Gains Losses storage,Losses_gains_storage,gains Losses storage,losses_gains_storage
+Gains Storage Losses,Losses_storage_Gains,gains Storage Losses,losses_storage_Gains
+Gains Storage losses,Losses_storage_gains,gains Storage losses,losses_storage_gains
+Gains losses Storage,Soc Changes,gains losses Storage,soc Changes
+Gains losses storage,Soc changes,gains losses storage,soc changes
+Gains storage Losses,Soc_Changes,gains storage Losses,soc_Changes
+Gains storage losses,Soc_changes,gains storage losses,soc_changes
+Gains_Losses_Storage,Storage Gains Losses,gains_Losses_Storage,storage Gains Losses
+Gains_Losses_storage,Storage Gains losses,gains_Losses_storage,storage Gains losses
+Gains_Storage_Losses,Storage Losses Gains,gains_Storage_Losses,storage Losses Gains
+Gains_Storage_losses,Storage Losses gains,gains_Storage_losses,storage Losses gains
+Gains_losses_Storage,Storage gains Losses,gains_losses_Storage,storage gains Losses
+Gains_losses_storage,Storage gains losses,gains_losses_storage,storage gains losses
+Gains_storage_Losses,Storage losses Gains,gains_storage_Losses,storage losses Gains
+Gains_storage_losses,Storage losses gains,gains_storage_losses,storage losses gains
+Idle Changes,Storage_Gains_Losses,idle Changes,storage_Gains_Losses
+Idle changes,Storage_Gains_losses,idle changes,storage_Gains_losses
+Idle_Changes,Storage_Losses_Gains,idle_Changes,storage_Losses_Gains
+Idle_changes,Storage_Losses_gains,idle_changes,storage_Losses_gains
+Losses Gains Storage,Storage_gains_Losses,losses Gains Storage,storage_gains_Losses
+Losses Gains storage,Storage_gains_losses,losses Gains storage,storage_gains_losses
+Losses Storage Gains,Storage_losses_Gains,losses Storage Gains,storage_losses_Gains
+Losses Storage gains,Storage_losses_gains,losses Storage gains,storage_losses_gains

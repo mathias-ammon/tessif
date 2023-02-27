@@ -1,0 +1,14 @@
+Combined,Sectoral inter,coupled,sectoral multi
+Coupled,Sectoral multi,inter Sectoral,sectoral trans
+Inter Sectoral,Sectoral trans,inter sectoral,sectoral_Inter
+Inter sectoral,Sectoral_Inter,inter_Sectoral,sectoral_Multi
+Inter_Sectoral,Sectoral_Multi,inter_sectoral,sectoral_Trans
+Inter_sectoral,Sectoral_Trans,mixed,sectoral_inter
+Mixed,Sectoral_inter,multi Sectoral,sectoral_multi
+Multi Sectoral,Sectoral_multi,multi sectoral,sectoral_trans
+Multi sectoral,Sectoral_trans,multi_Sectoral,trans Sectoral
+Multi_Sectoral,Trans Sectoral,multi_sectoral,trans sectoral
+Multi_sectoral,Trans sectoral,sectoral Inter,trans_Sectoral
+Sectoral Inter,Trans_Sectoral,sectoral Multi,trans_sectoral
+Sectoral Multi,Trans_sectoral,sectoral Trans,
+Sectoral Trans,combined,sectoral inter,

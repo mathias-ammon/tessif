@@ -1,0 +1,11 @@
+C,Flow Costs,costs,flow costs
+Costs,Flow costs,costs Flow,flow_Costs
+Costs Flow,Flow_Costs,costs Variable,flow_costs
+Costs Variable,Flow_costs,costs flow,variable
+Costs flow,Variable,costs variable,variable Costs
+Costs variable,Variable Costs,costs_Flow,variable costs
+Costs_Flow,Variable costs,costs_Variable,variable_Costs
+Costs_Variable,Variable_Costs,costs_flow,variable_costs
+Costs_flow,Variable_costs,costs_variable,vc
+Costs_variable,Vc,fc,
+Fc,c,flow Costs,
