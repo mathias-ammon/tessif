@@ -2,7 +2,7 @@
 name = "tessif"
 version = "0.0.25"
 description = "Transforming Energy Supply System modell*I*ng Framework"
-authors = ["Mathias Ammon <mathias.ammon@tuhh.de>"]
+authors = ["Mathias Ammon <tz3ma.coding@use.startmail.com>"]
 license = "MIT"
 readme = "README.rst"
 repository = "https://github.com/tZ3ma/tessif"
@@ -37,6 +37,7 @@ sphinx-paramlinks = "^0.5.2"
 pylint = "^2.14.5"
 nox = "^2022.11.21"
 nox-poetry = "^1.0.2"
+tessif-examples = ">=0.3.0"
 
 [tool.poetry.scripts]
 tessif = "tessif.cli:main_cli_entry"

@@ -43,23 +43,22 @@ def init(tessif_directory=None, dry=False):
     """Initialize tessif's working directory."""
     if not tessif_directory:
         tessif_directory = tessif_dir
+    elif tessif_directory == "~/.tessif.d/":
+        tessif_directory = tessif_dir
 
     # Create a Path object for the new folder
     working_directory = Path(tessif_directory)
-
-    logger.info(
-        "Attempting to initialize tessif's working directory at %s",
-        working_directory,
-    )
+    logging_directory = Path(os.path.join(tessif_directory, "logs"))
 
     if not dry:
         # Create the folder if it doesn't exist, with parents as needed
         working_directory.mkdir(parents=True, exist_ok=True)
+        logging_directory.mkdir(parents=True, exist_ok=True)
 
-    logger.info(
-        "Succesfully initialized tessif's working directory at %s",
-        working_directory,
-    )
+        logger.info(
+            "Succesfully initialized tessif's working directory at %s",
+            working_directory,
+        )
 
     return sys.exit(os.EX_OK)
 
@@ -103,7 +102,7 @@ def integrate(plugin, venv_dir=None, dry=False):
     logger.info("Initializing new python binary at %s", python_bin)
 
     if not dry:
-        venv.create(venv_dir, upgrade_deps=True, with_pip=True)
+        venv.create(venv_dir, with_pip=True)
 
     logger.info(
         "Succesfully created venv for plugin %s at %s",
