@@ -50,7 +50,7 @@ scientific_creates = [attr for attr in dir(scientific) if "create" in attr]
 @pytest.mark.parametrize("system_model_name", scientific_creates)
 def test_scientific_es_tropping(system_model_name):
     """Test tropping using the scientific tessif-example sysmods."""
-    tsf_sys_mod = getattr(basic, system_model_name)()
+    tsf_sys_mod = getattr(scientific, system_model_name)()
 
     results = tsf_sys_mod.tropp(
         plugins=PLUGINS,

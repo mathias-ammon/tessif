@@ -23,21 +23,8 @@ nox.options.sessions = (
     "docs_rebuild",
 )
 
-
-# deprecated with migration to nox-poetry:
-# def install_with_constraints(session, *args, **kwargs):
-#     """Install packages constrained by Poetry's lock file."""
-#     with tempfile.NamedTemporaryFile() as requirements:
-#         session.run(
-#             "poetry",
-#             "export",
-#             "--dev",
-#             "--format=requirements.txt",
-#             "--without-hashes",  # requ for working with pip resolver
-#             f"--output={requirements.name}",
-#             external=True,
-#         )
-#         session.install(f"--constraint={requirements.name}", *args, **kwargs)
+# locations to run linting and formatting on:
+locations = "src", "tests", "noxfile.py", "docs/conf.py"
 
 
 @nox_poetry.session(python="3.10")
@@ -49,7 +36,7 @@ def tests(session):
         "not e2e and not con and not slow",
         # append exlcuded markers as "and not ..."
     ]
-    session.run("poetry", "install", "--no-dev", external=True)
+    session.run("poetry", "install", "--only", "main", external=True)
     session.install(
         "tessif-examples",
         "coverage[toml]",
@@ -58,10 +45,6 @@ def tests(session):
         "pytest-mock",
     )
     session.run("pytest", *args)
-
-
-# locations to run linting and formatting on:
-locations = "src", "tests", "noxfile.py", "docs/conf.py"
 
 
 @nox_poetry.session(python="3.10")
