@@ -47,8 +47,8 @@ required folder. So for ``tessif-fine-2-2-2`` this would be:
 
 This is currently required for:
 
-    tessif-fine-2-2-2
-    tessif-calliope-0-6-6post1
+    - tessif-fine-2-2-2
+    - tessif-calliope-0-6-6post1
 
 since they only support python3.8.
 
